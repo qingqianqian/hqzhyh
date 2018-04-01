@@ -5,6 +5,8 @@ var express = require('express'),
     
 Object.assign=require('object-assign')
 
+app.use(express.static('views'));
+
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
