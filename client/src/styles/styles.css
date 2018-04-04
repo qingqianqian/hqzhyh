@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.header {
+  background-color: rgb(42, 27, 112);
+}
+
+#main-menu {
+  border-radius: 0;
+  margin-top: -5px;
+}
+
+#main-menu .item {
+  font-weight: bold;
+}
+
+img.fade {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  transition: opacity 1.5s ease-in-out;
+  opacity: 0;
+}
+
+img.show {
+  opacity: 1;
+}
