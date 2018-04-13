@@ -62,7 +62,9 @@ img.show {
   background-color: #F2F3F5;
 }
 
-
+.ui.vertical.menu .item>.header:not(.ui) {
+  margin: 0;
+}
 
 
 
