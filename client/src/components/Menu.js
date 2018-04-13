@@ -26,8 +26,8 @@ const menu = p =>
       })}
       <Menu.Menu position='right'>
         <div class="f aic p4">
-          <img src="images/canada.png" class="mr4" data-title="English" id="english" />
-          <Popup content="中文" position="bottom center" trigger={<img src="images/china.png" class="mr4" />} />
+          <img src="images/c1.png" class="mr4" data-title="English" id="english" />
+          <Popup content="中文" position="bottom center" trigger={<img src="images/c2.png" class="mr4" />} />
           <Input icon='search' placeholder='Search...' />
         </div>
       </Menu.Menu>
