@@ -7,7 +7,7 @@ const cards = ['Products', 'News', 'Training', 'Tournaments', 'League'];
 
 export default p =>
   <div>
-    <ImageSlider images={[1, 2, 3]} />
+    <ImageSlider n={3} />
 
     <div class="p16">
       <h2>Introduction</h2>
@@ -19,7 +19,7 @@ export default p =>
       {cards.map((c, i) =>
         <div class="f w20 p8">
           <div class="card fv w100 cp">
-            <ImageSlider images={[(i+1)*10+1, (i+1)*10+2]} />
+            <ImageSlider n={2} name={c} />
             <div class="p8 fs18 tac">{c}</div>
           </div>
         </div>
