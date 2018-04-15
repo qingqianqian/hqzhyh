@@ -12,7 +12,7 @@ app.use(morgan('combined'))
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
-    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL || 'mongodb://localhost:27017/vttc',
     mongoURLLabel = "";
 
 if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
@@ -86,11 +86,17 @@ app.get('/pagecount', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-    db.collection('counts').count(function(err, count ){
-      res.send('{ pageCount: ' + count + '}');
+    var col = db.collection('counts');
+    // Create a document with request IP and current time of request
+    col.insert({ip: req.ip, date: Date.now()});
+    col.count(function(err, count){
+      if (err) {
+        console.log('Error running count. Message:\n'+err);
+      }
+      res.send('{ pageHit: ' + count + '}');
     });
   } else {
-    res.send('{ pageCount: -1 }');
+    res.send('nodb');
   }
 });
 

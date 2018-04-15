@@ -7,7 +7,7 @@ const cats = [['New Arrivals'], ['On Sale'], ['Blades', ['Penhold', 'Shakehand']
 
 export default p =>
   <div class="p16 f">
-    <div class="ui vertical menu" style={{width: '200px'}}>
+    <div class="ui vertical menu">
       {cats.map(x =>
         <div class="item">
           <div class="header">{x[0]}</div>
@@ -21,7 +21,7 @@ export default p =>
         </div>
       )}
     </div>
-    <div class="pl32">
+    <div class="pl32 w90">
       <h1>New Arrivals</h1>
       <div class="ui divider"></div>
       <div class="ui five column grid">
