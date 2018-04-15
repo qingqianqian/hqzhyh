@@ -23,11 +23,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/openshift/nodejs-ex.git"
+    "url": "https://github.com/ln613/n2.git"
   },
   "author": "Nan Li",
   "license": "CC-BY-1.0",
-  "homepage": "http://github.com/openshift/nodejs-ex",
+  "homepage": "https://github.com/ln613/n2",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-latest-node": "^1.0.0"
