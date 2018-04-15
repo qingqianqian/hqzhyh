@@ -1,9 +1,8 @@
 import express from 'express';
 import path from 'path';
 import morgan from 'morgan';
-import mongodb from 'mongodb';
+import * as api from './api';
 
-let db = null;
 const app = express();
 
 const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -29,21 +28,11 @@ if (process.env.DATABASE_SERVICE_NAME) {
   }
 }
 
-const initDb = fn => {
-  if (db || mongoURL == null) return;
-
-  mongodb.connect(mongoURL)
-    .then(conn => {
-      db = conn;
-      console.log('Connected to MongoDB at: %s', mongoURL);
-  });
-};
-
-initDb();
+api.initdb(mongoURL);
 
 app.use(express.static('client/build'));
 app.use((req, res, next) => {
-  initDb();
+  api.initdb(mongoURL);
   next();
 });
 app.use(morgan('combined'));
@@ -52,10 +41,16 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something bad happened!');
 });
 
-app.get('/pagecount', (req, res) => {
-  const col = db.collection('counts');
-  col.insert({ ip: req.ip, date: Date.now() });
-  col.count().then(count => res.send('{ pageHit: ' + count + '}'));
+app.get('/api/count', (req, res) => {
+  api.count(req.ip).then(c => res.send(c.toString()));
+});
+
+app.get('/api/initdata', (req, res) => {
+  api.initdata().then(() => res.send('done'));
+});
+
+app.get('/api/products', (req, res) => {
+  api.get('products').then(x => res.send(x));
 });
 
 app.get('*', function (req, res) {

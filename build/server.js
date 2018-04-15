@@ -12,13 +12,14 @@ var _morgan = require('morgan');
 
 var _morgan2 = _interopRequireDefault(_morgan);
 
-var _mongodb = require('mongodb');
+var _api = require('./api');
 
-var _mongodb2 = _interopRequireDefault(_mongodb);
+var api = _interopRequireWildcard(_api);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-let db = null;
 const app = (0, _express2.default)();
 
 const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -44,20 +45,11 @@ if (process.env.DATABASE_SERVICE_NAME) {
   }
 }
 
-const initDb = fn => {
-  if (db || mongoURL == null) return;
-
-  _mongodb2.default.connect(mongoURL).then(conn => {
-    db = conn;
-    console.log('Connected to MongoDB at: %s', mongoURL);
-  });
-};
-
-initDb();
+api.initdb(mongoURL);
 
 app.use(_express2.default.static('client/build'));
 app.use((req, res, next) => {
-  initDb();
+  api.initdb(mongoURL);
   next();
 });
 app.use((0, _morgan2.default)('combined'));
@@ -66,10 +58,16 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something bad happened!');
 });
 
-app.get('/pagecount', (req, res) => {
-  const col = db.collection('counts');
-  col.insert({ ip: req.ip, date: Date.now() });
-  col.count().then(count => res.send('{ pageHit: ' + count + '}'));
+app.get('/api/count', (req, res) => {
+  api.count(req.ip).then(c => res.send(c.toString()));
+});
+
+app.get('/api/initdata', (req, res) => {
+  api.initdata().then(() => res.send('done'));
+});
+
+app.get('/api/products', (req, res) => {
+  api.get('products').then(x => res.send(x));
 });
 
 app.get('*', function (req, res) {
