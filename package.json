@@ -4,14 +4,8 @@
   "description": "Vancouver Table Tennis Club",
   "main": "server.js",
   "dependencies": {
-    "chai": "^3.5.0",
-    "chai-http": "^2.0.1",
-    "ejs": "^2.4.1",
     "express": "^4.13.4",
-    "mocha": "^2.4.5",
     "mongodb": "^2.1.16",
-    "morgan": "^1.7.0",
-    "object-assign": "4.1.0",
     "ramda": "^0.25.0"
   },
   "engine": {
@@ -19,7 +13,7 @@
     "npm": "*"
   },
   "scripts": {
-    "start": "babel server -d build && node build/server.js",
+    "start": "node server/server.js",
     "test": ""
   },
   "repository": {
@@ -28,9 +22,5 @@
   },
   "author": "Nan Li",
   "license": "CC-BY-1.0",
-  "homepage": "https://github.com/ln613/n2",
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-latest-node": "^1.0.0"
-  }
+  "homepage": "https://github.com/ln613/n2"
 }

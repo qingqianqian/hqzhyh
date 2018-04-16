@@ -1,5 +1,9 @@
-import { tap as _tap } from 'ramda';
+const R = require('ramda');
 
-export const cd = 'http://res.cloudinary.com/vttc/image/upload/v1522908408/';
+const e = {};
 
-export const tap = _tap(console.log);
+e.cd = 'http://res.cloudinary.com/vttc/image/upload/v1522908408/';
+
+e.tap = R.tap(console.log);
+
+module.exports = e;

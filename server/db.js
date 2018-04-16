@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   products: [
     { id: 1, name: 'Nakama S-2', cat: 'Rackets', cat1: 'Butterfly', price: 129, desc: 'Carbon Power With Great Spin For Aggressive Topspin Play' },
     { id: 2, name: 'Lezoline Rifones Shoes', cat: 'Footwear', cat1: 'Shoes', price: 150, sale: 120, desc: 'Athlete Style Model; The New Choice Of Top Players' },

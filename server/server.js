@@ -1,13 +1,12 @@
-import express from 'express';
-import path from 'path';
-import morgan from 'morgan';
-import * as api from './api';
+const express = require('express');
+const path = require('path');
+const api = require('./api');
 
 const app = express();
 
 const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 const ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
-let mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL || 'mongodb://localhost:27017/vttc';
+let mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL || 'mongodb+srv://ln613:ln-750613@cluster0-drvhn.mongodb.net/test';
 let mongoURLLabel = "";
 
 if (process.env.DATABASE_SERVICE_NAME) {
@@ -44,7 +43,6 @@ app.use((req, res, next) => {
   api.initdb(mongoURL);
   next();
 });
-app.use(morgan('combined'));
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something bad happened!');
