@@ -56,8 +56,17 @@ app.get('/api/initdata', (req, res) => {
   api.initdata().then(() => res.send('done'));
 });
 
+app.get('/api/:doc/:id', (req, res) => {
+  const { doc, id } = req.params;
+  api.getById(doc, id).then(x => res.send(x));
+});
+
 app.get('/api/:doc', (req, res) => {
   api.get(req.params.doc).then(x => res.send(x));
+});
+
+app.post('/api/:doc', (req, res) => {
+  api.add(req.params.doc, req.body).then(x => res.send(x));
 });
   
 app.get('*', function (req, res) {
