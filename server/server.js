@@ -48,7 +48,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something bad happened!');
 });
 
-app.get('/api/count', (req, res) => {
+app.get('/api/test', (req, res) => {
   api.count(req.ip).then(c => res.send(c.toString()));
 });
 
@@ -56,10 +56,10 @@ app.get('/api/initdata', (req, res) => {
   api.initdata().then(() => res.send('done'));
 });
 
-app.get('/api/products', (req, res) => {
-  api.get('products').then(x => res.send(x));
+app.get('/api/:doc', (req, res) => {
+  api.get(req.params.doc).then(x => res.send(x));
 });
-
+  
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client/build/index.html'))
 });
