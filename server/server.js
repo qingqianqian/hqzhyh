@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const api = require('./api');
 const { done, send } = require('./utils');
 
@@ -40,6 +41,7 @@ else {
 api.initdb(mongoURL);
 
 app.use(express.static('client/build'));
+app.use(app.use(bodyParser.json()));
 app.use((req, res, next) => {
   api.initdb(mongoURL);
   next();

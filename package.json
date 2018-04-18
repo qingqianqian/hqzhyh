@@ -4,6 +4,7 @@
   "description": "Vancouver Table Tennis Club",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.13.4",
     "mongodb": "^2.1.16",
     "ramda": "^0.25.0"
