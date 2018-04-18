@@ -20,7 +20,7 @@ e.initdata = () => Promise.all(
 
 e.get = doc => db.collection(doc).find().toArray()
 
-e.getById = (doc, id) => db.collection(doc).findOne({ id })
+e.getById = (doc, id) => db.collection(doc).findOne({ id: +id })
 
 e.add = (doc, obj) => db.collection(doc).insert(obj)
 
