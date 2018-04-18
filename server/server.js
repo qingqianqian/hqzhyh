@@ -70,7 +70,7 @@ app.get('/api/:doc', (req, res) => {
 // post --------------------
 
 app.post('/api/drop', (req, res) => {
-  api.add(req.body.doc).then(() => res.send('done'));
+  api.drop(req.body.doc).then(() => res.send('done'));
 });
 
 app.post('/api/:doc', (req, res) => {
