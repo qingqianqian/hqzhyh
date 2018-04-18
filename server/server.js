@@ -58,7 +58,7 @@ app.get('/api/initdata', (req, res) => {
 });
 
 app.get('/api/list', (req, res) => {
-  send(api.list(), res);
+  res.send(api.list());
 });
 
 app.get('/api/:doc/:id', (req, res) => {
