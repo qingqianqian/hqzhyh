@@ -18,6 +18,8 @@ e.initdata = () => Promise.all(
   Object.keys(dbj).map(k => db.collection(k).insertMany(dbj[k]))
 );
 
+e.list = () => db.getCollectionNames()
+
 e.get = doc => db.collection(doc).find().toArray()
 
 e.getById = (doc, id) => db.collection(doc).findOne({ id: +id })

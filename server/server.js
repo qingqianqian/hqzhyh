@@ -57,6 +57,10 @@ app.get('/api/initdata', (req, res) => {
   done(api.initdata(), res);
 });
 
+app.get('/api/list', (req, res) => {
+  send(api.list(), res);
+});
+
 app.get('/api/:doc/:id', (req, res) => {
   const { doc, id } = req.params;
   send(api.getById(doc, id), res);
@@ -68,13 +72,14 @@ app.get('/api/:doc', (req, res) => {
 
 // post --------------------
 
-app.purge('/api/drop', (req, res) => {
-    res.send(req.body);
-  //done(api.drop(req.body.doc), res);
-});
-
 app.post('/api/:doc', (req, res) => {
   send(api.add(req.params.doc, req.body), res);
+});
+
+// purge --------------------
+
+app.purge('/api/:doc', (req, res) => {
+  done(api.drop(req.params.doc), res);
 });
 
 // catch all --------------------
