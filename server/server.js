@@ -68,7 +68,11 @@ app.get('/api/:doc', (req, res) => {
 app.post('/api/:doc', (req, res) => {
   api.add(req.params.doc, req.body).then(x => res.send(x));
 });
-  
+
+app.post('/api/drop', (req, res) => {
+  api.add(req.body.doc).then(() => res.send('done'));
+});
+
 app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client/build/index.html'))
 });

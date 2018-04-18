@@ -14,10 +14,6 @@ e.initdb = mongoURL => {
   });
 };
 
-e.count = ip => db.collection('counts')
-  .insert({ ip, date: Date.now() })
-  .then(x => db.collection('counts').count());
-
 e.initdata = () => Promise.all(
   Object.keys(dbj).map(k => db.collection(k).insertMany(dbj[k]))
 );
@@ -27,5 +23,7 @@ e.get = doc => db.collection(doc).find().toArray()
 e.getById = (doc, id) => db.collection(doc).findOne({ id })
 
 e.add = (doc, obj) => db.collection(doc).insert(obj)
+
+e.drop = doc => db.collection(doc).drop()
 
 module.exports = e;
