@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const api = require('./api');
+const { done, send } = require('./utils');
 
 const app = express();
 
@@ -50,31 +51,27 @@ app.use((err, req, res, next) => {
 
 // get --------------------
 
-app.get('/api/test', (req, res) => {
-  api.count(req.ip).then(c => res.send(c.toString()));
-});
-
 app.get('/api/initdata', (req, res) => {
-  api.initdata().then(() => res.send('done'));
+  done(api.initdata(), res);
 });
 
 app.get('/api/:doc/:id', (req, res) => {
   const { doc, id } = req.params;
-  api.getById(doc, id).then(x => res.send(x));
+  send(api.getById(doc, id), res);
 });
 
 app.get('/api/:doc', (req, res) => {
-  api.get(req.params.doc).then(x => res.send(x));
+  send(api.get(req.params.doc), res);
 });
 
 // post --------------------
 
 app.post('/api/drop', (req, res) => {
-  api.drop(req.body.doc).then(() => res.send('done'));
+  done(api.drop(req.body.doc), res);
 });
 
 app.post('/api/:doc', (req, res) => {
-  api.add(req.params.doc, req.body).then(x => res.send(x));
+  send(api.add(req.params.doc, req.body), res);
 });
 
 // catch all --------------------
