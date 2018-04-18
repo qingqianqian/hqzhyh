@@ -68,7 +68,7 @@ app.get('/api/:doc', (req, res) => {
 
 // post --------------------
 
-app.post('/api/drop', (req, res) => {
+app.purge('/api/drop', (req, res) => {
     res.send(req.body);
   //done(api.drop(req.body.doc), res);
 });
