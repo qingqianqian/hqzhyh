@@ -85,6 +85,10 @@ app.purge('/api/:doc', (req, res) => {
 
 // catch all --------------------
 
+app.get('/', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/build/index.html'))
+});
+
 app.get('/admin/*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client/admin/build/index.html'))
 });
