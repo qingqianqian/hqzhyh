@@ -18,7 +18,7 @@ e.initdata = () => Promise.all(
   Object.keys(dbj).map(k => db.collection(k).insertMany(dbj[k]))
 );
 
-e.list = () => db.getCollectionNames()
+e.list = () => Object.keys(db)
 
 e.get = doc => db.collection(doc).find().toArray()
 
