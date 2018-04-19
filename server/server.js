@@ -40,8 +40,8 @@ else {
 
 api.initdb(mongoURL);
 
-app.use(express.static('client/admin/build'));
 app.use(express.static('client/build'));
+app.use(express.static('client/admin/build'));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   api.initdb(mongoURL);
@@ -84,10 +84,6 @@ app.purge('/api/:doc', (req, res) => {
 });
 
 // catch all --------------------
-
-app.get('/index.html', function (req, res) {
-  res.sendFile(path.resolve(__dirname, '../client/build/index.html'))
-});
 
 app.get('/admin/*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client/admin/build/index.html'))
