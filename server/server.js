@@ -40,6 +40,7 @@ else {
 
 api.initdb(mongoURL);
 
+app.use(express.static('client/admin/build'));
 app.use(express.static('client/build'));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
