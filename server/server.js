@@ -8,7 +8,7 @@ const app = express();
 
 const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
 const ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
-let mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL || 'mongodb+srv://ln613:ln-750613@cluster0-drvhn.mongodb.net/test';
+let mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL || 'mongodb://localhost:27017/vttc';
 let mongoURLLabel = "";
 
 if (process.env.DATABASE_SERVICE_NAME) {
@@ -40,8 +40,8 @@ else {
 
 api.initdb(mongoURL);
 
-app.use(express.static('client/build'));
-app.use(express.static('client/admin/build'));
+app.use(express.static('client/packages/vttc/build'));
+app.use(express.static('client/packages/admin/build'));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   api.initdb(mongoURL);
@@ -86,11 +86,11 @@ app.purge('/api/:doc', (req, res) => {
 // catch all --------------------
 
 app.get('/admin/*', function (req, res) {
-  res.sendFile(path.resolve(__dirname, '../client/admin/build/index.html'))
+  res.sendFile(path.resolve(__dirname, '../client/packages/admin/build/index.html'))
 });
 
 app.get('*', function (req, res) {
-  res.sendFile(path.resolve(__dirname, '../client/build/index.html'))
+  res.sendFile(path.resolve(__dirname, '../client/packages/vttc/build/index.html'))
 });
 
 app.listen(port, ip);
