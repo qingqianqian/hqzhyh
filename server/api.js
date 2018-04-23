@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const mongodb = require('mongodb');
 const cd = require('cloudinary');
+const { sortWith, ascend, prop } = require('ramda');
 const config = fs.existsSync(path.join(__dirname, 'config.js')) ? require('./config') : null;
 const dbj = require('./db');
 const { tap } = require('./utils');
@@ -33,6 +34,8 @@ e.add = (doc, obj) => db.collection(doc).insert(obj)
 
 e.drop = doc => db.collection(doc).drop()
 
-e.cdList = () => cd.v2.api.resources()
+e.cdList = () => cd.v2.api.resources({ max_results: 500 }).then(r => sortWith([ascend(prop('public_id'))], r.resources))
+
+e.cdVersion = () => cd.v2.api.resources({ max_results: 1 }).then(r => r.resources[0].version)
 
 module.exports = e;
