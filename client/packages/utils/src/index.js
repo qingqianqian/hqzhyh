@@ -1,7 +1,7 @@
 import { tap as _tap } from 'ramda';
 import { lifecycle } from 'recompose';
 
-export const cd = 'http://res.cloudinary.com/vttc/image/upload/v1522908408/';
+export const cdurl = (l, c, n) => l.cdVersion ? `http://res.cloudinary.com/vttc/image/upload/v${l.cdVersion}/${c}/${n}.jpg` : '';
 
 export const tap = _tap(console.log);
 

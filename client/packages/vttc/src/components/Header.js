@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'no-redux';
 import { Link } from 'react-router-dom';
-import { cd } from 'utils';
+import { cdurl } from 'utils';
+import { lookupSelector } from 'utils/selectors';
 import { range } from 'ramda';
 
 const s = { position: 'absolute', height: '150px', width: '10%' };
@@ -9,16 +11,15 @@ const s2 = { ...s, right: 0, background: 'linear-gradient(to right, rgba(42, 27,
 const n = 9;
 const r1 = range(1, n + 1);
 const r2 = r1.concat(r1);
-const hd = cd + 'header/';
 
-export default p =>
+const Header = ({ lookup }) =>
   <div class="bgb f">  
     <img src="images/banner.jpg" />
     <div class="fg1 ph8 f marquee">
       <div class="f aic m1">
         {r2.map(x =>
           <Link to="/">
-            <img width="130" height="130" src={hd + x + '.jpg'} />  
+            <img width="130" height="130" src={cdurl(lookup, 'header', x)} />  
           </Link>
         )}
       </div>
@@ -26,3 +27,5 @@ export default p =>
       <div style={s2}></div>
     </div>  
   </div>  
+
+export default connect(lookupSelector)(Header);

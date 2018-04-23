@@ -2,10 +2,9 @@
   "name": "utils",
   "version": "0.1.0",
   "description": "",
-  "main": "dist",
   "scripts": {
     "start": "watch \"npm run build\" src",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir ."
   },
   "license": "MIT",
   "devDependencies": {

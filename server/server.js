@@ -66,8 +66,8 @@ app.get('/api/cd/list', (req, res) => {
   send(api.cdList(), res);
 });
 
-app.get('/api/cd/version', (req, res) => {
-  send(api.cdVersion(), res);
+app.get('/api/lookup', (req, res) => {
+  send(api.cdVersion().then(r => ({ cdVersion: r })), res);
 });
 
 app.get('/api/:doc/:id', (req, res) => {

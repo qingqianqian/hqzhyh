@@ -3,13 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.withLoad = exports.api = exports.isDev = exports.tap = exports.cd = undefined;
+exports.withLoad = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _ramda = require('ramda');
 
 var _recompose = require('recompose');
 
-var cd = exports.cd = 'http://res.cloudinary.com/vttc/image/upload/v1522908408/';
+var cdurl = exports.cdurl = function cdurl(l, c, n) {
+  return l.cdVersion ? 'http://res.cloudinary.com/vttc/image/upload/v' + l.cdVersion + '/' + c + '/' + n + '.jpg' : '';
+};
 
 var tap = exports.tap = (0, _ramda.tap)(console.log);
 

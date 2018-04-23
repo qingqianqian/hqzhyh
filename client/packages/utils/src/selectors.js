@@ -1,6 +1,7 @@
 import { reduce } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
 
+const lookup = s => s.lookup || {};
 const products = s => s.products || [];
 const productFilter = s => s.productFilter || {};
 
@@ -16,4 +17,5 @@ const filteredProducts = createSelector(
   }))
 );
 
-export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter });
+export const lookupSelector = mapStateWithSelectors({ lookup });
+export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup });

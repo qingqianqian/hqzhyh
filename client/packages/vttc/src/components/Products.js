@@ -3,14 +3,13 @@ import { range, is } from 'ramda';
 import { connect } from 'no-redux';
 import { compose } from 'recompose';
 import ImageSlider from './ImageSlider';
-import actions from 'actions';
-import { productsSelector } from 'selectors';
-import { cd, withLoad } from 'utils';
+import actions from 'utils/actions';
+import { productsSelector } from 'utils/selectors';
+import { cdurl, withLoad } from 'utils';
 
 const cats = [['New Arrivals'], ['On Sale'], ['Blades', ['Penhold', 'Shakehand']], ['Rackets', ['Butterfly', 'Joola']], ['Rubbers', ['Butterfly', 'Joola']], ['Accessories', ['Net', 'Robot']], ['Apparel', ['Shirts', 'Shorts', 'Fleece']], ['Footwear', ['Shoes', 'Socks']]];
-const pd = cd + 'products/';
 
-const Products = ({ products, productFilter, setProductFilter }) =>
+const Products = ({ products, productFilter, setProductFilter, lookup }) =>
   <div class="p16 f">
     <div class="ui vertical menu">
       {cats.map(x =>
@@ -33,7 +32,7 @@ const Products = ({ products, productFilter, setProductFilter }) =>
         {products.map((x, i) =>
           <div class="f w20 p8">  
             <div class="card cp">
-              <img class="w100" src={pd + x.id + '.jpg'} />
+              <img class="w100" src={cdurl(lookup, 'products', x.id)} />
               <hr />
               <div class="fv p8 fg1">
                 <h3>{x.name}</h3>
