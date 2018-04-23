@@ -58,8 +58,12 @@ app.get('/api/initdata', (req, res) => {
   done(api.initdata(), res);
 });
 
-app.get('/api/list', (req, res) => {
+app.get('/api/env', (req, res) => {
   res.send(Object.keys(process.env));
+});
+
+app.get('/api/cd/list', (req, res) => {
+  api.cdList().then(r => res.send(r));
 });
 
 app.get('/api/:doc/:id', (req, res) => {
