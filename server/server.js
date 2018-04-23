@@ -59,7 +59,7 @@ app.get('/api/initdata', (req, res) => {
 });
 
 app.get('/api/list', (req, res) => {
-  res.send(api.list());
+  res.send(Object.keys(process.env));
 });
 
 app.get('/api/:doc/:id', (req, res) => {

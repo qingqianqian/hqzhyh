@@ -2,3 +2,4 @@
 npm-debug.log
 /client/packages/*/node_modules/
 .vscode
+/server/config.js
