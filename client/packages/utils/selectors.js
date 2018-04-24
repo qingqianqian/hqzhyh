@@ -24,10 +24,10 @@ var filteredProducts = (0, _noRedux.createSelector)(products, productFilter, fun
     return p.filter(c);
   }, ps, Object.keys(f).map(function (k) {
     if (k === 'cat') {
-      if (f[k] === 'New Arrivals') return function (p) {
+      if (f[k] === 1) return function (p) {
         return p;
       };
-      if (f[k] === 'On Sale') return function (p) {
+      if (f[k] === 2) return function (p) {
         return p.sale;
       };
     }

@@ -10,8 +10,8 @@ const filteredProducts = createSelector(
   productFilter,
   (ps, f) => reduce((p, c) => p.filter(c), ps, Object.keys(f).map(k => {
     if (k === 'cat') {
-      if (f[k] === 'New Arrivals') return p => p;
-      if (f[k] === 'On Sale') return p => p.sale;
+      if (f[k] === 1) return p => p;
+      if (f[k] === 2) return p => p.sale;
     }
     return p => p[k] === f[k];
   }))

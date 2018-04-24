@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import ImageSlider from './ImageSlider';
 import actions from 'utils/actions';
 import { productsSelector } from 'utils/selectors';
-import { cdurl, withLoad, name } from 'utils';
+import { cdurl, withLoad, name, desc, getNameById, findById } from 'utils';
 
 const Products = ({ products, productFilter, setProductFilter, lookup }) =>
   <div class="p16 f">
@@ -24,7 +24,7 @@ const Products = ({ products, productFilter, setProductFilter, lookup }) =>
       )}
     </div>
     <div class="pl32 w90">
-      <h1>{productFilter.cat ? productFilter.cat + (productFilter.cat1 ? ' - ' + productFilter.cat1: '') : 'New Arrivals'}</h1>
+      <h1>{header(lookup.cats, productFilter)}</h1>
       <div class="ui divider"></div>
       <div class="fw w100">
         {products.map((x, i) =>
@@ -33,8 +33,8 @@ const Products = ({ products, productFilter, setProductFilter, lookup }) =>
               <img class="w100" src={cdurl(lookup, 'products', x.id)} />
               <hr />
               <div class="fv p8 fg1">
-                <h3>{x.name}</h3>
-                <div>{x.desc}</div>
+                <h3>{name(x)}</h3>
+                <div>{desc(x)}</div>
               </div>
               <hr />
               <div class="f p8">
@@ -52,3 +52,10 @@ export default compose(
   connect(productsSelector, actions),
   withLoad('getProducts')
 )(Products);
+
+const header = (l, f) => {
+    if (!f.cat) return name(l.cats[0]);
+    const c = findById(f.cat)(l.cats);
+    const c1 = findById(f.cat1)(c.subs);
+    return name(c) + (c1 ? ' - ' + name(c1) : '');
+}

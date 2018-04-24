@@ -1,4 +1,4 @@
-import { tap as _tap } from 'ramda';
+import { tap as _tap, prop, find, pipe } from 'ramda';
 import { lifecycle } from 'recompose';
 
 export const cdurl = (l, c, n) => l.cdVersion ? `http://res.cloudinary.com/vttc/image/upload/v${l.cdVersion}/${c}/${n}.jpg` : '';
@@ -9,11 +9,16 @@ export const isDev = () => process.env.NODE_ENV === 'development';
 
 export const api = (isDev() ? 'http://localhost:8080' : '') + '/api/';
 
-export const ml = p => (o, l) => o[p + '_' + l] || o[p];
+export const ml = p => o => o[p + '_' + window.lang] || o[p];
 export const name = ml('name');
 export const desc = ml('desc');
 
-export const getPropById = p => (l, id) => ;
+export const findByProp = p => v => l => find(x => x[p] == v, l);
+export const findById = findByProp('id');
+export const findByName = findByProp('name');
+
+export const getPropById = p => id => pipe(findById(id), prop(p));
+export const getNameById = getPropById('name')
 
 export const withLoad = (f, ps) => lifecycle({
   componentWillMount() {
