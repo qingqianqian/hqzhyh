@@ -26,13 +26,15 @@ const menu = p =>
       })}
       <Menu.Menu position='right'>
         <div class="f aic p4">
-          <img src="images/c1.png" class="mr4" data-title="English" id="english" />
-          <Popup content="中文" position="bottom center" trigger={<img src="images/c2.png" class="mr4" />} />
+          {popup('English', 'c1', () => window.lang = '')}
+          {popup('中文', 'c2', () => window.lang = 'ch')}
           <Input icon='search' placeholder='Search...' />
         </div>
       </Menu.Menu>
     </Menu>
   </div>
+
+const popup = (t, img, f) => <Popup content={t} position="bottom center" trigger={<a onClick={f}><img src={`images/${img}.png`} class="mr4" /></a>} />
 
 export default lifecycle({
   componentDidMount() {

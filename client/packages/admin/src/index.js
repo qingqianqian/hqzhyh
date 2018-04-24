@@ -4,8 +4,10 @@ import { Provider, createStore } from 'no-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { actionData } from 'actions';
 import App from 'components/App';
+import 'semantic-ui/dist/semantic.min.js';
+import 'semantic-ui-css/semantic.min.css';
 import 'css-short';
-//import './styles/styles.css';
+import 'utils/css/styles.css';
 
 render(
   <Provider store={createStore(actionData)}>
