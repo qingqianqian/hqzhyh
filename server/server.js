@@ -67,7 +67,11 @@ app.get('/api/cd/list', (req, res) => {
 });
 
 app.get('/api/lookup', (req, res) => {
-  send(api.cdVersion().then(r => ({ cdVersion: r })), res);
+  send(
+    Promise.all([api.cdVersion(), api.get('cats')])
+      .then(r => ({ cdVersion: r[0], cats: r[1] })),
+    res
+  );
 });
 
 app.get('/api/:doc/:id', (req, res) => {

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.withLoad = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.withLoad = exports.desc = exports.name = exports.ml = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _ramda = require('ramda');
 
@@ -20,6 +20,14 @@ var isDev = exports.isDev = function isDev() {
 };
 
 var api = exports.api = (isDev() ? 'http://localhost:8080' : '') + '/api/';
+
+var ml = exports.ml = function ml(p) {
+  return function (o, l) {
+    return o[p + '_' + l] || o[p];
+  };
+};
+var name = exports.name = ml('name');
+var desc = exports.desc = ml('desc');
 
 var withLoad = exports.withLoad = function withLoad(f, ps) {
   return (0, _recompose.lifecycle)({

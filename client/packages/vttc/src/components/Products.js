@@ -5,20 +5,18 @@ import { compose } from 'recompose';
 import ImageSlider from './ImageSlider';
 import actions from 'utils/actions';
 import { productsSelector } from 'utils/selectors';
-import { cdurl, withLoad } from 'utils';
-
-const cats = [['New Arrivals'], ['On Sale'], ['Blades', ['Penhold', 'Shakehand']], ['Rackets', ['Butterfly', 'Joola']], ['Rubbers', ['Butterfly', 'Joola']], ['Accessories', ['Net', 'Robot']], ['Apparel', ['Shirts', 'Shorts', 'Fleece']], ['Footwear', ['Shoes', 'Socks']]];
+import { cdurl, withLoad, name } from 'utils';
 
 const Products = ({ products, productFilter, setProductFilter, lookup }) =>
   <div class="p16 f">
     <div class="ui vertical menu">
-      {cats.map(x =>
+      {lookup.cats.map(x =>
         <div class="item">
-          <a class="header cp" onClick={() => setProductFilter({ cat: x[0] })}>{x[0]}</a>
-          {x[1] ?
+          <a class="header cp" onClick={() => setProductFilter({ cat: x.id })}>{name(x)}</a>
+          {x.subs ?
             <div class="menu">
-              {x[1].map(y =>
-                <a class="item" onClick={() => setProductFilter({ cat: x[0], cat1: y })}>{y}</a>
+              {x.subs.map(y =>
+                <a class="item" onClick={() => setProductFilter({ cat: x.id, cat1: y.id })}>{name(y)}</a>
               )}
             </div>
           : null}  

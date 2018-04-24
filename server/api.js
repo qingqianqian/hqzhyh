@@ -26,9 +26,9 @@ e.initdata = () => Promise.all(
 
 e.list = () => Object.keys(db)
 
-e.get = doc => db.collection(doc).find().toArray()
+e.get = doc => db.collection(doc).find({}, { _id: 0 }).toArray()
 
-e.getById = (doc, id) => db.collection(doc).findOne({ id: +id })
+e.getById = (doc, id) => db.collection(doc).findOne({ id: +id }, { _id: 0 })
 
 e.add = (doc, obj) => db.collection(doc).insert(obj)
 
