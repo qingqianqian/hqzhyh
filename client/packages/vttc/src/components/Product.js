@@ -14,11 +14,13 @@ const Product = ({ product, id, lookup, n, d }) =>
     <div class="pl32 w90">
       <h1>{n(product)}</h1>
       <div class="ui divider"></div>
-      <div class="fw w100">
+      <div class="f w100">
         <img class="w100" src={cdurl(lookup, 'products', id)} />
-        <div>{d(product)}</div>
-        <div>{product.price}</div>
-        <div>{product.sale}</div>
+        <div class="fv">
+          <div>{d(product)}</div>
+          <div class={`fs24 blue ${product.sale ? 'tdlt' : ''}`}>{product.price}</div>
+          <div class="fs24 red pl8">{product.sale && '$' + product.sale}</div>
+        </div>
       </div>
     </div>
   </div>

@@ -7,8 +7,9 @@ import actions from 'utils/actions';
 import { productsSelector } from 'utils/selectors';
 import { cdurl, withLoad, withLang, getNameById, findById } from 'utils';
 import CatMenu from './CatMenu';
+import { withRouter } from "react-router-dom";
 
-const Products = ({ products, productFilter, lookup, n, d }) =>
+const Products = ({ products, productFilter, lookup, n, d, history }) =>
   <div class="p16 f">
     <CatMenu />
     <div class="pl32 w90">
@@ -17,7 +18,7 @@ const Products = ({ products, productFilter, lookup, n, d }) =>
       <div class="fw w100">
         {products.map((x, i) =>
           <div class="f w20 p8">  
-            <div class="card cp">
+            <div class="card cp" onClick={() => history.push('/products/' + x.id)}>
               <img class="w100" src={cdurl(lookup, 'products', x.id)} />
               <hr />
               <div class="fv p8 fg1">
@@ -39,7 +40,8 @@ const Products = ({ products, productFilter, lookup, n, d }) =>
 export default compose(
   connect(productsSelector, actions),
   withLoad('getProducts'),
-  withLang
+  withLang,
+  withRouter
 )(Products);
 
 const header = (l, f, n) => {
