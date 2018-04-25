@@ -5,14 +5,14 @@ import { compose, withProps } from 'recompose';
 import ImageSlider from './ImageSlider';
 import actions from 'utils/actions';
 import { productsSelector } from 'utils/selectors';
-import { cdurl, withLoad, name, desc, getNameById, findById } from 'utils';
+import { cdurl, withLoad, name, desc, getNameById, findById, tap } from 'utils';
 
 const Products = ({ products, productFilter, setProductFilter, lookup, n, d }) =>
   <div class="p16 f">
     <div class="ui vertical menu">
       {lookup.cats.map(x =>
         <div class="item">
-          <a class="header cp" onClick={() => setProductFilter({ cat: x.id })}>{n(x)}</a>
+          <a class="header cp" onClick={() => setProductFilter({ cat: x.id })}>{tap(n)(x)}</a>
           {x.subs ?
             <div class="menu">
               {x.subs.map(y =>
