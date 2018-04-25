@@ -28,7 +28,7 @@ const menu = ({ lang, setLang }) =>
       })}
       <Menu.Menu position='right'>
         <div class="f aic p4">
-          {popup('English', 'c1', () => setLang(''))}
+          {popup('English', 'c1', () => setLang())}
           {popup('中文', 'c2', () => setLang('ch'))}
           <Input icon='search' placeholder='Search...' />
         </div>
