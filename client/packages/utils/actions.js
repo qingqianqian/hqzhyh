@@ -14,9 +14,31 @@ var actionData = exports.actionData = {
     url: _utils.api + 'lookup'
   },
   products: {
-    url: _utils.api + 'products'
+    url: _utils.api + 'products',
+    methods: ['get', 'post']
   },
-  productFilter: {}
+  product: {
+    url: _utils.api + 'products',
+    path: 'products[]',
+    methods: ['put', 'patch', 'delete']
+  },
+  product_f: {
+    path: 'form.product'
+  },
+  cats: {
+    url: _utils.api + 'cats',
+    methods: ['get', 'post']
+  },
+  cat: {
+    url: _utils.api + 'cats',
+    path: 'cats[]',
+    methods: ['put', 'patch', 'delete']
+  },
+  cat_f: {
+    path: 'form.cat'
+  },
+  productFilter: {},
+  form: {}
 };
 
 exports.default = (0, _noRedux.generateActions)(actionData);

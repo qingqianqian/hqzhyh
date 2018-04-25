@@ -1,15 +1,18 @@
 import React from 'react';
+import { connect } from 'no-redux';
 import { withState, lifecycle, compose } from 'recompose';
-import { tap, cd } from 'utils';
+import { tap, cdurl } from 'utils';
 import { range } from 'ramda';
+import actions from 'utils/actions';
+import { lookupSelector } from 'utils/selectors';
 
-const sl = cd + 'slider';
+const sl = n => 'slider' + (n ? ('-' + n) : '');
 
-const ImageList = ({ n, name, index }) =>
+const ImageList = ({ n, name, index, lookup }) =>
   <div class="pr">
-    <img src={sl + (name ? ('-' + name) : '') + '/1.jpg'} class="op0 w100" />
+    <img src={cdurl(lookup, sl(name), 1)} class="op0 w100" />
     {range(0, n).map((x, i) =>
-      <img src={sl + (name ? ('-' + name + '/') : '/') + (i + 1) + '.jpg'} class={`fade ${index === i ? 'show' : ''}`} />
+      <img src={cdurl(lookup, sl(name), i + 1)} class={`fade ${index === i ? 'show' : ''}`} />
     )}
   </div>
 
@@ -25,5 +28,6 @@ export default compose(
     componentWillReceiveProps(p) {
       setIndex(p);
     }
-  })
+  }),
+  connect(lookupSelector, actions)
 )(ImageList);

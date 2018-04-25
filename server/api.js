@@ -30,7 +30,9 @@ e.get = doc => db.collection(doc).find({}, { _id: 0 }).toArray()
 
 e.getById = (doc, id) => db.collection(doc).findOne({ id: +id }, { _id: 0 })
 
-e.add = (doc, obj) => db.collection(doc).insert(obj)
+e.add = (doc, obj) => db.collection(doc).count().then(r => db.collection(doc).insert(Object.assign({}, obj, { id: r + 1})))
+
+e.replace = (doc, obj) => db.collection(doc).replaceOne({ id: obj.id }, obj)
 
 e.drop = doc => db.collection(doc).drop()
 

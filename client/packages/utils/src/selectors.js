@@ -1,12 +1,42 @@
-import { reduce } from 'ramda';
+import { reduce, prop, sortWith, ascend, descend } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
+import { findById, getNameById, tap } from '.';
 
 const lookup = s => s.lookup || {};
+const form = s => s.form || {};
+const cats = s => s.cats || [];
 const products = s => s.products || [];
 const productFilter = s => s.productFilter || {};
 
-const filteredProducts = createSelector(
+const sortedList = (list, filter) => createSelector(
+  list,
+  filter,
+  (l, f) => {
+    const sort = f.sort;
+    if (!sort || sort.length < 2) return l;
+
+    const by = prop(sort[0]);
+    return sortWith([sort[1] === 2 ? descend(by) : ascend(by)], l);
+  }
+)
+
+const catsDD = createSelector(
+  cats,
+  cs => cs.map(c => ({...c, text: c.name, value: c.id,
+    subs: (c.subs || []).map(s => ({...s, text: s.name, value: s.id}))}))
+);
+
+const productsWithCat = createSelector(
   products,
+  cats,
+  (ps, cs) => ps.map(p => {
+    const c = findById(p.cat)(cs);
+    return {...p, cat_name: c && c.name, cat1_name: getNameById(p.cat1)(c && c.subs)};
+  })
+);
+
+const filteredProducts = createSelector(
+  productsWithCat,
   productFilter,
   (ps, f) => reduce((p, c) => p.filter(c), ps, Object.keys(f).map(k => {
     if (k === 'cat') {
@@ -18,4 +48,5 @@ const filteredProducts = createSelector(
 );
 
 export const lookupSelector = mapStateWithSelectors({ lookup });
-export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup });
+export const catsSelector = mapStateWithSelectors({ cats, form });
+export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup, form, cats: catsDD });

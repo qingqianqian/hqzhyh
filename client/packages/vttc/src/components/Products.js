@@ -54,8 +54,8 @@ export default compose(
 )(Products);
 
 const header = (l, f) => {
-    if (!f.cat) return name(l.cats[0]);
-    const c = findById(f.cat)(l.cats);
+    if (!f.cat) return name(l[0]);
+    const c = findById(f.cat)(l);
     const c1 = findById(f.cat1)(c.subs);
     return name(c) + (c1 ? ' - ' + name(c1) : '');
 }

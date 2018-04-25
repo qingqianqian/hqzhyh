@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.toTitleCase = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _ramda = require('ramda');
 
@@ -34,7 +34,7 @@ var findByProp = exports.findByProp = function findByProp(p) {
     return function (l) {
       return (0, _ramda.find)(function (x) {
         return x[p] == v;
-      }, l);
+      }, l || []);
     };
   };
 };
@@ -48,10 +48,16 @@ var getPropById = exports.getPropById = function getPropById(p) {
 };
 var getNameById = exports.getNameById = getPropById('name');
 
-var withLoad = exports.withLoad = function withLoad(f, ps) {
+var withLoad = exports.withLoad = function withLoad(f, p) {
   return (0, _recompose.lifecycle)({
     componentWillMount: function componentWillMount() {
-      this.props[f](ps);
+      this.props[f](this.props[p]);
     }
+  });
+};
+
+var toTitleCase = exports.toTitleCase = function toTitleCase(s) {
+  return s.replace(/\w\S*/g, function (t) {
+    return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
   });
 };

@@ -34,7 +34,7 @@ const menu = p =>
     </Menu>
   </div>
 
-const popup = (t, img, f) => <Popup content={t} position="bottom center" trigger={<a onClick={f}><img src={`images/${img}.png`} class="mr4" /></a>} />
+const popup = (t, img, f) => <Popup content={t} position="bottom center" trigger={<a class="cp" onClick={f}><img src={`images/${img}.png`} class="mr4" /></a>} />
 
 export default lifecycle({
   componentDidMount() {

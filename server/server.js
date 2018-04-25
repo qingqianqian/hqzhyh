@@ -89,6 +89,12 @@ app.post('/api/:doc', (req, res) => {
   send(api.add(req.params.doc, req.body), res);
 });
 
+// put --------------------
+
+app.put('/api/:doc', (req, res) => {
+  send(api.replace(req.params.doc, req.body), res);
+});
+
 // purge --------------------
 
 app.purge('/api/:doc', (req, res) => {

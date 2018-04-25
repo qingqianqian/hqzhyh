@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider, createStore } from 'no-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { actionData } from 'actions';
+import { actionData } from 'utils/actions';
 import App from 'components/App';
 import 'semantic-ui/dist/semantic.min.js';
 import 'semantic-ui-css/semantic.min.css';

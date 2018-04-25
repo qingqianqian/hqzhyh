@@ -2,20 +2,24 @@ import React from 'react';
 import { Switch, Route } from 'react-router';
 import Menu from './Menu';
 import Home from './Home';
-import Category from './Category';
+import Cats from './Cats';
+import Cat from './Cat';
 import Products from './Products';
+import Product from './Product';
 
 const App = () =>
-  <div>
+  <div class="p16">
     <h1>VTTC Admin</h1>
     <hr/>
-    <div class="p16 f">
+    <div class="f">
       <Menu />
-      <div>
+      <div class="ph16 fg1">
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route path='/cats' component={Category} />
-          <Route path='/products' component={Products} />
+          <Route exact path='/cats' component={Cats} />
+          <Route path='/cats/:id' component={Cat} />
+          <Route exact path='/products' component={Products} />
+          <Route path='/products/:id' component={Product} />
         </Switch>
       </div>
     </div>

@@ -27,7 +27,4 @@ const App = p =>
     <div class="ph16 pb16">© 2018 vttc.ca. All Rights Reserved.</div>
   </div>
 
-export default compose(
-  connect(lookupSelector, actions),
-  withLoad('getLookup')
-)(Products);
+export default App;

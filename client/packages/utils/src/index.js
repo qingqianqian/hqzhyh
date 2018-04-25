@@ -13,15 +13,17 @@ export const ml = p => o => o[p + '_' + window.lang] || o[p];
 export const name = ml('name');
 export const desc = ml('desc');
 
-export const findByProp = p => v => l => find(x => x[p] == v, l);
+export const findByProp = p => v => l => find(x => x[p] == v, l || []);
 export const findById = findByProp('id');
 export const findByName = findByProp('name');
 
 export const getPropById = p => id => pipe(findById(id), prop(p));
 export const getNameById = getPropById('name')
 
-export const withLoad = (f, ps) => lifecycle({
+export const withLoad = (f, p) => lifecycle({
   componentWillMount() {
-    this.props[f](ps);
+    this.props[f](this.props[p]);
   }
 });
+
+export const toTitleCase = s => s.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
