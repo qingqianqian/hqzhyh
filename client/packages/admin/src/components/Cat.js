@@ -6,7 +6,7 @@ import { Button } from 'semantic-ui-react';
 import actions from 'utils/actions';
 import { catsSelector } from 'utils/selectors';
 import { Table, TextBox } from 'utils/comps';
-import { tap, withLoad } from 'utils';
+import { tap, withLoad, withDetail } from 'utils';
 
 const Cat = ({ cat, id, form, putCat, postCats }) =>
   <div>
@@ -21,6 +21,6 @@ const Cat = ({ cat, id, form, putCat, postCats }) =>
 
 export default compose(
   connect(catsSelector, actions),
-  withProps(p => ({ cat: find(x => x.id == p.match.params.id, p.cats) || {}, id: p.match.params.id })),
+  withDetail('cat'),
   withLoad('setCat_f', 'cat')
 )(Cat)

@@ -76,7 +76,7 @@ var filteredProducts = (0, _noRedux.createSelector)(productsWithCat, productFilt
   }));
 });
 
-var lookupSelector = exports.lookupSelector = (0, _noRedux.mapStateWithSelectors)({ lookup: lookup });
+var lookupSelector = exports.lookupSelector = (0, _noRedux.mapStateWithSelectors)({ lookup: lookup, lang: lang });
 var langSelector = exports.langSelector = (0, _noRedux.mapStateWithSelectors)({ lang: lang });
-var catsSelector = exports.catsSelector = (0, _noRedux.mapStateWithSelectors)({ cats: cats, form: form });
+var catsSelector = exports.catsSelector = (0, _noRedux.mapStateWithSelectors)({ cats: cats, form: form, lang: lang });
 var productsSelector = exports.productsSelector = (0, _noRedux.mapStateWithSelectors)({ products: filteredProducts, productFilter: productFilter, lookup: lookup, form: form, lang: lang, cats: catsDD });

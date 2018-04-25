@@ -3,11 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toTitleCase = exports.withLang = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.toTitleCase = exports.withDetail = exports.withLang = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _ramda = require('ramda');
 
 var _recompose = require('recompose');
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var cdurl = exports.cdurl = function cdurl(l, c, n) {
   return l.cdVersion ? 'http://res.cloudinary.com/vttc/image/upload/v' + l.cdVersion + '/' + c + '/' + n + '.jpg' : '';
@@ -61,6 +63,16 @@ var withLoad = exports.withLoad = function withLoad(f, p) {
 var withLang = exports.withLang = (0, _recompose.withProps)(function (p) {
   return { n: name(p.lang), d: desc(p.lang) };
 });
+
+var withDetail = exports.withDetail = function withDetail(o, c) {
+  return (0, _recompose.withProps)(function (p) {
+    var _ref;
+
+    return _ref = {}, _defineProperty(_ref, o, (0, _ramda.find)(function (x) {
+      return x.id == p.match.params.id;
+    }, p[c || o + 's']) || {}), _defineProperty(_ref, 'id', p.match.params.id), _ref;
+  });
+};
 
 var toTitleCase = exports.toTitleCase = function toTitleCase(s) {
   return s.replace(/\w\S*/g, function (t) {

@@ -28,4 +28,6 @@ export const withLoad = (f, p) => lifecycle({
 
 export const withLang = withProps(p => ({ n: name(p.lang), d: desc(p.lang) }));
 
+export const withDetail = (o, c) => withProps(p => ({ [o]: find(x => x.id == p.match.params.id, p[c || o + 's']) || {}, id: p.match.params.id }));
+
 export const toTitleCase = s => s.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());

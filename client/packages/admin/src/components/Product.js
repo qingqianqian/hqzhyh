@@ -6,7 +6,7 @@ import { Button } from 'semantic-ui-react';
 import actions from 'utils/actions';
 import { productsSelector } from 'utils/selectors';
 import { Table, TextBox, Select } from 'utils/comps';
-import { tap, withLoad, cdurl, getPropById } from 'utils';
+import { tap, withLoad, withDetail, cdurl, getPropById } from 'utils';
 
 const Product = ({ product, form, putProduct, lookup, cats }) =>
   <div>
@@ -28,7 +28,7 @@ const Product = ({ product, form, putProduct, lookup, cats }) =>
 
 export default compose(
   connect(productsSelector, actions),
-  withProps(p => ({ product: find(x => x.id == p.match.params.id, p.products) || {} })),
+  withDetail('product'),
   withLoad('getLookup'),
   withLoad('setProduct_f', 'product')
 )(Product)

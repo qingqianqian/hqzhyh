@@ -48,7 +48,7 @@ const filteredProducts = createSelector(
   }))
 );
 
-export const lookupSelector = mapStateWithSelectors({ lookup });
+export const lookupSelector = mapStateWithSelectors({ lookup, lang });
 export const langSelector = mapStateWithSelectors({ lang });
-export const catsSelector = mapStateWithSelectors({ cats, form });
+export const catsSelector = mapStateWithSelectors({ cats, form, lang });
 export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup, form, lang, cats: catsDD });
