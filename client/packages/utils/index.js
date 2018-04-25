@@ -24,7 +24,7 @@ var api = exports.api = (isDev() ? 'http://localhost:8080' : '') + '/api/';
 var ml = exports.ml = function ml(p) {
   return function (l) {
     return function (o) {
-      return o[p];
+      return o[p + '_' + l] || o[p];
     };
   };
 };
