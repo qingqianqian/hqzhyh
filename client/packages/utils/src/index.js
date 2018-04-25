@@ -1,5 +1,5 @@
 import { tap as _tap, prop, find, pipe } from 'ramda';
-import { lifecycle } from 'recompose';
+import { lifecycle, withProps } from 'recompose';
 
 export const cdurl = (l, c, n) => l.cdVersion ? `http://res.cloudinary.com/vttc/image/upload/v${l.cdVersion}/${c}/${n}.jpg` : '';
 
@@ -25,5 +25,7 @@ export const withLoad = (f, p) => lifecycle({
     this.props[f](this.props[p]);
   }
 });
+
+export const withLang = withProps(p => ({ n: name(p.lang), d: desc(p.lang) }));
 
 export const toTitleCase = s => s.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());

@@ -1,28 +1,16 @@
 import React from 'react';
 import { range, is } from 'ramda';
 import { connect } from 'no-redux';
-import { compose, withProps } from 'recompose';
+import { compose } from 'recompose';
 import ImageSlider from './ImageSlider';
 import actions from 'utils/actions';
 import { productsSelector } from 'utils/selectors';
-import { cdurl, withLoad, name, desc, getNameById, findById } from 'utils';
+import { cdurl, withLoad, withLang, getNameById, findById } from 'utils';
+import CatMenu from './CatMenu';
 
-const Products = ({ products, productFilter, setProductFilter, lookup, n, d }) =>
+const Products = ({ products, productFilter, lookup, n, d }) =>
   <div class="p16 f">
-    <div class="ui vertical menu">
-      {lookup.cats.map(x =>
-        <div class="item">
-          <a class="header cp" onClick={() => setProductFilter({ cat: x.id })}>{n(x)}</a>
-          {x.subs ?
-            <div class="menu">
-              {x.subs.map(y =>
-                <a class="item" onClick={() => setProductFilter({ cat: x.id, cat1: y.id })}>{n(y)}</a>
-              )}
-            </div>
-          : null}  
-        </div>
-      )}
-    </div>
+    <CatMenu />
     <div class="pl32 w90">
       <h1>{header(lookup.cats, productFilter, n)}</h1>
       <div class="ui divider"></div>
@@ -51,7 +39,7 @@ const Products = ({ products, productFilter, setProductFilter, lookup, n, d }) =
 export default compose(
   connect(productsSelector, actions),
   withLoad('getProducts'),
-  withProps(p => ({ n: name(p.lang), d: desc(p.lang) }))
+  withLang
 )(Products);
 
 const header = (l, f, n) => {

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toTitleCase = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.toTitleCase = exports.withLang = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _ramda = require('ramda');
 
@@ -57,6 +57,10 @@ var withLoad = exports.withLoad = function withLoad(f, p) {
     }
   });
 };
+
+var withLang = exports.withLang = (0, _recompose.withProps)(function (p) {
+  return { n: name(p.lang), d: desc(p.lang) };
+});
 
 var toTitleCase = exports.toTitleCase = function toTitleCase(s) {
   return s.replace(/\w\S*/g, function (t) {
