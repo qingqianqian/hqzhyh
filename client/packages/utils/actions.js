@@ -38,7 +38,8 @@ var actionData = exports.actionData = {
     path: 'form.cat'
   },
   productFilter: {},
-  form: {}
+  form: {},
+  lang: {}
 };
 
 exports.default = (0, _noRedux.generateActions)(actionData);

@@ -22,8 +22,10 @@ var isDev = exports.isDev = function isDev() {
 var api = exports.api = (isDev() ? 'http://localhost:8080' : '') + '/api/';
 
 var ml = exports.ml = function ml(p) {
-  return function (o) {
-    return o[p + '_' + window.lang] || o[p];
+  return function (l) {
+    return function (o) {
+      return l ? o[p + '_' + l] : o[p];
+    };
   };
 };
 var name = exports.name = ml('name');

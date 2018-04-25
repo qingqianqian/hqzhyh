@@ -1,13 +1,15 @@
 import React from 'react';
+import { connect } from 'no-redux';
 import { is } from 'ramda';
 import { Link } from 'react-router-dom';
 import { Button, Menu, Input, Card, Icon, Dropdown, Popup } from 'semantic-ui-react';
 import { lifecycle } from 'recompose';
-import $ from 'jquery';
+import actions from 'utils/actions';
+import { langSelector } from 'utils/selectors';
 
 const menus = ['Home', 'Products', 'News', ['Training', [['Classes', 'university'], ['Coaches', 'user'], ['Players', 'users']]], 'Tournaments', 'League', 'Rating', 'Contact'];
 
-const menu = p =>
+const menu = ({ lang, setLang }) =>
   <div>
     <Menu color="blue" inverted id="main-menu">
       {menus.map(x => {
@@ -26,8 +28,8 @@ const menu = p =>
       })}
       <Menu.Menu position='right'>
         <div class="f aic p4">
-          {popup('English', 'c1', () => window.lang = '')}
-          {popup('中文', 'c2', () => window.lang = 'ch')}
+          {popup('English', 'c1', () => setLang(''))}
+          {popup('中文', 'c2', () => setLang('ch'))}
           <Input icon='search' placeholder='Search...' />
         </div>
       </Menu.Menu>
@@ -36,8 +38,4 @@ const menu = p =>
 
 const popup = (t, img, f) => <Popup content={t} position="bottom center" trigger={<a class="cp" onClick={f}><img src={`images/${img}.png`} class="mr4" /></a>} />
 
-export default lifecycle({
-  componentDidMount() {
-    //$('#english').popup();
-  }
-})(menu);
+export default connect(langSelector, actions)(menu);

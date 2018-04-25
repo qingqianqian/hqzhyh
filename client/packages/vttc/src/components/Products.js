@@ -1,22 +1,22 @@
 import React from 'react';
 import { range, is } from 'ramda';
 import { connect } from 'no-redux';
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 import ImageSlider from './ImageSlider';
 import actions from 'utils/actions';
 import { productsSelector } from 'utils/selectors';
 import { cdurl, withLoad, name, desc, getNameById, findById } from 'utils';
 
-const Products = ({ products, productFilter, setProductFilter, lookup }) =>
+const Products = ({ products, productFilter, setProductFilter, lookup, n, d }) =>
   <div class="p16 f">
     <div class="ui vertical menu">
       {lookup.cats.map(x =>
         <div class="item">
-          <a class="header cp" onClick={() => setProductFilter({ cat: x.id })}>{name(x)}</a>
+          <a class="header cp" onClick={() => setProductFilter({ cat: x.id })}>{n(x)}</a>
           {x.subs ?
             <div class="menu">
               {x.subs.map(y =>
-                <a class="item" onClick={() => setProductFilter({ cat: x.id, cat1: y.id })}>{name(y)}</a>
+                <a class="item" onClick={() => setProductFilter({ cat: x.id, cat1: y.id })}>{n(y)}</a>
               )}
             </div>
           : null}  
@@ -24,7 +24,7 @@ const Products = ({ products, productFilter, setProductFilter, lookup }) =>
       )}
     </div>
     <div class="pl32 w90">
-      <h1>{header(lookup.cats, productFilter)}</h1>
+      <h1>{header(lookup.cats, productFilter, n)}</h1>
       <div class="ui divider"></div>
       <div class="fw w100">
         {products.map((x, i) =>
@@ -33,8 +33,8 @@ const Products = ({ products, productFilter, setProductFilter, lookup }) =>
               <img class="w100" src={cdurl(lookup, 'products', x.id)} />
               <hr />
               <div class="fv p8 fg1">
-                <h3>{name(x)}</h3>
-                <div>{desc(x)}</div>
+                <h3>{n(x)}</h3>
+                <div>{d(x)}</div>
               </div>
               <hr />
               <div class="f p8">
@@ -50,12 +50,13 @@ const Products = ({ products, productFilter, setProductFilter, lookup }) =>
 
 export default compose(
   connect(productsSelector, actions),
-  withLoad('getProducts')
+  withLoad('getProducts'),
+  withProps(p => ({ n: name(p.lang), d: desc(p.lang) }))
 )(Products);
 
-const header = (l, f) => {
-    if (!f.cat) return name(l[0]);
+const header = (l, f, n) => {
+    if (!f.cat) return n(l[0]);
     const c = findById(f.cat)(l);
     const c1 = findById(f.cat1)(c.subs);
-    return name(c) + (c1 ? ' - ' + name(c1) : '');
+    return n(c) + (c1 ? ' - ' + n(c1) : '');
 }

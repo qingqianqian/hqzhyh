@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.productsSelector = exports.catsSelector = exports.lookupSelector = undefined;
+exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -18,6 +18,9 @@ var lookup = function lookup(s) {
 };
 var form = function form(s) {
   return s.form || {};
+};
+var lang = function lang(s) {
+  return s.lang || {};
 };
 var cats = function cats(s) {
   return s.cats || [];
@@ -74,5 +77,6 @@ var filteredProducts = (0, _noRedux.createSelector)(productsWithCat, productFilt
 });
 
 var lookupSelector = exports.lookupSelector = (0, _noRedux.mapStateWithSelectors)({ lookup: lookup });
+var langSelector = exports.langSelector = (0, _noRedux.mapStateWithSelectors)({ lang: lang });
 var catsSelector = exports.catsSelector = (0, _noRedux.mapStateWithSelectors)({ cats: cats, form: form });
-var productsSelector = exports.productsSelector = (0, _noRedux.mapStateWithSelectors)({ products: filteredProducts, productFilter: productFilter, lookup: lookup, form: form, cats: catsDD });
+var productsSelector = exports.productsSelector = (0, _noRedux.mapStateWithSelectors)({ products: filteredProducts, productFilter: productFilter, lookup: lookup, form: form, lang: lang, cats: catsDD });

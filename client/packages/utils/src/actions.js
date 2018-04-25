@@ -31,6 +31,7 @@ export const actionData = {
   },
   productFilter: {},
   form: {},
+  lang: {},
 }
 
 export default generateActions(actionData);

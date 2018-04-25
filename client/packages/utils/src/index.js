@@ -9,7 +9,7 @@ export const isDev = () => process.env.NODE_ENV === 'development';
 
 export const api = (isDev() ? 'http://localhost:8080' : '') + '/api/';
 
-export const ml = p => o => o[p + '_' + window.lang] || o[p];
+export const ml = p => l => o => l ? o[p + '_' + l] : o[p];
 export const name = ml('name');
 export const desc = ml('desc');
 

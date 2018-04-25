@@ -4,6 +4,7 @@ import { findById, getNameById, tap } from '.';
 
 const lookup = s => s.lookup || {};
 const form = s => s.form || {};
+const lang = s => s.lang || {};
 const cats = s => s.cats || [];
 const products = s => s.products || [];
 const productFilter = s => s.productFilter || {};
@@ -48,5 +49,6 @@ const filteredProducts = createSelector(
 );
 
 export const lookupSelector = mapStateWithSelectors({ lookup });
+export const langSelector = mapStateWithSelectors({ lang });
 export const catsSelector = mapStateWithSelectors({ cats, form });
-export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup, form, cats: catsDD });
+export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup, form, lang, cats: catsDD });
