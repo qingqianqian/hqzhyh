@@ -14,8 +14,12 @@ var actionData = exports.actionData = {
     url: _utils.api + 'lookup'
   },
   products: {
+    url: _utils.api + 'products'
+  },
+  newProduct: {
     url: _utils.api + 'products',
-    methods: ['get', 'post']
+    path: 'products[]',
+    method: 'post'
   },
   product: {
     url: _utils.api + 'products',

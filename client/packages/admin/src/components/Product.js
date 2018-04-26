@@ -8,7 +8,7 @@ import { productsSelector } from 'utils/selectors';
 import { Table, TextBox, Select } from 'utils/comps';
 import { tap, withLoad, withDetail, cdurl, getPropById } from 'utils';
 
-const Product = ({ product, form, putProduct, lookup, cats }) =>
+const Product = ({ product, id, form, putProduct, postNewProduct, lookup, cats }) =>
   <div>
     <h1>Product - {product.name}</h1>
     <hr />
@@ -23,7 +23,7 @@ const Product = ({ product, form, putProduct, lookup, cats }) =>
     <TextBox name="product.desc_ch" fluid />
     <img src={cdurl(lookup, 'products', product.id)} />  
     <hr />
-    <Button primary onClick={() => putProduct(form.product)}>Save</Button>
+    <Button primary onClick={() => +id ? putProduct(form.product) : postNewProduct(form.product)}>Save</Button>
   </div>
 
 export default compose(

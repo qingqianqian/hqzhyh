@@ -6,8 +6,12 @@ export const actionData = {
     url: api + 'lookup'
   },
   products: {
+    url: api + 'products'
+  },
+  newProduct: {
     url: api + 'products',
-    methods: ['get', 'post']
+    path: 'products[]',
+    method: 'post'
   },
   product: {
     url: api + 'products',
