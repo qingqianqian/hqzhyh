@@ -6,7 +6,9 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "cloudinary": "^1.11.0",
+    "cookie-parser": "^1.4.3",
     "express": "^4.13.4",
+    "jsonwebtoken": "^8.2.1",
     "mongodb": "^2.1.16",
     "ramda": "^0.25.0"
   },
@@ -15,7 +17,7 @@
     "npm": "*"
   },
   "scripts": {
-    "start": "node server/server.js",
+    "start": "nodemon server/server.js",
     "test": ""
   },
   "repository": {
@@ -24,5 +26,8 @@
   },
   "author": "Nan Li",
   "license": "CC-BY-1.0",
-  "homepage": "https://github.com/ln613/n2"
+  "homepage": "https://github.com/ln613/n2",
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
 }
