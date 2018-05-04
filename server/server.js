@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const api = require('./api');
-const { done, send } = require('./utils');
+const { tap, done, send, config, cors, nocache, port, ip, mongoURL, secret, username, password, gotoLogin } = require('./utils');
 
 const app = express();
 
@@ -16,8 +16,8 @@ api.initdb(mongoURL);
 app.use(express.static('client/packages/vttc/build'));
 app.use(express.static('client/packages/admin/build'));
 app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use((req, res, next) => {
   api.initdb(mongoURL);
   next();
