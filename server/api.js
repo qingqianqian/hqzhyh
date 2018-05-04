@@ -1,11 +1,8 @@
-const fs = require('fs');
-const path = require('path');
 const mongodb = require('mongodb');
 const cd = require('cloudinary');
 const { sortWith, ascend, descend, prop } = require('ramda');
-const config = fs.existsSync(path.join(__dirname, 'config.js')) ? require('./config') : null;
 const dbj = require('./db');
-const { tap } = require('./utils');
+const { tap, config } = require('./utils');
 
 let db = null;
 if (config) cd.config({ cloud_name: 'vttc', api_key: config.cloudinary_key, api_secret: config.cloudinary_secret });
@@ -33,6 +30,8 @@ e.getById = (doc, id) => db.collection(doc).findOne({ id: +id }, { _id: 0 })
 e.add = (doc, obj) => db.collection(doc).count().then(r => db.collection(doc).insert(Object.assign({}, obj, { id: r + 1})))
 
 e.replace = (doc, obj) => db.collection(doc).replaceOne({ id: obj.id }, obj)
+
+e.delete = (doc, obj) => db.collection(doc).remove({ id: obj.id })
 
 e.drop = doc => db.collection(doc).drop()
 
