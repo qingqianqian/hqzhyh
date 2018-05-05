@@ -74,7 +74,7 @@ app.purge('/api/:doc', (req, res) => {
 
 // catch all --------------------
 
-app.get('/admin', function (req, res) {
+app.get('/admin/*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client/packages/admin/build/index.html'))
 });
 
