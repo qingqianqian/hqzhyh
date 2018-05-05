@@ -78,7 +78,7 @@ app.get('/admin', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client/packages/admin/build/index.html'))
 });
 
-app.get('/', function (req, res) {
+app.get('*', function (req, res) {
   res.sendFile(path.resolve(__dirname, '../client/packages/vttc/build/index.html'))
 });
 
