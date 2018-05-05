@@ -54,6 +54,26 @@ app.get('/api/:doc', (req, res) => {
   send(api.get(req.params.doc), res);
 });
 
+// admin --------------------
+
+app.get('/login', nocache, (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+app.post('/login', (req, res) => {
+  if (username != req.body.username || password != req.body.password) {
+    gotoLogin(res);
+  } else {
+    const token = jwt.sign({}, secret, { expiresIn: '24h' });
+    res.cookie('vttc_token', token);
+    res.redirect('/admin');
+  }
+});
+
+app.get('/logout', (req, res) => {
+  gotoLogin(res);
+});
+
 app.post('/admin/:doc', (req, res) => {
   send(api.add(req.params.doc, req.body), res);
 });
