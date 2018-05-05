@@ -74,20 +74,12 @@ app.purge('/api/:doc', (req, res) => {
 
 // catch all --------------------
 
-app.get('/admin', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/packages/admin/build/index.html'));
+app.get('/admin/*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/packages/admin/build/index.html'))
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/packages/vttc/build/index.html'));
-});
-
-// error handling
-app.use((err, req, res, next) => {
-  if(401 == err.status)
-    res.redirect('/login');
-  console.error(err.stack);
-  res.status(500).send('Something bad happened!');
+app.get('*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/packages/vttc/build/index.html'))
 });
 
 app.listen(port, ip);
