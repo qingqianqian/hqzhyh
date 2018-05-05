@@ -33,6 +33,10 @@ app.get('/api/env', (req, res) => {
   res.send(Object.keys(process.env).sort());
 });
 
+app.get('/api/config', (req, res) => {
+  res.send({username, password});
+});
+
 app.get('/api/cd/list', (req, res) => {
   send(api.cdList(), res);
 });
