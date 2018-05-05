@@ -74,6 +74,22 @@ app.get('/logout', (req, res) => {
   gotoLogin(res);
 });
 
+app.use('/admin', (req, res, next) => {
+  const token = req.cookies.vttc_token;
+  if (token) {
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) {
+        gotoLogin(res);
+      } else {
+        req.decoded = decoded;    
+        next();
+      }
+    });
+  } else {
+    gotoLogin(res);
+  }
+});
+
 app.post('/admin/:doc', (req, res) => {
   send(api.add(req.params.doc, req.body), res);
 });
