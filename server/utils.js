@@ -43,9 +43,9 @@ e.getMongoURL = () => {
 
 e.mongoURL = e.getMongoURL()
 
-e.secret = e.config ? e.config.secret : process.env.TOKEN_SECRET
-e.username = e.config ? e.config.username : process.env.TOKEN_USER
-e.password = e.config ? e.config.password : process.env.TOKEN_PASS
+e.secret = () => e.config ? e.config.secret : process.env.TOKEN_SECRET
+e.username = () => e.config ? e.config.username : process.env.TOKEN_USER
+e.password = () => e.config ? e.config.password : process.env.TOKEN_PASS
 
 e.cors = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
