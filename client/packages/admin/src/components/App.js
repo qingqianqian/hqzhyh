@@ -6,10 +6,11 @@ import Cats from './Cats';
 import Cat from './Cat';
 import Products from './Products';
 import Product from './Product';
+import Header from './Header';
 
 const App = () =>
   <div class="p16">
-    <h1>VTTC Admin</h1>
+    <Header/>  
     <hr/>
     <div class="f">
       <Menu />

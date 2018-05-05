@@ -2,12 +2,22 @@ import { reduce, prop, sortWith, ascend, descend } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
 import { findById, getNameById, tap } from '.';
 
+const isLoading = s => s.isLoading;
+const lastAction = s => s.lastAction || '';
+const error = s => s.error;
 const lookup = s => s.lookup || {};
 const form = s => s.form || {};
 const lang = s => s.lang || {};
 const cats = s => s.cats || [];
 const products = s => s.products || [];
 const productFilter = s => s.productFilter || {};
+
+const success = a => (list, filter) => createSelector(
+  isLoading,
+  lastAction,
+  error,
+  (il, la, e) => !il && la.toLowerCase() === a + 'set' && !e
+)
 
 const sortedList = (list, filter) => createSelector(
   list,
@@ -48,6 +58,7 @@ const filteredProducts = createSelector(
   }))
 );
 
+export const successSelector = a => mapStateWithSelectors({ success: success(a) });
 export const lookupSelector = mapStateWithSelectors({ lookup, lang });
 export const langSelector = mapStateWithSelectors({ lang });
 export const catsSelector = mapStateWithSelectors({ cats, form, lang });

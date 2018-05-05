@@ -10,33 +10,30 @@ var _noRedux = require('no-redux');
 var _utils = require('utils');
 
 var actionData = exports.actionData = {
+  logout: {
+    url: '/logout'
+  },
   lookup: {
     url: _utils.api + 'lookup'
   },
   products: {
     url: _utils.api + 'products'
   },
-  newProduct: {
-    url: _utils.api + 'products',
-    path: 'products[]',
-    method: 'post'
-  },
   product: {
-    url: _utils.api + 'products',
+    url: _utils.admin + 'products',
     path: 'products[]',
-    methods: ['put', 'patch', 'delete']
+    methods: ['post', 'put', 'patch', 'delete']
   },
   product_f: {
     path: 'form.product'
   },
   cats: {
-    url: _utils.api + 'cats',
-    methods: ['get', 'post']
+    url: _utils.api + 'cats'
   },
   cat: {
-    url: _utils.api + 'cats',
+    url: _utils.admin + 'cats',
     path: 'cats[]',
-    methods: ['put', 'patch', 'delete']
+    methods: ['post', 'put', 'patch', 'delete']
   },
   cat_f: {
     path: 'form.cat'

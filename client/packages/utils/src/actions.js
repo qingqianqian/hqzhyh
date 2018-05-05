@@ -1,34 +1,31 @@
 import { generateActions } from 'no-redux';
-import { api } from 'utils';
+import { api, admin } from 'utils';
 
 export const actionData = {
+  logout: {
+    url: '/logout'
+  },
   lookup: {
     url: api + 'lookup'
   },
   products: {
     url: api + 'products'
   },
-  newProduct: {
-    url: api + 'products',
-    path: 'products[]',
-    method: 'post'
-  },
   product: {
-    url: api + 'products',
+    url: admin + 'products',
     path: 'products[]',
-    methods: ['put', 'patch', 'delete']
+    methods: ['post', 'put', 'patch', 'delete']
   },
   product_f: {
     path: 'form.product'
   },
   cats: {
-    url: api + 'cats',
-    methods: ['get', 'post']
+    url: api + 'cats'
   },
   cat: {
-    url: api + 'cats',
+    url: admin + 'cats',
     path: 'cats[]',
-    methods: ['put', 'patch', 'delete']
+    methods: ['post', 'put', 'patch', 'delete']
   },
   cat_f: {
     path: 'form.cat'

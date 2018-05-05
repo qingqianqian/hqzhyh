@@ -11,7 +11,7 @@ import 'utils/css/styles.css';
 
 render(
   <Provider store={createStore(actionData)}>
-    <BrowserRouter>
+    <BrowserRouter basename="/admin">
       <App />
     </BrowserRouter>  
   </Provider>,

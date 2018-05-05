@@ -3,11 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toTitleCase = exports.withDetail = exports.withLang = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.api = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.toTitleCase = exports.withDetail = exports.withLang = exports.withSuccess = exports.withNewValue = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _ramda = require('ramda');
 
+var _noRedux = require('no-redux');
+
 var _recompose = require('recompose');
+
+var _selectors = require('./selectors');
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -21,7 +25,9 @@ var isDev = exports.isDev = function isDev() {
   return process.env.NODE_ENV === 'development';
 };
 
-var api = exports.api = (isDev() ? 'http://localhost:8080' : '') + '/api/';
+var host = exports.host = isDev() ? 'http://localhost:8080/' : '/';
+var api = exports.api = host + 'api/';
+var admin = exports.admin = host + 'admin/';
 
 var ml = exports.ml = function ml(p) {
   return function (l) {
@@ -58,6 +64,20 @@ var withLoad = exports.withLoad = function withLoad(f, p) {
       this.props[f](this.props[p]);
     }
   });
+};
+
+var withNewValue = exports.withNewValue = function withNewValue(p, v, f) {
+  return (0, _recompose.lifecycle)({
+    componentWillReceiveProps: function componentWillReceiveProps(op) {
+      var ov = op[p];
+      var nv = this.props[p];
+      if ((0, _ramda.isNil)(v) ? nv !== ov : nv === v && ov !== v) f(nv);
+    }
+  });
+};
+
+var withSuccess = exports.withSuccess = function withSuccess(a, f1, f2) {
+  return (0, _recompose.compose)((0, _noRedux.connect)((0, _selectors.successSelector)(a)), withNewValue('success', true, f1), withNewValue('success', false, f2));
 };
 
 var withLang = exports.withLang = (0, _recompose.withProps)(function (p) {
