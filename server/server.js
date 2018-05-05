@@ -34,7 +34,7 @@ app.get('/api/env', (req, res) => {
 });
 
 app.get('/api/config', (req, res) => {
-  res.send({port, ip, u:username(), p:password(), s:secret(), mongoURL});
+  res.send({port, ip, u:username(), p:password(), s:secret(), mongoURL, config: config ? 'y' : 'n'});
 });
 
 app.get('/api/cd/list', (req, res) => {
