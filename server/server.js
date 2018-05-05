@@ -34,7 +34,7 @@ app.get('/api/env', (req, res) => {
 });
 
 app.get('/api/config', (req, res) => {
-  res.send({username, password});
+  res.send({port, ip, username, password, secret, mongoURL});
 });
 
 app.get('/api/cd/list', (req, res) => {
