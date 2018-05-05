@@ -54,21 +54,19 @@ app.get('/api/:doc', (req, res) => {
   send(api.get(req.params.doc), res);
 });
 
-// post --------------------
-
-app.post('/api/:doc', (req, res) => {
+app.post('/admin/:doc', (req, res) => {
   send(api.add(req.params.doc, req.body), res);
 });
 
-// put --------------------
-
-app.put('/api/:doc', (req, res) => {
+app.put('/admin/:doc', (req, res) => {
   send(api.replace(req.params.doc, req.body), res);
 });
 
-// purge --------------------
+app.put('/admin/:doc', (req, res) => {
+  send(api.replace(req.params.doc, req.body), res);
+});
 
-app.purge('/api/:doc', (req, res) => {
+app.purge('/admin/:doc', (req, res) => {
   done(api.drop(req.params.doc), res);
 });
 
