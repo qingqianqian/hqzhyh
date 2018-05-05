@@ -34,7 +34,7 @@ app.get('/api/env', (req, res) => {
 });
 
 app.get('/api/config', (req, res) => {
-  res.send({port, ip, u:username(), p:password(), s:secret(), mongoURL, config: config ? 'y' : 'n'});
+  res.send({port, ip, username, password, secret, mongoURL});
 });
 
 app.get('/api/cd/list', (req, res) => {
@@ -65,10 +65,10 @@ app.get('/login', nocache, (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  if (username() != req.body.username || password() != req.body.password) {
+  if (username != req.body.username || password != req.body.password) {
     gotoLogin(res);
   } else {
-    const token = jwt.sign({}, secret(), { expiresIn: '24h' });
+    const token = jwt.sign({}, secret, { expiresIn: '24h' });
     res.cookie('vttc_token', token);
     res.redirect('/admin');
   }
@@ -81,7 +81,7 @@ app.get('/logout', (req, res) => {
 app.use('/admin', (req, res, next) => {
   const token = req.cookies.vttc_token;
   if (token) {
-    jwt.verify(token, secret(), (err, decoded) => {
+    jwt.verify(token, secret, (err, decoded) => {
       if (err) {
         gotoLogin(res);
       } else {
