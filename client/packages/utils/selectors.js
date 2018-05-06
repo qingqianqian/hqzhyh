@@ -44,8 +44,8 @@ var filter = function filter(s) {
   return s.filter || {};
 };
 
-var playerFilter = (0, _noRedux.createSelector)(filter, function (f) {
-  return (f.player || '').toLowerCase();
+var playerFilter = (0, _noRedux.createSelector)(form, function (f) {
+  return (f.pf || '').toLowerCase();
 });
 
 var productFilter = (0, _noRedux.createSelector)(filter, function (f) {
@@ -106,7 +106,7 @@ var filteredProducts = (0, _noRedux.createSelector)(productsWithCat, productFilt
 
 var filteredPlayers = (0, _noRedux.createSelector)(players, playerFilter, function (ps, f) {
   return (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('rating'))])(ps.filter(function (p) {
-    return p.firstName.toLowerCase().indexOf(f) > -1 || p.lastName.toLowerCase().indexOf(f) > -1;
+    return (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1;
   }));
 });
 

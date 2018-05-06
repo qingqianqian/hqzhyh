@@ -7,6 +7,7 @@ import actions from 'utils/actions';
 import { playersSelector } from 'utils/selectors';
 import { cdurl, withLoad, withLang, getNameById, findById } from 'utils';
 import { withRouter } from "react-router-dom";
+import { TextBox } from 'utils/comps';
 
 const s1 = s => ({
   width: '130px',
@@ -16,10 +17,13 @@ const s1 = s => ({
   background: `url(/images/${s === 'M' ? 'male' : 'female'}.png) no-repeat scroll 0 0`
 });
 
-const Players = ({ lookup, players }) =>
+const Players = ({ lookup, players, setFilter }) =>
   <div class="p16 fv">
     <div class="ph16">
-      <h1>Players</h1>
+      <div class="f">  
+        <h1 class="fg1">Players</h1>
+        <TextBox name="pf" placeholder='Search player...' />
+      </div>  
       <div class="ui divider"></div>
     </div>
     <div class="fw w100">

@@ -14,8 +14,8 @@ const players = s => s.players || [];
 const filter = s => s.filter || {};
 
 const playerFilter = createSelector(
-  filter,
-  f => (f.player || '').toLowerCase()
+  form,
+  f => (f.pf || '').toLowerCase()
 );
 
 const productFilter = createSelector(
@@ -72,7 +72,7 @@ const filteredProducts = createSelector(
 const filteredPlayers = createSelector(
   players,
   playerFilter,
-  (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => p.firstName.toLowerCase().indexOf(f) > -1 || p.lastName.toLowerCase().indexOf(f) > -1))
+  (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1))
 );
 
 export const successSelector = a => mapStateWithSelectors({ success: success(a) });
