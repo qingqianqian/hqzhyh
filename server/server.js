@@ -25,22 +25,6 @@ app.use((req, res, next) => {
 
 // get --------------------
 
-app.get('/api/initdata', (req, res) => {
-  done(api.initdata(), res);
-});
-
-app.get('/api/env', (req, res) => {
-  res.send(Object.keys(process.env).sort());
-});
-
-app.get('/api/config', (req, res) => {
-  res.send({port, ip, username, password, secret, mongoURL});
-});
-
-app.get('/api/cd/list', (req, res) => {
-  send(api.cdList(), res);
-});
-
 app.get('/api/lookup', (req, res) => {
   send(
     Promise.all([api.cdVersion(), api.get('cats')])
@@ -92,6 +76,26 @@ app.use('/admin', (req, res, next) => {
   } else {
     gotoLogin(res);
   }
+});
+
+app.get('/admin/initdata', (req, res) => {
+  done(api.initdata(), res);
+});
+
+app.get('/admin/initacc', (req, res) => {
+  done(api.initacc(), res);
+});
+
+app.get('/admin/env', (req, res) => {
+  res.send(Object.keys(process.env).sort());
+});
+
+app.get('/admin/cd/list', (req, res) => {
+  send(api.cdList(), res);
+});
+
+app.get('/admin/count/:doc', (req, res) => {
+  send(api.count(req.params.doc), res);
 });
 
 app.post('/admin/:doc', (req, res) => {

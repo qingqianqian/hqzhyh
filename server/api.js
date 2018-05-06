@@ -1,7 +1,7 @@
+const fs = require('fs');
 const mongodb = require('mongodb');
 const cd = require('cloudinary');
 const { sortWith, ascend, descend, prop } = require('ramda');
-const dbj = require('./db');
 const { tap, config } = require('./utils');
 
 let db = null;
@@ -17,11 +17,20 @@ e.initdb = mongoURL => {
   });
 };
 
-e.initdata = () => Promise.all(
-  Object.keys(dbj).map(k => db.collection(k).insertMany(dbj[k]))
-);
+e.initdocs = docs => {
+  const f = k => r => db.collection(k).insertMany(docs[k]);
+  return Promise.all(
+    Object.keys(docs).map(k => db.collection(k).drop().then(f(k)).catch(f(k)))
+  );
+}
+
+e.initdata = () => e.initdocs(require('../data/db'))
+
+e.initacc = () => e.initdocs(JSON.parse(fs.readFileSync('./data/1.json')))
 
 e.list = () => Object.keys(db)
+
+e.count = doc => db.collection(doc).count()
 
 e.get = doc => db.collection(doc).find({}, { _id: 0 }).toArray()
 
