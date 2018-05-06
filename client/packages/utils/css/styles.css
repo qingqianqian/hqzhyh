@@ -74,3 +74,13 @@ hr {
 }
 
 .tdlt { text-decoration: line-through; }
+
+.player {
+  width: 130px;
+  height: 130px;
+  border-radius: 500rem;
+}
+
+.player:after {
+  background-color:red;
+}

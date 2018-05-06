@@ -8,6 +8,9 @@ export const actionData = {
   lookup: {
     url: api + 'lookup'
   },
+  players: {
+    url: api + 'players'
+  },
   products: {
     url: api + 'products'
   },
@@ -30,7 +33,7 @@ export const actionData = {
   cat_f: {
     path: 'form.cat'
   },
-  productFilter: {},
+  filter: {},
   form: {},
   lang: {},
 }

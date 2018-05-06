@@ -6,6 +6,7 @@ import Menu from './Menu';
 import Home from './Home';
 import Products from './Products';
 import Product from './Product';
+import Players from './Players';
 import Contact from './Contact';
 import { Switch, Route } from 'react-router';
 import { withLoad } from 'utils';
@@ -23,6 +24,7 @@ const App = p =>
       <Route path='/contact' component={Contact} />
       <Route exact path='/products' component={Products} />
       <Route path='/products/:id' component={Product} />
+      <Route exact path='/players' component={Players} />
     </Switch>
 
     <div class="ui divider"></div>

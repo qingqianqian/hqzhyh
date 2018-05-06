@@ -16,6 +16,9 @@ var actionData = exports.actionData = {
   lookup: {
     url: _utils.api + 'lookup'
   },
+  players: {
+    url: _utils.api + 'players'
+  },
   products: {
     url: _utils.api + 'products'
   },
@@ -38,7 +41,7 @@ var actionData = exports.actionData = {
   cat_f: {
     path: 'form.cat'
   },
-  productFilter: {},
+  filter: {},
   form: {},
   lang: {}
 };

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
+exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -37,9 +37,20 @@ var cats = function cats(s) {
 var products = function products(s) {
   return s.products || [];
 };
-var productFilter = function productFilter(s) {
-  return s.productFilter || {};
+var players = function players(s) {
+  return s.players || [];
 };
+var filter = function filter(s) {
+  return s.filter || {};
+};
+
+var playerFilter = (0, _noRedux.createSelector)(filter, function (f) {
+  return (f.player || '').toLowerCase();
+});
+
+var productFilter = (0, _noRedux.createSelector)(filter, function (f) {
+  return f.product || '';
+});
 
 var success = function success(a) {
   return function (list, filter) {
@@ -93,6 +104,12 @@ var filteredProducts = (0, _noRedux.createSelector)(productsWithCat, productFilt
   }));
 });
 
+var filteredPlayers = (0, _noRedux.createSelector)(players, playerFilter, function (ps, f) {
+  return (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('rating'))])(ps.filter(function (p) {
+    return p.firstName.toLowerCase().indexOf(f) > -1 || p.lastName.toLowerCase().indexOf(f) > -1;
+  }));
+});
+
 var successSelector = exports.successSelector = function successSelector(a) {
   return (0, _noRedux.mapStateWithSelectors)({ success: success(a) });
 };
@@ -100,3 +117,5 @@ var lookupSelector = exports.lookupSelector = (0, _noRedux.mapStateWithSelectors
 var langSelector = exports.langSelector = (0, _noRedux.mapStateWithSelectors)({ lang: lang });
 var catsSelector = exports.catsSelector = (0, _noRedux.mapStateWithSelectors)({ cats: cats, form: form, lang: lang });
 var productsSelector = exports.productsSelector = (0, _noRedux.mapStateWithSelectors)({ products: filteredProducts, productFilter: productFilter, lookup: lookup, form: form, lang: lang, cats: catsDD });
+var ratingsSelector = exports.ratingsSelector = (0, _noRedux.mapStateWithSelectors)({ cats: cats, form: form, lang: lang });
+var playersSelector = exports.playersSelector = (0, _noRedux.mapStateWithSelectors)({ players: filteredPlayers, lookup: lookup });

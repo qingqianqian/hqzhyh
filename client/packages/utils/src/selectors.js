@@ -10,7 +10,18 @@ const form = s => s.form || {};
 const lang = s => s.lang || {};
 const cats = s => s.cats || [];
 const products = s => s.products || [];
-const productFilter = s => s.productFilter || {};
+const players = s => s.players || [];
+const filter = s => s.filter || {};
+
+const playerFilter = createSelector(
+  filter,
+  f => (f.player || '').toLowerCase()
+);
+
+const productFilter = createSelector(
+  filter,
+  f => f.product || ''
+);
 
 const success = a => (list, filter) => createSelector(
   isLoading,
@@ -58,8 +69,16 @@ const filteredProducts = createSelector(
   }))
 );
 
+const filteredPlayers = createSelector(
+  players,
+  playerFilter,
+  (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => p.firstName.toLowerCase().indexOf(f) > -1 || p.lastName.toLowerCase().indexOf(f) > -1))
+);
+
 export const successSelector = a => mapStateWithSelectors({ success: success(a) });
 export const lookupSelector = mapStateWithSelectors({ lookup, lang });
 export const langSelector = mapStateWithSelectors({ lang });
 export const catsSelector = mapStateWithSelectors({ cats, form, lang });
 export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup, form, lang, cats: catsDD });
+export const ratingsSelector = mapStateWithSelectors({ cats, form, lang });
+export const playersSelector = mapStateWithSelectors({ players: filteredPlayers, lookup });

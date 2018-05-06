@@ -7,7 +7,8 @@ import { lifecycle } from 'recompose';
 import actions from 'utils/actions';
 import { langSelector } from 'utils/selectors';
 
-const menus = ['Home', 'Products', 'News', ['Training', [['Classes', 'university'], ['Coaches', 'user'], ['Players', 'users']]], 'Tournaments', 'League', 'Rating', 'Contact'];
+//const menus = ['Home', 'Products', 'News', ['Training', [['Classes', 'university'], ['Coaches', 'user'], ['Players', 'users']]], 'Tournaments', 'League', 'Rating', 'Contact'];
+const menus = ['Home', 'Products', 'News', 'Players', 'Tournaments', 'Rating', 'Contact'];
 
 const menu = ({ lang, setLang }) =>
   <div>
