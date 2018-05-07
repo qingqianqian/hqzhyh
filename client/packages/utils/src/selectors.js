@@ -23,7 +23,7 @@ const productFilter = createSelector(
   f => f.product || ''
 );
 
-const success = a => (list, filter) => createSelector(
+const success = a => createSelector(
   isLoading,
   lastAction,
   error,

@@ -53,11 +53,9 @@ var productFilter = (0, _noRedux.createSelector)(filter, function (f) {
 });
 
 var success = function success(a) {
-  return function (list, filter) {
-    return (0, _noRedux.createSelector)(isLoading, lastAction, error, function (il, la, e) {
-      return !il && la.toLowerCase() === a + 'set' && !e;
-    });
-  };
+  return (0, _noRedux.createSelector)(isLoading, lastAction, error, function (il, la, e) {
+    return !il && la.toLowerCase() === a + 'set' && !e;
+  });
 };
 
 var sortedList = function sortedList(list, filter) {
