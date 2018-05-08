@@ -30,12 +30,12 @@ export const withLoad = (f, p) => lifecycle({
   }
 });
 
-export const withNewValue = (p, v, f) => lifecycle({
-  componentWillReceiveProps(op) {
-    const ov = op[p];
-    const nv = this.props[p];
+export const withNewValue = (p, f, v) => lifecycle({
+  componentWillReceiveProps(np) {
+    const nv = np[p];
+    const ov = this.props[p];
     if (isNil(v) ? nv !== ov : (nv === v && ov !== v))
-      f(nv);
+      tap(f)(this.props, nv);
   }
 });
 
