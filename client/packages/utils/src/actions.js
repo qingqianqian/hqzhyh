@@ -11,6 +11,12 @@ export const actionData = {
   players: {
     url: api + 'players'
   },
+  tournaments: {
+    url: api + 'idname/tournaments'
+  },
+  tournament: {
+    url: api + 'tournaments/{id}'
+  },
   products: {
     url: api + 'products'
   },

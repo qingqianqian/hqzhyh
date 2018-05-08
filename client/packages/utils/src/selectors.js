@@ -12,6 +12,7 @@ const cats = s => s.cats || [];
 const products = s => s.products || [];
 const players = s => s.players || [];
 const tournaments = s => s.tournaments || [];
+const tournament = s => s.tournament || {};
 const filter = s => s.filter || {};
 
 const playerFilter = createSelector(
@@ -76,6 +77,34 @@ const filteredPlayers = createSelector(
   (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1))
 );
 
+const teams = createSelector(
+  tournament,
+  t => t.teams || []
+);
+
+const teamsWithPlayers = createSelector(
+  teams,
+  players,
+  (ts, ps) => ts.map(t => ({...t, players: t.players.map(p => ({...findById(p.id, ps), initRating: p.rating }))}))
+);
+
+const games = createSelector(
+  tournament,
+  t => t.games || []
+);
+
+const gamesWithTeams = createSelector(
+  teams,
+  players,
+  games,
+  (ts, ps, gs) => gs.map(g => ({...g,
+    player1: findById(g.p1, ps),
+    player2: findById(g.p2, ps),
+    team1: find(x => findById(g.p1, x.players), ts),
+    team2: find(x => findById(g.p2, x.players), ts),
+     g.players.map(p => ({..., initRating: p.rating }))}))
+);
+
 export const successSelector = a => mapStateWithSelectors({ success: success(a) });
 export const lookupSelector = mapStateWithSelectors({ lookup, lang });
 export const langSelector = mapStateWithSelectors({ lang });
@@ -84,3 +113,4 @@ export const productsSelector = mapStateWithSelectors({ products: filteredProduc
 export const ratingsSelector = mapStateWithSelectors({ cats, form, lang });
 export const playersSelector = mapStateWithSelectors({ players: filteredPlayers, lookup });
 export const tournamentsSelector = mapStateWithSelectors({ tournaments, lookup });
+export const teamsSelector = mapStateWithSelectors({ teamsWithPlayers, lookup });
