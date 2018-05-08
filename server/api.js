@@ -34,6 +34,8 @@ e.count = doc => db.collection(doc).count()
 
 e.get = doc => db.collection(doc).find({}, { _id: 0 }).toArray()
 
+e.getIdName = doc => db.collection(doc).find({}, { _id: 0, id: 1, name: 1 }).toArray()
+
 e.getById = (doc, id) => db.collection(doc).findOne({ id: +id }, { _id: 0 })
 
 e.add = (doc, obj) => db.collection(doc).count().then(r => db.collection(doc).insert(Object.assign({}, obj, { id: r + 1})))

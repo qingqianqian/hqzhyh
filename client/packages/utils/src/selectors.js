@@ -11,6 +11,7 @@ const lang = s => s.lang || {};
 const cats = s => s.cats || [];
 const products = s => s.products || [];
 const players = s => s.players || [];
+const tournaments = s => s.tournaments || [];
 const filter = s => s.filter || {};
 
 const playerFilter = createSelector(
@@ -82,3 +83,4 @@ export const catsSelector = mapStateWithSelectors({ cats, form, lang });
 export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup, form, lang, cats: catsDD });
 export const ratingsSelector = mapStateWithSelectors({ cats, form, lang });
 export const playersSelector = mapStateWithSelectors({ players: filteredPlayers, lookup });
+export const tournamentsSelector = mapStateWithSelectors({ tournaments, lookup });

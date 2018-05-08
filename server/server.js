@@ -33,6 +33,10 @@ app.get('/api/lookup', (req, res) => {
   );
 });
 
+app.get('/api/idname/:doc', (req, res) => {
+  send(api.getIdName(req.params.doc), res);
+});
+
 app.get('/api/:doc/:id', (req, res) => {
   const { doc, id } = req.params;
   send(api.getById(doc, id), res);
