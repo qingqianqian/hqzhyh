@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
+exports.tournamentSelector = exports.tournamentsSelector = exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -39,6 +39,12 @@ var products = function products(s) {
 };
 var players = function players(s) {
   return s.players || [];
+};
+var tournaments = function tournaments(s) {
+  return s.tournaments || [];
+};
+var tournament = function tournament(s) {
+  return s.tournament || {};
 };
 var filter = function filter(s) {
   return s.filter || {};
@@ -108,6 +114,48 @@ var filteredPlayers = (0, _noRedux.createSelector)(players, playerFilter, functi
   }));
 });
 
+var teams = (0, _noRedux.createSelector)(tournament, function (t) {
+  return t.teams || [];
+});
+
+var tournamentWithPlayers = (0, _noRedux.createSelector)(tournament, players, function (t, ps) {
+  var teams = (t.teams || []).map(function (x) {
+    return _extends({}, x, { players: x.players.map(function (p) {
+        return _extends({}, (0, _.findById)(p.id)(ps), { initRating: p.rating });
+      }) });
+  });
+  return teams.length > 0 ? _extends({}, t, { teams: teams }) : t;
+});
+
+var tournamentsWithYears = (0, _noRedux.createSelector)(tournaments, function (ts) {
+  return (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('year')), (0, _ramda.ascend)((0, _ramda.prop)('name'))], ts.map(function (t) {
+    return _extends({ year: +(0, _ramda.find)(function (x) {
+        return !isNaN(+x);
+      }, (0, _ramda.unnest)(t.name.split(' ').map(function (x) {
+        return x.split('/');
+      }))) }, t);
+  }));
+});
+
+var games = (0, _noRedux.createSelector)(tournament, function (t) {
+  return t.games || [];
+});
+
+var gamesWithTeams = (0, _noRedux.createSelector)(teams, players, games, function (ts, ps, gs) {
+  return gs.map(function (g) {
+    return _extends({}, g, {
+      player1: (0, _.findById)(g.p1, ps),
+      player2: (0, _.findById)(g.p2, ps),
+      team1: (0, _ramda.find)(function (x) {
+        return (0, _.findById)(g.p1, x.players);
+      }, ts),
+      team2: (0, _ramda.find)(function (x) {
+        return (0, _.findById)(g.p2, x.players);
+      }, ts)
+    });
+  });
+});
+
 var successSelector = exports.successSelector = function successSelector(a) {
   return (0, _noRedux.mapStateWithSelectors)({ success: success(a) });
 };
@@ -117,3 +165,5 @@ var catsSelector = exports.catsSelector = (0, _noRedux.mapStateWithSelectors)({ 
 var productsSelector = exports.productsSelector = (0, _noRedux.mapStateWithSelectors)({ products: filteredProducts, productFilter: productFilter, lookup: lookup, form: form, lang: lang, cats: catsDD });
 var ratingsSelector = exports.ratingsSelector = (0, _noRedux.mapStateWithSelectors)({ cats: cats, form: form, lang: lang });
 var playersSelector = exports.playersSelector = (0, _noRedux.mapStateWithSelectors)({ players: filteredPlayers, lookup: lookup });
+var tournamentsSelector = exports.tournamentsSelector = (0, _noRedux.mapStateWithSelectors)({ tournaments: tournamentsWithYears, lookup: lookup });
+var tournamentSelector = exports.tournamentSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournamentWithPlayers, lookup: lookup, players: filteredPlayers });

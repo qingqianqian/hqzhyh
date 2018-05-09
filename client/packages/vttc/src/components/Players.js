@@ -43,6 +43,6 @@ const Players = ({ lookup, players, setFilter }) =>
 
 export default compose(
   connect(playersSelector, actions),
-  withLoad('getPlayers'),
+  withLoad('players'),
   withLang
 )(Players);

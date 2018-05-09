@@ -40,7 +40,9 @@ var _Table = function _Table(_ref) {
       history = _ref.history;
 
   var l = data || [];
-  var keys = l.length > 0 ? Object.keys(l[0]) : [];
+  var keys = l.length > 0 ? Object.keys(l[0]).filter(function (k) {
+    return !hidden(k, children);
+  }) : [];
   //const sort = (filter[name] || {}).sort;
   //const sortby = sort && sort[0];
   //const sortDir = sort && sort[1];
@@ -59,7 +61,7 @@ var _Table = function _Table(_ref) {
             'th',
             { key: 'th' + i
             },
-            k
+            title(k, children)
           );
         })
       )
@@ -113,7 +115,7 @@ var prop = function prop(_prop) {
   return function (key, children) {
     var child = (0, _ramda.find)(function (x) {
       return x.key === key;
-    }, children);
+    }, children || []);
     return child && child.props[_prop] || val;
   };
 };
@@ -121,6 +123,7 @@ var prop = function prop(_prop) {
 var title = function title(key, children) {
   return prop('title', (0, _.toTitleCase)(key))(key, children);
 };
+var hidden = prop('hidden', false);
 
 // class={sortby === k ? (sortDir === 1 ? '_asc' : '_desc') : ''}
 // onClick={() => setSort(name, k, sortDir === 1 ? 2 : 1)}

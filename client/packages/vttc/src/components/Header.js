@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'no-redux';
+import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
-import { cdurl } from 'utils';
+import { cdurl, withLoad } from 'utils';
+import actions from 'utils/actions';
 import { lookupSelector } from 'utils/selectors';
 import { range } from 'ramda';
 
@@ -28,4 +30,7 @@ const Header = ({ lookup }) =>
     </div>  
   </div>  
 
-export default connect(lookupSelector)(Header);
+export default compose(
+  connect(lookupSelector, actions),
+  withLoad('lookup')
+)(Header);

@@ -1,4 +1,4 @@
-import { reduce, prop, sortWith, ascend, descend } from 'ramda';
+import { reduce, prop, sortWith, ascend, descend, unnest, find } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
 import { findById, getNameById, tap } from '.';
 
@@ -82,10 +82,21 @@ const teams = createSelector(
   t => t.teams || []
 );
 
-const teamsWithPlayers = createSelector(
-  teams,
+const tournamentWithPlayers = createSelector(
+  tournament,
   players,
-  (ts, ps) => ts.map(t => ({...t, players: t.players.map(p => ({...findById(p.id, ps), initRating: p.rating }))}))
+  (t, ps) => {
+    const teams = (t.teams || []).map(x => ({ ...x, players: x.players.map(p => ({ ...findById(p.id)(ps), initRating: p.rating })) }));
+    return teams.length > 0 ? { ...t, teams } : t;
+  }
+);
+
+const tournamentsWithYears = createSelector(
+  tournaments,
+  ts => sortWith(
+    [descend(prop('year')), ascend(prop('name'))],
+    ts.map(t => ({ year: +find(x => !isNaN(+x), unnest(t.name.split(' ').map(x => x.split('/')))), ...t }))
+  )
 );
 
 const games = createSelector(
@@ -97,12 +108,13 @@ const gamesWithTeams = createSelector(
   teams,
   players,
   games,
-  (ts, ps, gs) => gs.map(g => ({...g,
+  (ts, ps, gs) => gs.map(g => ({
+    ...g,
     player1: findById(g.p1, ps),
     player2: findById(g.p2, ps),
     team1: find(x => findById(g.p1, x.players), ts),
-    team2: find(x => findById(g.p2, x.players), ts),
-     g.players.map(p => ({..., initRating: p.rating }))}))
+    team2: find(x => findById(g.p2, x.players), ts)
+  }))
 );
 
 export const successSelector = a => mapStateWithSelectors({ success: success(a) });
@@ -112,5 +124,5 @@ export const catsSelector = mapStateWithSelectors({ cats, form, lang });
 export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup, form, lang, cats: catsDD });
 export const ratingsSelector = mapStateWithSelectors({ cats, form, lang });
 export const playersSelector = mapStateWithSelectors({ players: filteredPlayers, lookup });
-export const tournamentsSelector = mapStateWithSelectors({ tournaments, lookup });
-export const teamsSelector = mapStateWithSelectors({ teamsWithPlayers, lookup });
+export const tournamentsSelector = mapStateWithSelectors({ tournaments: tournamentsWithYears, lookup });
+export const tournamentSelector = mapStateWithSelectors({ tournament: tournamentWithPlayers, lookup, players: filteredPlayers });

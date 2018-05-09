@@ -7,6 +7,8 @@ import Home from './Home';
 import Products from './Products';
 import Product from './Product';
 import Players from './Players';
+import Tournaments from './Tournaments';
+import Tournament from './Tournament';
 import Contact from './Contact';
 import { Switch, Route } from 'react-router';
 import { withLoad } from 'utils';
@@ -25,6 +27,8 @@ const App = p =>
       <Route exact path='/products' component={Products} />
       <Route path='/products/:id' component={Product} />
       <Route exact path='/players' component={Players} />
+      <Route exact path='/tournaments' component={Tournaments} />
+      <Route path='/tournaments/:id' component={Tournament} />
     </Switch>
 
     <div class="ui divider"></div>

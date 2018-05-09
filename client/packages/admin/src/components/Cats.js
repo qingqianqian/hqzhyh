@@ -17,7 +17,6 @@ const Cats = ({ cats, history }) =>
     </div>
     <hr/>
     <Table name="cats" data={(cats || []).map(pick(['id', 'name', 'name_ch']))} />
-    <hr/>
   </div>
 
 export default compose(

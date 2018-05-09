@@ -19,6 +19,12 @@ var actionData = exports.actionData = {
   players: {
     url: _utils.api + 'players'
   },
+  tournaments: {
+    url: _utils.api + 'idname/tournaments'
+  },
+  tournament: {
+    url: _utils.api + 'tournaments/{id}'
+  },
   products: {
     url: _utils.api + 'products'
   },

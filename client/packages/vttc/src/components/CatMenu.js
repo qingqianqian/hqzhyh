@@ -9,7 +9,7 @@ import { cdurl, withLoad, withLang } from 'utils';
 
 const CatMenu = ({ lookup, setFilter, n, d }) =>
     <div class="ui vertical menu">
-      {lookup.cats.map(x =>
+      {(lookup.cats || []).map(x =>
         <div class="item">
         <a class="header cp" onClick={() => setFilter({ product: { cat: x.id } })}>{n(x)}</a>
           {x.subs ?

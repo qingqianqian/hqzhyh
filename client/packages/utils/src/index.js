@@ -1,4 +1,4 @@
-import { tap as _tap, prop, find, pipe, isNil } from 'ramda';
+import { tap as _tap, prop, find, pipe, isNil, is, isEmpty } from 'ramda';
 import { connect } from 'no-redux';
 import { compose, lifecycle, withProps } from 'recompose';
 import { successSelector } from './selectors';
@@ -26,7 +26,7 @@ export const getNameById = getPropById('name')
 
 export const withLoad = (f, p) => lifecycle({
   componentWillMount() {
-    this.props[f](this.props[p]);
+    isEmpty(this.props[f]) && this.props['get' + f[0].toUpperCase() + f.slice(1)](p && { [p]: this.props[p] });
   }
 });
 
@@ -35,7 +35,7 @@ export const withNewValue = (p, f, v) => lifecycle({
     const nv = np[p];
     const ov = this.props[p];
     if (isNil(v) ? nv !== ov : (nv === v && ov !== v))
-      tap(f)(this.props, nv);
+      f(this.props, nv);
   }
 });
 
@@ -48,5 +48,7 @@ export const withSuccess = (a, f1, f2) => compose(
 export const withLang = withProps(p => ({ n: name(p.lang), d: desc(p.lang) }));
 
 export const withDetail = (o, c) => withProps(p => ({ [o]: find(x => x.id == p.match.params.id, p[c || o + 's']) || {}, id: p.match.params.id }));
+
+export const withParams = withProps(p => ({ ...p.match.params }));
 
 export const toTitleCase = s => s.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());

@@ -9,7 +9,7 @@ import { Input, Dropdown } from 'semantic-ui-react';
 
 const _Table = ({ data, name, filter, setSort, children, history }) => {
   const l = data || [];
-  const keys = l.length > 0 ? Object.keys(l[0]) : [];
+  const keys = l.length > 0 ? Object.keys(l[0]).filter(k => !hidden(k, children)) : [];
   //const sort = (filter[name] || {}).sort;
   //const sortby = sort && sort[0];
   //const sortDir = sort && sort[1];
@@ -21,7 +21,7 @@ const _Table = ({ data, name, filter, setSort, children, history }) => {
         {keys.map((k, i) =>
           <th key={`th${i}`}
           >
-            {k}
+            {title(k, children)}
           </th>
         )}
         </tr>
@@ -60,11 +60,12 @@ const col = (idx, key, obj, children) => {
 }
 
 const prop = (prop, val = '') => (key, children) => {
-  const child = find(x => x.key === key, children);
+  const child = find(x => x.key === key, children || []);
   return (child && child.props[prop]) || val;
 }
 
 const title = (key, children) => prop('title', toTitleCase(key))(key, children);
+const hidden = prop('hidden', false);
 
 // class={sortby === k ? (sortDir === 1 ? '_asc' : '_desc') : ''}
 // onClick={() => setSort(name, k, sortDir === 1 ? 2 : 1)}

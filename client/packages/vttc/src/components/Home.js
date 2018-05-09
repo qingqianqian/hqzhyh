@@ -32,7 +32,4 @@ const Home = p =>
     </div>
   </div>
 
-export default compose(
-  connect(lookupSelector, actions),
-  withLoad('getLookup')
-)(Home);
+export default Home;
