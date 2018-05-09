@@ -13,7 +13,7 @@ const Tournament = ({ lookup, tournament }) =>
     <h1>{tournament.name}</h1>
     <hr/>
     {(tournament.teams || []).map(t =>
-      <div>
+      <div class="pt8">
         <div class="pt8 fs24 darkgreen">{t.name}</div>
         <Table name="team" data={t.players || []}>
           <td key="rating" title="Start Rating" />  
