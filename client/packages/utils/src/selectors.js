@@ -1,4 +1,4 @@
-import { reduce, prop, sortWith, ascend, descend, unnest, find } from 'ramda';
+import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
 import { findById, getNameById, tap } from '.';
 
@@ -67,8 +67,8 @@ const filteredProducts = createSelector(
 
 const filteredPlayers = createSelector(
   players,
-  filter('player'),
-  (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1))
+  form('player'),
+  (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => isEmpty(f) || (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1))
 );
 
 const teams = createSelector(
@@ -109,6 +109,11 @@ const gamesWithTeams = createSelector(
     team1: find(x => findById(g.p1, x.players), ts),
     team2: find(x => findById(g.p2, x.players), ts)
   }))
+);
+
+const playerGames = createSelector(
+  tournament,
+  t => t.games || []
 );
 
 export const successSelector = a => mapStateWithSelectors({ success: success(a) });

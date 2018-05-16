@@ -56,4 +56,10 @@ e.cdList = () => cd.v2.api.resources({ max_results: 500 }).then(r => sortWith([a
 
 e.cdVersion = () => cd.v2.api.resources({ max_results: 500 }).then(r => sortWith([descend(prop('version'))], r.resources)[0].version)
 
+e.getPlayerGames = id => db.collection('players').findOne({ id }).then(r => db.collection('tournaments').aggregate(
+  {$match: {}},
+  {$unwind: "$games"},
+  {$match: {"games.p1": id}}
+))
+
 module.exports = e;

@@ -9,6 +9,8 @@ import Product from './Product';
 import Players from './Players';
 import Tournaments from './Tournaments';
 import Tournament from './Tournament';
+import Rating from './Rating';
+import History from './History';
 import Contact from './Contact';
 import { Switch, Route } from 'react-router';
 import { withLoad } from 'utils';
@@ -29,6 +31,8 @@ const App = p =>
       <Route exact path='/players' component={Players} />
       <Route exact path='/tournaments' component={Tournaments} />
       <Route path='/tournaments/:id' component={Tournament} />
+      <Route exact path='/rating' component={Rating} />
+      <Route path='/rating/:id' component={History} />
     </Switch>
 
     <div class="ui divider"></div>

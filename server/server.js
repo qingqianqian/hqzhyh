@@ -33,6 +33,10 @@ app.get('/api/lookup', (req, res) => {
   );
 });
 
+app.get('/api/playergames/:id', (req, res) => {
+  send(api.getPlayerGames(req.params.id), res);
+});
+
 app.get('/api/idname/:doc', (req, res) => {
   send(api.getIdName(req.params.doc), res);
 });

@@ -112,9 +112,9 @@ var filteredProducts = (0, _noRedux.createSelector)(productsWithCat, filter('pro
   }));
 });
 
-var filteredPlayers = (0, _noRedux.createSelector)(players, filter('player'), function (ps, f) {
+var filteredPlayers = (0, _noRedux.createSelector)(players, form('player'), function (ps, f) {
   return (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('rating'))])(ps.filter(function (p) {
-    return (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1;
+    return (0, _ramda.isEmpty)(f) || (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1;
   }));
 });
 
@@ -158,6 +158,10 @@ var gamesWithTeams = (0, _noRedux.createSelector)(teams, players, games, functio
       }, ts)
     });
   });
+});
+
+var playerGames = (0, _noRedux.createSelector)(tournament, function (t) {
+  return t.games || [];
 });
 
 var successSelector = exports.successSelector = function successSelector(a) {

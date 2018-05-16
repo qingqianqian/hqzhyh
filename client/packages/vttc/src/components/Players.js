@@ -17,12 +17,12 @@ const s1 = s => ({
   background: `url(/images/${s === 'M' ? 'male' : 'female'}.png) no-repeat scroll 0 0`
 });
 
-const Players = ({ lookup, players, setFilter }) =>
+const Players = ({ lookup, players }) =>
   <div class="p16 fv">
     <div class="ph16">
-      <div class="f">  
+      <div class="f">
         <h1 class="fg1">Players</h1>
-        <TextBox name="pf" placeholder='Search player...' />
+        <TextBox name="player" placeholder='Search player...' />
       </div>  
       <div class="ui divider"></div>
     </div>

@@ -41,6 +41,9 @@ var actionData = exports.actionData = {
     path: 'cats[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
+  games: {
+    url: _utils.api + 'games/{id}'
+  },
   form: {
     path: 'form.{path}'
   },
