@@ -5,7 +5,7 @@ import { successSelector } from './selectors';
 
 export const cdurl = (l, c, n) => l.cdVersion ? `http://res.cloudinary.com/vttc/image/upload/v${l.cdVersion}/${c}/${n}.jpg` : '';
 
-export const tap = _tap(console.log);
+export const tap = x => _tap(console.log, isNil(x) ? 'null' : x);
 
 export const isDev = () => process.env.NODE_ENV === 'development';
 
@@ -24,17 +24,23 @@ export const findByName = findByProp('name');
 export const getPropById = p => id => pipe(findById(id), prop(p));
 export const getNameById = getPropById('name')
 
-export const withLoad = (f, p) => lifecycle({
+export const withLoad = (p, v) => lifecycle({
   componentWillMount() {
-    isEmpty(this.props[f]) && this.props['get' + f[0].toUpperCase() + f.slice(1)](p && { [p]: this.props[p] });
+    isEmpty(this.props[p]) && this.props['get' + p[0].toUpperCase() + p.slice(1)](v && { [v]: this.props[v] });
   }
 });
 
-export const withNewValue = (p, f, v) => lifecycle({
+export const withEdit = (p, l) => lifecycle({
+  componentWillMount() {
+    this.props.setForm(find(x => x.id == this.props.match.params.id, this.props[l || (p + 's')]), { path: p });
+  }
+});
+
+export const withNewValue = (p, v, f) => lifecycle({
   componentWillReceiveProps(np) {
     const nv = np[p];
     const ov = this.props[p];
-    if (isNil(v) ? nv !== ov : (nv === v && ov !== v))
+    if (isNil(v) ? nv !== ov : (nv === v && ov === null))
       f(this.props, nv);
   }
 });
@@ -46,8 +52,6 @@ export const withSuccess = (a, f1, f2) => compose(
 );
 
 export const withLang = withProps(p => ({ n: name(p.lang), d: desc(p.lang) }));
-
-export const withDetail = (o, c) => withProps(p => ({ [o]: find(x => x.id == p.match.params.id, p[c || o + 's']) || {}, id: p.match.params.id }));
 
 export const withParams = withProps(p => ({ ...p.match.params }));
 

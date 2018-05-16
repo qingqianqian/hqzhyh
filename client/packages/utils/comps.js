@@ -38,7 +38,7 @@ var _Table = function _Table(_ref) {
       setSort = _ref.setSort,
       children = _ref.children,
       history = _ref.history;
-  (0, _.tap)(children);
+
   var l = data || [];
   var keys = l.length > 0 ? Object.keys(l[0]).filter(function (k) {
     return !hidden(k, children);
@@ -56,7 +56,7 @@ var _Table = function _Table(_ref) {
       _react2.default.createElement(
         'tr',
         null,
-        (0, _.tap)(keys).map(function (k, i) {
+        keys.map(function (k, i) {
           return _react2.default.createElement(
             'th',
             { key: 'th' + i

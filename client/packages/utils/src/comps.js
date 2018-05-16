@@ -7,7 +7,7 @@ import { toTitleCase, tap } from '.';
 import { filterSelector } from './selectors';
 import { Input, Dropdown } from 'semantic-ui-react';
 
-const _Table = ({ data, name, filter, setSort, children, history }) => {tap(children);
+const _Table = ({ data, name, filter, setSort, children, history }) => {
   const l = data || [];
   const keys = l.length > 0 ? Object.keys(l[0]).filter(k => !hidden(k, children)) : [];
   //const sort = (filter[name] || {}).sort;
@@ -18,7 +18,7 @@ const _Table = ({ data, name, filter, setSort, children, history }) => {tap(chil
     <table class="ui celled striped table">
       <thead>
         <tr>
-        {tap(keys).map((k, i) =>
+        {keys.map((k, i) =>
           <th key={`th${i}`}
           >
             {title(k, children)}

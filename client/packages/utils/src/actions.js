@@ -25,22 +25,18 @@ export const actionData = {
     path: 'products[]',
     methods: ['post', 'put', 'patch', 'delete']
   },
-  product_f: {
-    path: 'form.product'
-  },
   cats: {
     url: api + 'cats'
   },
   cat: {
     url: admin + 'cats',
-    path: 'cats[]',
+    path: 'cats[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
-  cat_f: {
-    path: 'form.cat'
+  form: {
+    path: 'form.{path}'
   },
   filter: {},
-  form: {},
   lang: {},
 }
 

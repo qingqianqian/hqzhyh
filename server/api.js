@@ -40,7 +40,11 @@ e.getById = (doc, id) => db.collection(doc).findOne({ id: +id }, { _id: 0 })
 
 e.search = (doc, prop, val) => db.collection(doc).find({ [prop]: new RegExp(val, 'i')}, { _id: 0 }).toArray()
 
-e.add = (doc, obj) => db.collection(doc).count().then(r => db.collection(doc).insert(Object.assign({}, obj, { id: r + 1})))
+e.add = (doc, obj) => db.collection(doc).find({}).sort({ "id": -1 }).limit(1).toArray().then(r => {
+  const id = r.length > 0 ? r[0].id + 1 : 1;
+  const o = Object.assign({}, obj, { id });
+  return db.collection(doc).insert(o).then(() => o);
+})
 
 e.replace = (doc, obj) => db.collection(doc).replaceOne({ id: obj.id }, obj)
 

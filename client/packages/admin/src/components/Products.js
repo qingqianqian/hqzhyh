@@ -21,7 +21,7 @@ const Products = ({ products, history }) =>
 
 export default compose(
   connect(productsSelector, actions),
-  withLoad('getCats'),
-  withLoad('getProducts'),
+  withLoad('cats'),
+  withLoad('products'),
   withRouter
 )(Products)

@@ -9,7 +9,7 @@ const { tap, done, send, config, cors, nocache, port, ip, mongoURL, secret, user
 const app = express();
 
 if (!process.env.DATABASE_SERVICE_NAME)
-    app.use(cors);
+  app.use(cors);
 
 api.initdb(mongoURL);
 
@@ -72,19 +72,23 @@ app.get('/logout', (req, res) => {
 });
 
 app.use('/admin', (req, res, next) => {
-  const token = req.cookies.vttc_token;
-  if (token) {
-    jwt.verify(token, secret, (err, decoded) => {
-      if (err) {
-        gotoLogin(res);
-      } else {
-        req.decoded = decoded;    
-        next();
-      }
-    });
+  if (config) {
+    next();
   } else {
-    gotoLogin(res);
-  }
+    const token = req.cookies.vttc_token;
+    if (token) {
+      jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+          gotoLogin(res);
+        } else {
+          req.decoded = decoded;
+          next();
+        }
+      });
+    } else {
+      gotoLogin(res);
+    }
+  }  
 });
 
 app.get('/admin/initdata', (req, res) => {

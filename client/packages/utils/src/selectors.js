@@ -2,34 +2,28 @@ import { reduce, prop, sortWith, ascend, descend, unnest, find } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
 import { findById, getNameById, tap } from '.';
 
+const _form = s => s.form || {};
+const _filter = s => s.filter || {};
+
+const form = p => s => _form(s)[p] || {};
+const filter = p => s => _filter(s)[p] || {};
+
 const isLoading = s => s.isLoading;
 const lastAction = s => s.lastAction || '';
 const error = s => s.error;
 const lookup = s => s.lookup || {};
-const form = s => s.form || {};
 const lang = s => s.lang || {};
 const cats = s => s.cats || [];
 const products = s => s.products || [];
 const players = s => s.players || [];
 const tournaments = s => s.tournaments || [];
 const tournament = s => s.tournament || {};
-const filter = s => s.filter || {};
-
-const playerFilter = createSelector(
-  form,
-  f => (f.pf || '').toLowerCase()
-);
-
-const productFilter = createSelector(
-  filter,
-  f => f.product || ''
-);
 
 const success = a => createSelector(
   isLoading,
   lastAction,
   error,
-  (il, la, e) => !il && la.toLowerCase() === a + 'set' && !e
+  (il, la, e) => il || la.toLowerCase() !== ('set' + a) ? null : !e
 )
 
 const sortedList = (list, filter) => createSelector(
@@ -61,7 +55,7 @@ const productsWithCat = createSelector(
 
 const filteredProducts = createSelector(
   productsWithCat,
-  productFilter,
+  filter('product'),
   (ps, f) => reduce((p, c) => p.filter(c), ps, Object.keys(f).map(k => {
     if (k === 'cat') {
       if (f[k] === 1) return p => p;
@@ -73,7 +67,7 @@ const filteredProducts = createSelector(
 
 const filteredPlayers = createSelector(
   players,
-  playerFilter,
+  filter('player'),
   (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1))
 );
 
@@ -120,8 +114,8 @@ const gamesWithTeams = createSelector(
 export const successSelector = a => mapStateWithSelectors({ success: success(a) });
 export const lookupSelector = mapStateWithSelectors({ lookup, lang });
 export const langSelector = mapStateWithSelectors({ lang });
-export const catsSelector = mapStateWithSelectors({ cats, form, lang });
-export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter, lookup, form, lang, cats: catsDD });
+export const catsSelector = mapStateWithSelectors({ cats, cat: form('cat'), lang });
+export const productsSelector = mapStateWithSelectors({ products: filteredProducts, productFilter: filter('product'), lookup, lang, product: form('product'), cats: catsDD });
 export const ratingsSelector = mapStateWithSelectors({ cats, form, lang });
 export const playersSelector = mapStateWithSelectors({ players: filteredPlayers, lookup });
 export const tournamentsSelector = mapStateWithSelectors({ tournaments: tournamentsWithYears, lookup });

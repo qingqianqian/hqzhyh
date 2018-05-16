@@ -13,6 +13,24 @@ var _noRedux = require('no-redux');
 
 var _ = require('.');
 
+var _form = function _form(s) {
+  return s.form || {};
+};
+var _filter = function _filter(s) {
+  return s.filter || {};
+};
+
+var form = function form(p) {
+  return function (s) {
+    return _form(s)[p] || {};
+  };
+};
+var filter = function filter(p) {
+  return function (s) {
+    return _filter(s)[p] || {};
+  };
+};
+
 var isLoading = function isLoading(s) {
   return s.isLoading;
 };
@@ -24,9 +42,6 @@ var error = function error(s) {
 };
 var lookup = function lookup(s) {
   return s.lookup || {};
-};
-var form = function form(s) {
-  return s.form || {};
 };
 var lang = function lang(s) {
   return s.lang || {};
@@ -46,21 +61,10 @@ var tournaments = function tournaments(s) {
 var tournament = function tournament(s) {
   return s.tournament || {};
 };
-var filter = function filter(s) {
-  return s.filter || {};
-};
-
-var playerFilter = (0, _noRedux.createSelector)(form, function (f) {
-  return (f.pf || '').toLowerCase();
-});
-
-var productFilter = (0, _noRedux.createSelector)(filter, function (f) {
-  return f.product || '';
-});
 
 var success = function success(a) {
   return (0, _noRedux.createSelector)(isLoading, lastAction, error, function (il, la, e) {
-    return !il && la.toLowerCase() === a + 'set' && !e;
+    return il || la.toLowerCase() !== 'set' + a ? null : !e;
   });
 };
 
@@ -90,7 +94,7 @@ var productsWithCat = (0, _noRedux.createSelector)(products, cats, function (ps,
   });
 });
 
-var filteredProducts = (0, _noRedux.createSelector)(productsWithCat, productFilter, function (ps, f) {
+var filteredProducts = (0, _noRedux.createSelector)(productsWithCat, filter('product'), function (ps, f) {
   return (0, _ramda.reduce)(function (p, c) {
     return p.filter(c);
   }, ps, Object.keys(f).map(function (k) {
@@ -108,7 +112,7 @@ var filteredProducts = (0, _noRedux.createSelector)(productsWithCat, productFilt
   }));
 });
 
-var filteredPlayers = (0, _noRedux.createSelector)(players, playerFilter, function (ps, f) {
+var filteredPlayers = (0, _noRedux.createSelector)(players, filter('player'), function (ps, f) {
   return (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('rating'))])(ps.filter(function (p) {
     return (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1;
   }));
@@ -161,8 +165,8 @@ var successSelector = exports.successSelector = function successSelector(a) {
 };
 var lookupSelector = exports.lookupSelector = (0, _noRedux.mapStateWithSelectors)({ lookup: lookup, lang: lang });
 var langSelector = exports.langSelector = (0, _noRedux.mapStateWithSelectors)({ lang: lang });
-var catsSelector = exports.catsSelector = (0, _noRedux.mapStateWithSelectors)({ cats: cats, form: form, lang: lang });
-var productsSelector = exports.productsSelector = (0, _noRedux.mapStateWithSelectors)({ products: filteredProducts, productFilter: productFilter, lookup: lookup, form: form, lang: lang, cats: catsDD });
+var catsSelector = exports.catsSelector = (0, _noRedux.mapStateWithSelectors)({ cats: cats, cat: form('cat'), lang: lang });
+var productsSelector = exports.productsSelector = (0, _noRedux.mapStateWithSelectors)({ products: filteredProducts, productFilter: filter('product'), lookup: lookup, lang: lang, product: form('product'), cats: catsDD });
 var ratingsSelector = exports.ratingsSelector = (0, _noRedux.mapStateWithSelectors)({ cats: cats, form: form, lang: lang });
 var playersSelector = exports.playersSelector = (0, _noRedux.mapStateWithSelectors)({ players: filteredPlayers, lookup: lookup });
 var tournamentsSelector = exports.tournamentsSelector = (0, _noRedux.mapStateWithSelectors)({ tournaments: tournamentsWithYears, lookup: lookup });

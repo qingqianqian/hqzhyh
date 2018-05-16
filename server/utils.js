@@ -6,7 +6,7 @@ const e = {};
 
 e.cd = 'http://res.cloudinary.com/vttc/image/upload/v1522908408/';
 
-e.tap = R.tap(console.log);
+e.tap = x => R.tap(console.log, isNil(x) ? 'null' : x);
 
 e.config = fs.existsSync(path.join(__dirname, 'config.js')) ? require('./config') : null;
 
@@ -52,7 +52,11 @@ e.cors = (req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
 
-  next();
+  if ('OPTIONS' == req.method) {
+    res.send(200);
+  } else {
+    next();
+  }
 }
 
 e.nocache = (req, res, next) => {

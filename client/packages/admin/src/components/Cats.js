@@ -21,6 +21,6 @@ const Cats = ({ cats, history }) =>
 
 export default compose(
   connect(catsSelector, actions),
-  withLoad('getCats'),
+  withLoad('cats'),
   withRouter
 )(Cats)

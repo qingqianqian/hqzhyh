@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toTitleCase = exports.withParams = exports.withDetail = exports.withLang = exports.withSuccess = exports.withNewValue = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.toTitleCase = exports.withParams = exports.withLang = exports.withSuccess = exports.withNewValue = exports.withEdit = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -21,7 +21,9 @@ var cdurl = exports.cdurl = function cdurl(l, c, n) {
   return l.cdVersion ? 'http://res.cloudinary.com/vttc/image/upload/v' + l.cdVersion + '/' + c + '/' + n + '.jpg' : '';
 };
 
-var tap = exports.tap = (0, _ramda.tap)(console.log);
+var tap = exports.tap = function tap(x) {
+  return (0, _ramda.tap)(console.log, (0, _ramda.isNil)(x) ? 'null' : x);
+};
 
 var isDev = exports.isDev = function isDev() {
   return process.env.NODE_ENV === 'development';
@@ -60,20 +62,32 @@ var getPropById = exports.getPropById = function getPropById(p) {
 };
 var getNameById = exports.getNameById = getPropById('name');
 
-var withLoad = exports.withLoad = function withLoad(f, p) {
+var withLoad = exports.withLoad = function withLoad(p, v) {
   return (0, _recompose.lifecycle)({
     componentWillMount: function componentWillMount() {
-      (0, _ramda.isEmpty)(this.props[f]) && this.props['get' + f[0].toUpperCase() + f.slice(1)](p && _defineProperty({}, p, this.props[p]));
+      (0, _ramda.isEmpty)(this.props[p]) && this.props['get' + p[0].toUpperCase() + p.slice(1)](v && _defineProperty({}, v, this.props[v]));
     }
   });
 };
 
-var withNewValue = exports.withNewValue = function withNewValue(p, f, v) {
+var withEdit = exports.withEdit = function withEdit(p, l) {
+  return (0, _recompose.lifecycle)({
+    componentWillMount: function componentWillMount() {
+      var _this = this;
+
+      this.props.setForm((0, _ramda.find)(function (x) {
+        return x.id == _this.props.match.params.id;
+      }, this.props[l || p + 's']), { path: p });
+    }
+  });
+};
+
+var withNewValue = exports.withNewValue = function withNewValue(p, v, f) {
   return (0, _recompose.lifecycle)({
     componentWillReceiveProps: function componentWillReceiveProps(np) {
       var nv = np[p];
       var ov = this.props[p];
-      if ((0, _ramda.isNil)(v) ? nv !== ov : nv === v && ov !== v) f(this.props, nv);
+      if ((0, _ramda.isNil)(v) ? nv !== ov : nv === v && ov === null) f(this.props, nv);
     }
   });
 };
@@ -85,16 +99,6 @@ var withSuccess = exports.withSuccess = function withSuccess(a, f1, f2) {
 var withLang = exports.withLang = (0, _recompose.withProps)(function (p) {
   return { n: name(p.lang), d: desc(p.lang) };
 });
-
-var withDetail = exports.withDetail = function withDetail(o, c) {
-  return (0, _recompose.withProps)(function (p) {
-    var _ref2;
-
-    return _ref2 = {}, _defineProperty(_ref2, o, (0, _ramda.find)(function (x) {
-      return x.id == p.match.params.id;
-    }, p[c || o + 's']) || {}), _defineProperty(_ref2, 'id', p.match.params.id), _ref2;
-  });
-};
 
 var withParams = exports.withParams = (0, _recompose.withProps)(function (p) {
   return _extends({}, p.match.params);
