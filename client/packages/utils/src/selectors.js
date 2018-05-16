@@ -18,6 +18,7 @@ const products = s => s.products || [];
 const players = s => s.players || [];
 const tournaments = s => s.tournaments || [];
 const tournament = s => s.tournament || {};
+const history = s => s.history || [];
 
 const success = a => createSelector(
   isLoading,
@@ -111,11 +112,6 @@ const gamesWithTeams = createSelector(
   }))
 );
 
-const playerGames = createSelector(
-  tournament,
-  t => t.games || []
-);
-
 export const successSelector = a => mapStateWithSelectors({ success: success(a) });
 export const lookupSelector = mapStateWithSelectors({ lookup, lang });
 export const langSelector = mapStateWithSelectors({ lang });
@@ -125,3 +121,4 @@ export const ratingsSelector = mapStateWithSelectors({ cats, form, lang });
 export const playersSelector = mapStateWithSelectors({ players: filteredPlayers, lookup });
 export const tournamentsSelector = mapStateWithSelectors({ tournaments: tournamentsWithYears, lookup });
 export const tournamentSelector = mapStateWithSelectors({ tournament: tournamentWithPlayers, lookup, players: filteredPlayers });
+export const historySelector = mapStateWithSelectors({ history, lookup, players });

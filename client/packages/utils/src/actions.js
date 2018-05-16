@@ -33,8 +33,8 @@ export const actionData = {
     path: 'cats[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
-  games: {
-    url: api + 'games/{id}'
+  history: {
+    url: api + 'playergames/{id}'
   },
   form: {
     path: 'form.{path}'
