@@ -51,6 +51,16 @@ export const withSuccess = (a, f1, f2) => compose(
   withNewValue('success', false, f2),
 );
 
+export const withScrollListener = lifecycle({
+    componentDidMount() {
+        window.addEventListener('scroll', this.props.onScroll);
+    },
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.props.onScroll);
+    }
+});
+
 export const withLang = withProps(p => ({ n: name(p.lang), d: desc(p.lang) }));
 
 export const withParams = withProps(p => ({ ...p.match.params }));

@@ -18,7 +18,7 @@ const products = s => s.products || [];
 const players = s => s.players || [];
 const tournaments = s => s.tournaments || [];
 const tournament = s => s.tournament || {};
-const history = s => (s.history || []).map(x => x.games);
+const history = s => (s.history || []).map(x => x.games.map(g => ({ id: g.id, date: g.date, player1: g.p1, player2: g.p2, result: p.result })));
 
 const success = a => createSelector(
   isLoading,

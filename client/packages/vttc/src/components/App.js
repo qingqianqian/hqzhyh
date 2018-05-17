@@ -11,6 +11,7 @@ import Tournaments from './Tournaments';
 import Tournament from './Tournament';
 import Rating from './Rating';
 import History from './History';
+import Selector from './Selector';
 import Contact from './Contact';
 import { Switch, Route } from 'react-router';
 import { withLoad } from 'utils';
@@ -25,6 +26,7 @@ const App = p =>
     <Switch>
       <Route exact path='/' component={Home} />
       <Route exact path='/home' component={Home} />
+      <Route path='/selector/:name' component={Selector} />
       <Route path='/contact' component={Contact} />
       <Route exact path='/products' component={Products} />
       <Route path='/products/:id' component={Product} />
