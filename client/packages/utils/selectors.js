@@ -62,7 +62,9 @@ var tournament = function tournament(s) {
   return s.tournament || {};
 };
 var history = function history(s) {
-  return s.history || [];
+  return (s.history || []).map(function (x) {
+    return x.games;
+  });
 };
 
 var success = function success(a) {

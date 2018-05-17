@@ -18,7 +18,7 @@ const products = s => s.products || [];
 const players = s => s.players || [];
 const tournaments = s => s.tournaments || [];
 const tournament = s => s.tournament || {};
-const history = s => s.history || [];
+const history = s => (s.history || []).map(x => x.games);
 
 const success = a => createSelector(
   isLoading,
