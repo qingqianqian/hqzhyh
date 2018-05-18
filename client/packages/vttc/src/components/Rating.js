@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import ImageSlider from './ImageSlider';
 import actions from 'utils/actions';
 import { playersSelector } from 'utils/selectors';
-import { cdurl, withLoad, withLang, getNameById, findById } from 'utils';
+import { tap, cdurl, withLoad, withLang, getNameById, findById, withListener } from 'utils';
 import { withRouter } from "react-router-dom";
 import { TextBox, Table } from 'utils/comps';
 
@@ -20,7 +20,7 @@ const Rating = ({ lookup, players }) =>
       <td key="id" hidden />
       <td key="firstName" title="First Name"/>
       <td key="lastName" title="Last Name"/>
-      <td key="sex" title="Gender"/>
+      <td key="Sex" title="Gender"/>
     </Table>
   </div>
 

@@ -5,7 +5,7 @@ import { compose, withProps } from 'recompose';
 import ImageSlider from './ImageSlider';
 import actions from 'utils/actions';
 import { historySelector } from 'utils/selectors';
-import { cdurl, withLoad, withLang, getNameById, findById, withParams } from 'utils';
+import { tap, cdurl, withLoad, withLang, getNameById, findById, withParams, withListener } from 'utils';
 import { withRouter } from "react-router-dom";
 import { TextBox, Table } from 'utils/comps';
 
@@ -25,5 +25,6 @@ export default compose(
   withParams,
   withLoad('players'),
   withLoad('history', 'id'),
-  withProps(p => ({ player: find(x => x.id === p.id, p.players)}))
+  withProps(p => ({ player: find(x => x.id === p.id, p.players)})),
+  withListener('click', p => tap(p))
 )(History);

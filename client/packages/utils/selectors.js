@@ -64,6 +64,8 @@ var tournament = function tournament(s) {
 var history = function history(s) {
   return (s.history || []).map(function (x) {
     return x.games;
+  }).map(function (g) {
+    return { id: g.id, date: g.date, player1: g.p1, player2: g.p2, result: g.result };
   });
 };
 

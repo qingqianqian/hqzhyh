@@ -1,6 +1,6 @@
 import { tap as _tap, prop, find, pipe, isNil, is, isEmpty } from 'ramda';
 import { connect } from 'no-redux';
-import { compose, lifecycle, withProps } from 'recompose';
+import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { successSelector } from './selectors';
 
 export const cdurl = (l, c, n) => l.cdVersion ? `http://res.cloudinary.com/vttc/image/upload/v${l.cdVersion}/${c}/${n}.jpg` : '';
@@ -51,15 +51,20 @@ export const withSuccess = (a, f1, f2) => compose(
   withNewValue('success', false, f2),
 );
 
-export const withScrollListener = lifecycle({
+const getEl = id => id ? document.getElementById(id) : window;
+
+export const withListener = (ev, f, id) => compose(
+  withHandlers({ listener: p => e => f(p) }),
+  lifecycle({
     componentDidMount() {
-        window.addEventListener('scroll', this.props.onScroll);
+      getEl(id).addEventListener(ev, this.props.listener);
     },
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.props.onScroll);
+      getEl(id).removeEventListener(ev, this.props.listener);
     }
-});
+  })
+)  
 
 export const withLang = withProps(p => ({ n: name(p.lang), d: desc(p.lang) }));
 

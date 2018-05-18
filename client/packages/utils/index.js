@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toTitleCase = exports.withParams = exports.withLang = exports.withSuccess = exports.withNewValue = exports.withEdit = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.toTitleCase = exports.withParams = exports.withLang = exports.withListener = exports.withSuccess = exports.withNewValue = exports.withEdit = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -94,6 +94,25 @@ var withNewValue = exports.withNewValue = function withNewValue(p, v, f) {
 
 var withSuccess = exports.withSuccess = function withSuccess(a, f1, f2) {
   return (0, _recompose.compose)((0, _noRedux.connect)((0, _selectors.successSelector)(a)), withNewValue('success', true, f1), withNewValue('success', false, f2));
+};
+
+var getEl = function getEl(id) {
+  return id ? document.getElementById(id) : window;
+};
+
+var withListener = exports.withListener = function withListener(ev, f, id) {
+  return (0, _recompose.compose)((0, _recompose.withHandlers)({ listener: function listener(p) {
+      return function (e) {
+        return f(p);
+      };
+    } }), (0, _recompose.lifecycle)({
+    componentDidMount: function componentDidMount() {
+      getEl(id).addEventListener(ev, this.props.listener);
+    },
+    componentWillUnmount: function componentWillUnmount() {
+      getEl(id).removeEventListener(ev, this.props.listener);
+    }
+  }));
 };
 
 var withLang = exports.withLang = (0, _recompose.withProps)(function (p) {

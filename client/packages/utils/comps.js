@@ -39,6 +39,7 @@ var _Table = function _Table(_ref) {
       children = _ref.children,
       history = _ref.history;
 
+  children = (0, _ramda.is)(Object, children) ? [children] : children;
   var l = data || [];
   var keys = l.length > 0 ? Object.keys(l[0]).filter(function (k) {
     return !hidden(k, children);
