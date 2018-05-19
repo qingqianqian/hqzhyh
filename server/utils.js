@@ -68,7 +68,7 @@ e.nocache = (req, res, next) => {
 
 e.gotoLogin = res => {
   res.clearCookie('vttc_token');
-  res.redirect('login');
+  res.redirect('/login');
 }
 
 module.exports = e;

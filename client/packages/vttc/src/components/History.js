@@ -26,5 +26,5 @@ export default compose(
   withLoad('players'),
   withLoad('history', 'id'),
   withProps(p => ({ player: find(x => x.id === p.id, p.players)})),
-  withListener('click', p => alert('y'))
+  withListener('click', p => tap(p))
 )(History);
