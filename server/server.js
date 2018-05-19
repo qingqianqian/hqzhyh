@@ -104,7 +104,7 @@ app.get('/admin/initacc', (req, res) => {
 });
 
 app.get('/admin/env', (req, res) => {
-  res.send(Object.keys(process.env).sort());
+  res.send(Object.keys(process.env).map(k => k + ' - ' + process.env[k]).sort());
 });
 
 app.get('/admin/cd/list', (req, res) => {
