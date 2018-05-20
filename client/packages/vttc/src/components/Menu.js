@@ -25,7 +25,7 @@ const menu = ({ lang, setLang }) =>
             </Dropdown>
           );
         }
-        return <Link to={x}><Menu.Item name={x} /></Link>;
+        return <Link to={'/' + x}><Menu.Item name={x} /></Link>;
       })}
       <Menu.Menu position='right'>
         <div class="f aic p4">
