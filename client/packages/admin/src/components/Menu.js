@@ -9,4 +9,7 @@ export default () =>
     <div class="item">
       <Link class="header cp" to="/products">Products</Link>
     </div>
+    <div class="item">
+      <Link class="header cp" to="/tournaments">Tournaments</Link>
+    </div>
   </div>
