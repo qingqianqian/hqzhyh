@@ -4,22 +4,31 @@ import { pick, find } from 'ramda';
 import { connect } from 'no-redux';
 import { Button } from 'semantic-ui-react';
 import actions from 'utils/actions';
-import { tournamentSelector } from 'utils/selectors';
+import { tourSelector } from 'utils/selectors';
 import { Table, TextBox } from 'utils/comps';
-import { tap, withLoad, withEdit, withSuccess } from 'utils';
+import { tap, withLoad, withEdit, withSuccess, withParams } from 'utils';
+import { withRouter } from "react-router-dom";
 
-const Tournament = ({ tournament, putTournament, postTournament }) =>
+const Tournament = ({ tournament, history, postTour, patchTour }) =>
   <div>
     <h1>Tournament - {+tournament.id ? tournament.name : 'Add New'}</h1>
     <hr />
+    {+tournament.id ?
+    <div>  
+      <Button primary onClick={() => history.push(`/teams/${tournament.id}`)}>Teams</Button>
+      <Button primary onClick={() => history.push('/teams/0')}>Schedules</Button>
+    </div>  
+    : null}  
     <TextBox name="tournament.id" disabled />
-    <TextBox name="tournament.name" />
+    <TextBox name="tournament.name" fluid />
     <hr />
-    <Button primary onClick={() => +tournament.id ? putTournament(tournament) : postTournament(tournament)}>Save</Button>
+    <Button primary onClick={() => +tournament.id ? patchTour(tournament) : postTour(tournament)}>Save</Button>
   </div>
 
 export default compose(
-  connect(tournamentSelector, actions),
+  connect(tourSelector, actions),
+  withParams,
   withEdit('tournament'),
-  withSuccess('tournament', () => alert('Saved'), () => alert('Error happened!'))
+  withSuccess('tour', () => alert('Saved'), () => alert('Error happened!')),
+  withRouter
 )(Tournament)

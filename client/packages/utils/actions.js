@@ -21,23 +21,31 @@ var actionData = exports.actionData = {
   },
   player: {
     url: _utils.admin + 'players',
-    path: 'players[]',
+    path: 'players[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
   tournaments: {
     url: _utils.api + 'idname/tournaments'
   },
-  tournament: {
+  tour: {
     url: _utils.admin + 'tournaments',
-    path: 'tournaments[]',
+    path: 'tournaments[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
-  teams: {
+  tournament: {
     url: _utils.api + 'tournaments/{id}'
   },
   team: {
     url: _utils.admin + 'teams',
-    path: 'teams[]',
+    path: 'teams[id]',
+    methods: ['post', 'put', 'patch', 'delete']
+  },
+  cats: {
+    url: _utils.api + 'cats'
+  },
+  cat: {
+    url: _utils.admin + 'cats',
+    path: 'cats[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
   products: {
@@ -45,7 +53,7 @@ var actionData = exports.actionData = {
   },
   product: {
     url: _utils.admin + 'products',
-    path: 'products[]',
+    path: 'products[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
   schedules: {

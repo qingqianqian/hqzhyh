@@ -123,8 +123,8 @@ app.put('/admin/:doc', (req, res) => {
   send(api.replace(req.params.doc, req.body), res);
 });
 
-app.put('/admin/:doc', (req, res) => {
-  send(api.replace(req.params.doc, req.body), res);
+app.patch('/admin/:doc', (req, res) => {
+  send(api.update(req.params.doc, req.body), res);
 });
 
 app.purge('/admin/:doc', (req, res) => {

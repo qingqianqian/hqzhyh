@@ -13,23 +13,31 @@ export const actionData = {
   },
   player: {
     url: admin + 'players',
-    path: 'players[]',
+    path: 'players[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
   tournaments: {
     url: api + 'idname/tournaments'
   },
-  tournament: {
+  tour: {
     url: admin + 'tournaments',
-    path: 'tournaments[]',
+    path: 'tournaments[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
-  teams: {
+  tournament: {
     url: api + 'tournaments/{id}'
   },
   team: {
     url: admin + 'teams',
-    path: 'teams[]',
+    path: 'teams[id]',
+    methods: ['post', 'put', 'patch', 'delete']
+  },
+  cats: {
+    url: api + 'cats'
+  },
+  cat: {
+    url: admin + 'cats',
+    path: 'cats[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
   products: {
@@ -37,7 +45,7 @@ export const actionData = {
   },
   product: {
     url: admin + 'products',
-    path: 'products[]',
+    path: 'products[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
   schedules: {

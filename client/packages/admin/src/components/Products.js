@@ -16,7 +16,7 @@ const Products = ({ products, history }) =>
       <Button primary onClick={() => history.push('/products/0')}>Add</Button>
     </div>
     <hr/>
-    <Table name="products" data={products.map(x => ({ 'id': x.id, 'name': x.name, 'name_ch': x.name_ch, 'cat': x.cat_name, 'cat1': x.cat1_name, 'price': x.price, 'sale': x.sale, 'desc': x.desc }))} />
+    <Table name="products" isLink data={products.map(x => ({ 'id': x.id, 'name': x.name, 'name_ch': x.name_ch, 'cat': x.cat_name, 'cat1': x.cat1_name, 'price': x.price, 'sale': x.sale, 'desc': x.desc }))} />
   </div>
 
 export default compose(

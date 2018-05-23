@@ -8,6 +8,9 @@ import Products from './Products';
 import Product from './Product';
 import Tournaments from './Tournaments';
 import Tournament from './Tournament';
+import Players from './Players';
+import Teams from './Teams';
+import Team from './Team';
 import Header from './Header';
 
 const App = () =>
@@ -26,7 +29,8 @@ const App = () =>
           <Route exact path='/tournaments' component={Tournaments} />
           <Route path='/tournaments/:id' component={Tournament} />
           <Route exact path='/players' component={Players} />
-          <Route exact path='/tournaments/:id1/teams' component={Teams} />
+          <Route path='/teams/:id' component={Teams} />
+          <Route path='/team/:id1/:id2' component={Team} />
         </Switch>
       </div>
     </div>

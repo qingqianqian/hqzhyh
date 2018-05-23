@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { pick } from 'ramda';
+import { pick, sortWith, descend, prop } from 'ramda';
 import { connect } from 'no-redux';
 import actions from 'utils/actions';
 import { withLoad, tap } from 'utils';
@@ -16,7 +16,7 @@ const Tournaments = ({ tournaments, history }) =>
       <Button primary onClick={() => history.push('/tournaments/0')}>Add</Button>
     </div>
     <hr/>
-    <Table name="tournaments" data={tournaments.map(x => ({ 'id': x.id, 'name': x.name }))} />
+    <Table name="tournaments" data={sortWith([descend(prop('id'))], tournaments.map(x => ({ 'id': x.id, 'name': x.name })))} isLink />
   </div>
 
 export default compose(

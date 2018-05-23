@@ -180,6 +180,7 @@ export const ratingsSelector = mapStateWithSelectors({ cats, form, lang });
 export const playersSelector = mapStateWithSelectors({ players: filteredPlayers, lookup });
 export const tournamentsSelector = mapStateWithSelectors({ tournaments: tournamentsWithYears, lookup });
 export const tournamentSelector = mapStateWithSelectors({ tournament: tournamentWithPlayers, lookup, players: filteredPlayers, gamesWithTeams });
+export const tourSelector = mapStateWithSelectors({ tournament: form('tournament'), tournaments });
 export const historySelector = mapStateWithSelectors({ history: historyTable, lookup, players: playersWithNames });
 export const scheduleSelector = mapStateWithSelectors({ schedule, tournament });
 export const standingSelector = mapStateWithSelectors({ standing, tournament });
