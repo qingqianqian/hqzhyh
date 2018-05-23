@@ -6,6 +6,8 @@ import Cats from './Cats';
 import Cat from './Cat';
 import Products from './Products';
 import Product from './Product';
+import Tournaments from './Tournaments';
+import Tournament from './Tournament';
 import Header from './Header';
 
 const App = () =>
@@ -21,6 +23,8 @@ const App = () =>
           <Route path='/cats/:id' component={Cat} />
           <Route exact path='/products' component={Products} />
           <Route path='/products/:id' component={Product} />
+          <Route exact path='/tournaments' component={Tournaments} />
+          <Route path='/tournaments/:id' component={Tournament} />
         </Switch>
       </div>
     </div>
