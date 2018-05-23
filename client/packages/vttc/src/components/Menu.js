@@ -13,7 +13,7 @@ const menus = ['Home', 'Products', 'News', 'Players', 'Tournaments', 'Rating', '
 const menu = ({ lang, setLang }) =>
   <div>
     <Menu color="blue" inverted id="main-menu">
-      {menus.map(x => {
+      {menus.map((x, i) => {
         if (is(Array, x)) {
           return (
             <Dropdown item simple text={x[0]}>
@@ -25,7 +25,7 @@ const menu = ({ lang, setLang }) =>
             </Dropdown>
           );
         }
-        return <Link to={'/' + x}><Menu.Item name={x} /></Link>;
+        return <Link to={'/' + (i === 0 ? '' : x)}><Menu.Item name={x} /></Link>;
       })}
       <Menu.Menu position='right'>
         <div class="f aic p4">

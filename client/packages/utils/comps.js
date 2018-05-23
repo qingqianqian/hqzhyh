@@ -34,12 +34,13 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 var _Table = function _Table(_ref) {
   var data = _ref.data,
       name = _ref.name,
-      filter = _ref.filter,
+      isLink = _ref.isLink,
+      equalWidth = _ref.equalWidth,
       setSort = _ref.setSort,
       children = _ref.children,
       history = _ref.history;
 
-  children = (0, _ramda.is)(Object, children) ? [children] : children;
+  children = children && ((0, _ramda.is)(Array, children) ? children : [children]);
   var l = data || [];
   var keys = l.length > 0 ? Object.keys(l[0]).filter(function (k) {
     return !hidden(k, children);
@@ -60,7 +61,7 @@ var _Table = function _Table(_ref) {
         keys.map(function (k, i) {
           return _react2.default.createElement(
             'th',
-            { key: 'th' + i
+            { key: 'th' + i, style: equalWidth ? { width: Math.floor(100 / keys.length) + '%' } : {}
             },
             title(k, children)
           );
@@ -73,8 +74,8 @@ var _Table = function _Table(_ref) {
       l.map(function (o, i) {
         return _react2.default.createElement(
           'tr',
-          { key: 'tr' + i, 'class': 'cp', onClick: function onClick() {
-              return history.push('/' + name + '/' + o.id);
+          { key: 'tr' + i, 'class': isLink ? "cp" : "", onClick: function onClick() {
+              return isLink && history.push('/' + name + '/' + o.id);
             } },
           keys.map(function (k) {
             return col(i, k, o, children);
@@ -103,11 +104,13 @@ var col = function col(idx, key, obj, children) {
 
   var v = obj[key];
   var cls = '';
+  if (p.center) cls += 'tac';
+  if (p.right) cls += 'tar';
 
   return _react2.default.createElement(
     'td',
     { key: 'td' + (key + idx), 'class': cls },
-    v
+    _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: v } })
   );
 };
 

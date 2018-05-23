@@ -84,3 +84,12 @@ hr {
 .player:after {
   background-color:red;
 }
+
+#root table thead tr th {
+  background-color: #2185d0;
+  color: white;
+}
+
+#root table tbody tr:hover {
+  background-color: Lavender;
+}

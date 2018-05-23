@@ -1,6 +1,7 @@
-import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty } from 'ramda';
+import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty, groupBy, join, sum } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
-import { findById, getNameById, tap } from '.';
+import { findById, getNameById, toDate, addIndex, tap } from '.';
+import { Z_TEXT } from 'zlib';
 
 const _form = s => s.form || {};
 const _filter = s => s.filter || {};
@@ -18,7 +19,7 @@ const products = s => s.products || [];
 const players = s => s.players || [];
 const tournaments = s => s.tournaments || [];
 const tournament = s => s.tournament || {};
-const history = s => (s.history || []).map(x => x.games).map(g => ({ id: g.id, date: g.date, player1: g.p1, player2: g.p2, result: g.result }));
+const history = s => s.history || [];
 
 const success = a => createSelector(
   isLoading,
@@ -66,10 +67,15 @@ const filteredProducts = createSelector(
   }))
 );
 
-const filteredPlayers = createSelector(
+const playersWithNames = createSelector(
   players,
+  ps => ps.map(p => ({ ...p, name: p.firstName + ' ' + p.lastName }))
+);
+
+const filteredPlayers = createSelector(
+  playersWithNames,
   form('player'),
-  (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => isEmpty(f) || (p.firstName + ' ' + p.lastName).toLowerCase().indexOf(f) > -1))
+  (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => isEmpty(f) || p.name.toLowerCase().indexOf(f) > -1))
 );
 
 const teams = createSelector(
@@ -79,7 +85,7 @@ const teams = createSelector(
 
 const tournamentWithPlayers = createSelector(
   tournament,
-  players,
+  playersWithNames,
   (t, ps) => {
     const teams = (t.teams || []).map(x => ({ ...x, players: x.players.map(p => ({ ...findById(p.id)(ps), initRating: p.rating })) }));
     return teams.length > 0 ? { ...t, teams } : t;
@@ -101,14 +107,67 @@ const games = createSelector(
 
 const gamesWithTeams = createSelector(
   teams,
-  players,
+  playersWithNames,
   games,
   (ts, ps, gs) => gs.map(g => ({
     ...g,
-    player1: findById(g.p1, ps),
-    player2: findById(g.p2, ps),
-    team1: find(x => findById(g.p1, x.players), ts),
-    team2: find(x => findById(g.p2, x.players), ts)
+    player1: findById(g.p1)(ps),
+    player2: findById(g.p2)(ps),
+    team1: find(x => findById(g.p1)(x.players), ts),
+    team2: find(x => findById(g.p2)(x.players), ts)
+  }))
+);
+
+const redSpan = x => `<span class="red">${x}</span>`;
+
+const schedule = createSelector(
+  gamesWithTeams,
+  gs => {
+    const ss = groupBy(x => x.date, gs);
+    return Object.keys(ss).sort().map(k => {
+      const ms = groupBy(x => join('|', [x.team1.name, x.team2.name].sort()), ss[k].filter(x => x.team1 && x.team2));
+      return ({
+        date: toDate(new Date(k)),
+        matches: Object.keys(ms).map(m => {
+          const ns = m.split('|');
+          const n = ms[m].filter(x => (x.team1.name === ns[0] && x.result[0] === '3') || (x.team2.name === ns[0] && x.result[2] === '3')).length;
+          return ({
+            team1: ns[0],
+            result: (n > 2 ? redSpan(n) : n) + ' - ' + (5 - n > 2 ? redSpan(5 - n) : 5 - n),
+            team2: ns[1],
+            team1Points: n,
+            team2Points: 5 - n,
+            winner: n > 2 ? ns[0] : ns[1],
+            loser: n > 2 ? ns[1] : ns[0],
+          });
+        })
+      });
+    });
+  }
+);
+
+const getPoints = (m, t, v) => m[t] === v ? m[t + 'Points'] : 0;
+
+const standing = createSelector(
+  schedule,
+  teams,
+  (s, ts) => addIndex(sortWith([descend(prop('points'))], ts.map(t => ({
+    team: t.name,
+    w: sum(s.map(w => w.matches.filter(m => m.winner === t.name).length)),
+    l: sum(s.map(w => w.matches.filter(m => m.loser === t.name).length)),
+    points: sum(s.map(w => sum(w.matches.map(m => getPoints(m, 'team1', t.name) + getPoints(m, 'team2', t.name))))),
+  }))), 'rank')
+);
+
+const historyTable = createSelector(
+  history,
+  playersWithNames,
+  (h, ps) => sortWith([descend(prop('date'))], h.map(x => x.games)).map(g => ({
+    id: g.id,
+    date: toDate(new Date(g.date)),
+    player1: `${getNameById(g.p1)(ps)} (${g.p1Rating} ${(g.p1Diff > 0 ? '+ ' : '- ') + Math.abs(g.p1Diff)} = ${g.p1Rating + g.p1Diff})`,
+    player2: `${getNameById(g.p2)(ps)} (${g.p2Rating} ${(g.p2Diff > 0 ? '+ ' : '- ') + Math.abs(g.p2Diff)} = ${g.p2Rating + g.p2Diff})`,
+    result: g.result
   }))
 );
 
@@ -120,5 +179,7 @@ export const productsSelector = mapStateWithSelectors({ products: filteredProduc
 export const ratingsSelector = mapStateWithSelectors({ cats, form, lang });
 export const playersSelector = mapStateWithSelectors({ players: filteredPlayers, lookup });
 export const tournamentsSelector = mapStateWithSelectors({ tournaments: tournamentsWithYears, lookup });
-export const tournamentSelector = mapStateWithSelectors({ tournament: tournamentWithPlayers, lookup, players: filteredPlayers });
-export const historySelector = mapStateWithSelectors({ history, lookup, players });
+export const tournamentSelector = mapStateWithSelectors({ tournament: tournamentWithPlayers, lookup, players: filteredPlayers, gamesWithTeams });
+export const historySelector = mapStateWithSelectors({ history: historyTable, lookup, players: playersWithNames });
+export const scheduleSelector = mapStateWithSelectors({ schedule, tournament });
+export const standingSelector = mapStateWithSelectors({ standing, tournament });

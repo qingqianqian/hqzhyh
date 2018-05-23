@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toTitleCase = exports.withParams = exports.withLang = exports.withListener = exports.withSuccess = exports.withNewValue = exports.withEdit = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.addIndex = exports.toDate = exports.toTitleCase = exports.withParams = exports.withLang = exports.withListener = exports.withSuccess = exports.withNewValue = exports.withEdit = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -62,10 +62,10 @@ var getPropById = exports.getPropById = function getPropById(p) {
 };
 var getNameById = exports.getNameById = getPropById('name');
 
-var withLoad = exports.withLoad = function withLoad(p, v) {
+var withLoad = exports.withLoad = function withLoad(p, v, force) {
   return (0, _recompose.lifecycle)({
     componentWillMount: function componentWillMount() {
-      (0, _ramda.isEmpty)(this.props[p]) && this.props['get' + p[0].toUpperCase() + p.slice(1)](v && _defineProperty({}, v, this.props[v]));
+      (force || (0, _ramda.isEmpty)(this.props[p])) && this.props['get' + p[0].toUpperCase() + p.slice(1)](v && _defineProperty({}, v, this.props[v]));
     }
   });
 };
@@ -126,5 +126,15 @@ var withParams = exports.withParams = (0, _recompose.withProps)(function (p) {
 var toTitleCase = exports.toTitleCase = function toTitleCase(s) {
   return s.replace(/\w\S*/g, function (t) {
     return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
+  });
+};
+
+var toDate = exports.toDate = function toDate(d) {
+  return d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear();
+};
+
+var addIndex = exports.addIndex = function addIndex(a, p) {
+  return a.map(function (x, i) {
+    return _extends(_defineProperty({}, p || 'id', i + 1), x);
   });
 };

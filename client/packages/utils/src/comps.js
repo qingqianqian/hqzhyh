@@ -7,8 +7,8 @@ import { toTitleCase, tap } from '.';
 import { filterSelector } from './selectors';
 import { Input, Dropdown } from 'semantic-ui-react';
 
-const _Table = ({ data, name, filter, setSort, children, history }) => {
-  children = is(Object, children) ? [children] : children;
+const _Table = ({ data, name, isLink, equalWidth, setSort, children, history }) => {
+  children = children && (is(Array, children) ? children : [children]);
   const l = data || [];
   const keys = l.length > 0 ? Object.keys(l[0]).filter(k => !hidden(k, children)) : [];
   //const sort = (filter[name] || {}).sort;
@@ -20,7 +20,7 @@ const _Table = ({ data, name, filter, setSort, children, history }) => {
       <thead>
         <tr>
         {keys.map((k, i) =>
-          <th key={`th${i}`}
+          <th key={`th${i}`} style={equalWidth ? {width: Math.floor(100 / keys.length) + '%'} : {}}
           >
             {title(k, children)}
           </th>
@@ -29,7 +29,7 @@ const _Table = ({ data, name, filter, setSort, children, history }) => {
       </thead>
       <tbody>
       {l.map((o, i) =>
-        <tr key={`tr${i}`} class="cp" onClick={() => history.push('/' + name + '/' + o.id)}>
+        <tr key={`tr${i}`} class={isLink ? "cp" : ""} onClick={() => isLink && history.push('/' + name + '/' + o.id)}>
           {keys.map(k => col(i, k, o, children))}
         </tr>
       )}
@@ -56,8 +56,10 @@ const col = (idx, key, obj, children) => {
 
   let v = obj[key];
   let cls = '';
+  if (p.center) cls += 'tac';
+  if (p.right) cls += 'tar';
 
-  return <td key={`td${key + idx}`} class={cls}>{v}</td>;
+  return <td key={`td${key + idx}`} class={cls}><div dangerouslySetInnerHTML={{ __html: v }}/></td>;
 }
 
 const prop = (prop, val = '') => (key, children) => {

@@ -24,9 +24,9 @@ export const findByName = findByProp('name');
 export const getPropById = p => id => pipe(findById(id), prop(p));
 export const getNameById = getPropById('name')
 
-export const withLoad = (p, v) => lifecycle({
+export const withLoad = (p, v, force) => lifecycle({
   componentWillMount() {
-    isEmpty(this.props[p]) && this.props['get' + p[0].toUpperCase() + p.slice(1)](v && { [v]: this.props[v] });
+    (force || isEmpty(this.props[p])) && this.props['get' + p[0].toUpperCase() + p.slice(1)](v && { [v]: this.props[v] });
   }
 });
 
@@ -71,3 +71,7 @@ export const withLang = withProps(p => ({ n: name(p.lang), d: desc(p.lang) }));
 export const withParams = withProps(p => ({ ...p.match.params }));
 
 export const toTitleCase = s => s.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
+
+export const toDate = d => `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+
+export const addIndex = (a, p) => a.map((x, i) => ({ [p || 'id']: i + 1, ...x }))
