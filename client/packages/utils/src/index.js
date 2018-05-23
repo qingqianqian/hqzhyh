@@ -1,4 +1,4 @@
-import { tap as _tap, prop, find, pipe, isNil, is, isEmpty } from 'ramda';
+import { tap as _tap, prop, find, pipe, isNil, is, isEmpty, view, lensPath } from 'ramda';
 import { connect } from 'no-redux';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { successSelector } from './selectors';
@@ -32,7 +32,9 @@ export const withLoad = (p, v, force) => lifecycle({
 
 export const withEdit = (p, l) => lifecycle({
   componentWillMount() {
-    this.props.setForm(find(x => x.id == this.props.match.params.id, this.props[l || (p + 's')]), { path: p });
+    const id = this.props.match.params.id;
+    const v = find(x => x.id == id, l ? view(lensPath(l), this.props) : this.props[p + 's']);
+    this.props.setForm(v, { path: p });
   }
 });
 
@@ -74,4 +76,6 @@ export const toTitleCase = s => s.replace(/\w\S*/g, t => t.charAt(0).toUpperCase
 
 export const toDate = d => `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 
-export const addIndex = (a, p) => a.map((x, i) => ({ [p || 'id']: i + 1, ...x }))
+export const addIndex = (a, p) => a.map((x, i) => ({ [p || 'id']: i + 1, ...x }));
+
+export const replaceParam = (s, ps) => reduce((p, c) => p.replace(new RegExp(`\{${c}\}`), ps[c]), s, Object.keys(ps));

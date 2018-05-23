@@ -30,7 +30,7 @@ const App = () =>
           <Route path='/tournaments/:id' component={Tournament} />
           <Route exact path='/players' component={Players} />
           <Route path='/teams/:id' component={Teams} />
-          <Route path='/team/:id1/:id2' component={Team} />
+          <Route path='/team/:id1/:id' component={Team} />
         </Switch>
       </div>
     </div>

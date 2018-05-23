@@ -9,11 +9,11 @@ import { Table } from 'utils/comps';
 import { withRouter } from "react-router-dom";
 import { Button } from 'semantic-ui-react';
 
-const Teams = ({ tournament, history }) =>
+const Teams = ({ tournament, history, id }) =>
   <div>
     <div class="f">
       <h1 class="fg1">Teams - {tournament.name}</h1>
-      <Button primary onClick={() => history.push('/teams/0')}>Add</Button>
+      <Button primary onClick={() => history.push(`/team/${id}/0`)}>Add</Button>
     </div>
     <hr/>
     <Table name="teams" isLink data={(tournament.teams || []).map(x => ({ 'id': x.id, 'name': x.name }))} />
