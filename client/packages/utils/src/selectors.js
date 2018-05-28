@@ -78,6 +78,11 @@ const filteredPlayers = createSelector(
   (ps, f) => sortWith([descend(prop('rating'))])(ps.filter(p => isEmpty(f) || p.name.toLowerCase().indexOf(f) > -1))
 );
 
+const dsPlayers = createSelector(
+  filteredPlayers,
+  ps => sortWith([ascend(prop('name'))])(ps.map(p => ({ ...p, text: `${p.name} (${p.rating})`, value: p.id })))
+);
+
 const teams = createSelector(
   tournament,
   t => t.teams || []
@@ -184,3 +189,4 @@ export const tourSelector = mapStateWithSelectors({ tournament: form('tournament
 export const historySelector = mapStateWithSelectors({ history: historyTable, lookup, players: playersWithNames });
 export const scheduleSelector = mapStateWithSelectors({ schedule, tournament });
 export const standingSelector = mapStateWithSelectors({ standing, tournament });
+export const teamSelector = mapStateWithSelectors({ tournament, team: form('team'), players: dsPlayers });

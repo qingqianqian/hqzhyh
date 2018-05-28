@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addIndex = exports.toDate = exports.toTitleCase = exports.withParams = exports.withLang = exports.withListener = exports.withSuccess = exports.withNewValue = exports.withEdit = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.replaceParam = exports.addIndex = exports.toDate = exports.toTitleCase = exports.withParams = exports.withLang = exports.withListener = exports.withSuccess = exports.withNewValue = exports.withEdit = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -73,11 +73,11 @@ var withLoad = exports.withLoad = function withLoad(p, v, force) {
 var withEdit = exports.withEdit = function withEdit(p, l) {
   return (0, _recompose.lifecycle)({
     componentWillMount: function componentWillMount() {
-      var _this = this;
-
-      this.props.setForm((0, _ramda.find)(function (x) {
-        return x.id == _this.props.match.params.id;
-      }, this.props[l || p + 's']), { path: p });
+      var id = this.props.match.params.id;
+      var v = (0, _ramda.find)(function (x) {
+        return x.id == id;
+      }, (l ? (0, _ramda.view)((0, _ramda.lensPath)(l), this.props) : this.props[p + 's']) || []);
+      this.props.setForm(v, { path: p });
     }
   });
 };
@@ -137,4 +137,10 @@ var addIndex = exports.addIndex = function addIndex(a, p) {
   return a.map(function (x, i) {
     return _extends(_defineProperty({}, p || 'id', i + 1), x);
   });
+};
+
+var replaceParam = exports.replaceParam = function replaceParam(s, ps) {
+  return (0, _ramda.reduce)(function (p, c) {
+    return p.replace(new RegExp('{' + c + '}'), ps[c]);
+  }, s, Object.keys(ps));
 };

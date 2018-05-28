@@ -28,8 +28,8 @@ export const actionData = {
     url: api + 'tournaments/{id}'
   },
   team: {
-    url: admin + 'teams',
-    path: 'teams[id]',
+    url: admin + 'tournaments/{id1}/teams',
+    path: 'tournament.teams[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
   cats: {

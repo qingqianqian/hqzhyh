@@ -6,7 +6,7 @@ const e = {};
 
 e.cd = 'http://res.cloudinary.com/vttc/image/upload/v1522908408/';
 
-e.tap = x => R.tap(console.log, isNil(x) ? 'null' : x);
+e.tap = x => R.tap(console.log, R.isNil(x) ? 'null' : x);
 
 e.config = fs.existsSync(path.join(__dirname, 'config.js')) ? require('./config') : null;
 

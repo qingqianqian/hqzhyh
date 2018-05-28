@@ -36,8 +36,8 @@ var actionData = exports.actionData = {
     url: _utils.api + 'tournaments/{id}'
   },
   team: {
-    url: _utils.admin + 'teams',
-    path: 'teams[id]',
+    url: _utils.admin + 'tournaments/{id1}/teams',
+    path: 'tournament.teams[id]',
     methods: ['post', 'put', 'patch', 'delete']
   },
   cats: {

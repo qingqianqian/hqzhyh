@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.standingSelector = exports.scheduleSelector = exports.historySelector = exports.tourSelector = exports.tournamentSelector = exports.tournamentsSelector = exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
+exports.teamSelector = exports.standingSelector = exports.scheduleSelector = exports.historySelector = exports.tourSelector = exports.tournamentSelector = exports.tournamentsSelector = exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -126,6 +126,12 @@ var playersWithNames = (0, _noRedux.createSelector)(players, function (ps) {
 var filteredPlayers = (0, _noRedux.createSelector)(playersWithNames, form('player'), function (ps, f) {
   return (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('rating'))])(ps.filter(function (p) {
     return (0, _ramda.isEmpty)(f) || p.name.toLowerCase().indexOf(f) > -1;
+  }));
+});
+
+var dsPlayers = (0, _noRedux.createSelector)(filteredPlayers, function (ps) {
+  return (0, _ramda.sortWith)([(0, _ramda.ascend)((0, _ramda.prop)('name'))])(ps.map(function (p) {
+    return _extends({}, p, { text: p.name + ' (' + p.rating + ')', value: p.id });
   }));
 });
 
@@ -262,3 +268,4 @@ var tourSelector = exports.tourSelector = (0, _noRedux.mapStateWithSelectors)({ 
 var historySelector = exports.historySelector = (0, _noRedux.mapStateWithSelectors)({ history: historyTable, lookup: lookup, players: playersWithNames });
 var scheduleSelector = exports.scheduleSelector = (0, _noRedux.mapStateWithSelectors)({ schedule: schedule, tournament: tournament });
 var standingSelector = exports.standingSelector = (0, _noRedux.mapStateWithSelectors)({ standing: standing, tournament: tournament });
+var teamSelector = exports.teamSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, team: form('team'), players: dsPlayers });

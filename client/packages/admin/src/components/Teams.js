@@ -16,7 +16,7 @@ const Teams = ({ tournament, history, id }) =>
       <Button primary onClick={() => history.push(`/team/${id}/0`)}>Add</Button>
     </div>
     <hr/>
-    <Table name="teams" isLink data={(tournament.teams || []).map(x => ({ 'id': x.id, 'name': x.name }))} />
+    <Table name="teams" link={x => `/team/${id}/${x}`} data={(tournament.teams || []).map(x => ({ 'id': x.id, 'name': x.name }))} />
   </div>
 
 export default compose(

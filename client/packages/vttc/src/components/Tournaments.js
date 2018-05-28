@@ -13,7 +13,7 @@ const Tournaments = ({ lookup, tournaments }) =>
   <div class="p16 fv">
     <h1>Tournaments</h1>
     <hr/>
-    <Table name="tournaments" data={tournaments} isLink>
+    <Table name="tournaments" data={tournaments} link>
       <td key="id" hidden/>   
     </Table>
   </div>

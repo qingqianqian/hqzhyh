@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Select = exports.TextBox = exports.Table = undefined;
+exports.DoubleSelect = exports.Select = exports.TextBox = exports.Table = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -34,7 +34,7 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 var _Table = function _Table(_ref) {
   var data = _ref.data,
       name = _ref.name,
-      isLink = _ref.isLink,
+      link = _ref.link,
       equalWidth = _ref.equalWidth,
       setSort = _ref.setSort,
       children = _ref.children,
@@ -74,8 +74,8 @@ var _Table = function _Table(_ref) {
       l.map(function (o, i) {
         return _react2.default.createElement(
           'tr',
-          { key: 'tr' + i, 'class': isLink ? "cp" : "", onClick: function onClick() {
-              return isLink && history.push('/' + name + '/' + o.id);
+          { key: 'tr' + i, 'class': link ? "cp" : "", onClick: function onClick() {
+              return link && history.push((0, _ramda.is)(Function, link) ? link(o.id) : '/' + name + '/' + o.id);
             } },
           keys.map(function (k) {
             return col(i, k, o, children);
@@ -183,7 +183,7 @@ var textBox = function textBox(p) {
   );
 };
 
-var select = function select(p) {
+var select1 = function select1(p) {
   return _react2.default.createElement(
     'div',
     { 'class': 'pv8' },
@@ -192,4 +192,165 @@ var select = function select(p) {
 };
 
 var TextBox = exports.TextBox = withAll(textBox);
-var Select = exports.Select = withAll(select);
+var Select = exports.Select = withAll(select1);
+
+var s1 = {
+  display: 'flex',
+  flexDirection: 'row'
+};
+
+var s2 = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  marginLeft: '8px',
+  marginRight: '8px'
+};
+
+var s3 = {
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%'
+};
+
+var s4 = {
+  marginBottom: '8px'
+};
+
+var select2 = function select2(_ref3) {
+  var options = _ref3.options,
+      placeholder = _ref3.placeholder,
+      isGroup = _ref3.isGroup,
+      size = _ref3.size,
+      multiple = _ref3.multiple,
+      onChange = _ref3.onChange;
+  return _react2.default.createElement(
+    'select',
+    { onChange: onChange, size: size, multiple: multiple },
+    placeholder ? _react2.default.createElement(
+      'option',
+      { value: '' },
+      placeholder
+    ) : null,
+    isGroup ? Object.keys(options).map(function (k) {
+      return optionGroup(k, options);
+    }) : (0, _.tap)(options).map(option)
+  );
+};
+
+var Select2 = withAll(select2);
+
+var option = function option(o) {
+  return _react2.default.createElement(
+    'option',
+    { key: o.value, value: o.value },
+    o.text
+  );
+};
+
+var optionGroup = function optionGroup(key, options) {
+  return _react2.default.createElement(
+    'optgroup',
+    { label: key, key: key },
+    (options[key] || []).map(option)
+  );
+};
+
+var _DoubleSelect = function _DoubleSelect(_ref4) {
+  var name = _ref4.name,
+      src = _ref4.src,
+      dst = _ref4.dst,
+      srcTitle = _ref4.srcTitle,
+      dstTitle = _ref4.dstTitle,
+      size = _ref4.size,
+      buttonStyle = _ref4.buttonStyle,
+      onChange = _ref4.onChange,
+      onAdd = _ref4.onAdd,
+      onRemove = _ref4.onRemove;
+  return _react2.default.createElement(
+    'div',
+    { name: name, style: s1 },
+    _react2.default.createElement(
+      'div',
+      { style: s3 },
+      _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'b',
+          null,
+          srcTitle
+        )
+      ),
+      _react2.default.createElement(Select2, { name: name + '_src', options: src, size: size || 8, multiple: true, onChange: onChange })
+    ),
+    _react2.default.createElement(
+      'div',
+      { style: s2 },
+      _react2.default.createElement(
+        'button',
+        { 'class': buttonStyle, onClick: onAdd, style: s4 },
+        '>>'
+      ),
+      _react2.default.createElement(
+        'button',
+        { 'class': buttonStyle, onClick: onRemove },
+        '<<'
+      )
+    ),
+    _react2.default.createElement(
+      'div',
+      { style: s3 },
+      _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'b',
+          null,
+          dstTitle
+        )
+      ),
+      _react2.default.createElement(Select2, { name: name + '_dst', options: dst, size: size || 8, multiple: true, onChange: onChange })
+    )
+  );
+};
+
+var getSelectedValue = function getSelectedValue(x) {
+  return (0, _ramda.is)(Object, x) ? x.value || x.id : x;
+};
+
+var DoubleSelect = exports.DoubleSelect = (0, _recompose.compose)(withForm, (0, _recompose.withProps)(function (_ref5) {
+  var name = _ref5.name,
+      options = _ref5.options,
+      form = _ref5.form,
+      setForm = _ref5.setForm;
+
+  var _name$split3 = name.split('.'),
+      _name$split4 = _slicedToArray(_name$split3, 2),
+      fn = _name$split4[0],
+      n = _name$split4[1];
+
+  var f = form;
+  var selectedOptions = f && f[fn] && f[fn][n] || [];
+  var src = (0, _ramda.innerJoin)(function (a, b) {
+    return a.value != getSelectedValue(b);
+  }, options, selectedOptions);
+  var dst = (0, _ramda.innerJoin)(function (a, b) {
+    return a.value == getSelectedValue(b);
+  }, options, selectedOptions);
+  var srcSelected = f && f[fn] && f[fn][n + '_src'] || [];
+  var dstSelected = f && f[fn] && f[fn][n + '_dst'] || [];
+  var onAdd = function onAdd() {
+    setForm(name, dst.map(function (x) {
+      return x.value.toString();
+    }).concat(srcSelected));
+    setForm(name + '_src', []);
+  };
+  var onRemove = function onRemove() {
+    setForm(name, (0, _ramda.difference)(dst.map(function (x) {
+      return x.value.toString();
+    }), dstSelected));
+    setForm(name + '_dst', []);
+  };
+  return { src: src, dst: dst, onAdd: onAdd, onRemove: onRemove };
+}))(_DoubleSelect);

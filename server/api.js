@@ -48,6 +48,8 @@ e.add = (doc, obj) => db.collection(doc).find({}).sort({ "id": -1 }).limit(1).to
 
 e.replace = (doc, obj) => db.collection(doc).replaceOne({ id: obj.id }, obj)
 
+e.replaceList = (doc, id, list, obj) => db.collection(doc).update({ id, [list + '.id']: obj.id }, { $set: { [list + '.$.name']: obj.name } })
+
 e.update = (doc, obj) => db.collection(doc).update({ id: obj.id }, { $set: obj })
 
 e.delete = (doc, obj) => db.collection(doc).remove({ id: obj.id })

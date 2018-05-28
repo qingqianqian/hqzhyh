@@ -16,7 +16,7 @@ const Tournaments = ({ tournaments, history }) =>
       <Button primary onClick={() => history.push('/tournaments/0')}>Add</Button>
     </div>
     <hr/>
-    <Table name="tournaments" data={sortWith([descend(prop('id'))], tournaments.map(x => ({ 'id': x.id, 'name': x.name })))} isLink />
+    <Table name="tournaments" data={sortWith([descend(prop('id'))], tournaments.map(x => ({ 'id': x.id, 'name': x.name })))} link />
   </div>
 
 export default compose(

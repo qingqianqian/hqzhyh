@@ -16,7 +16,7 @@ const Cats = ({ cats, history }) =>
       <Button primary onClick={() => history.push('/cats/0')}>Add</Button>
     </div>
     <hr/>
-    <Table name="cats" isLink data={(cats || []).map(pick(['id', 'name', 'name_ch']))} />
+    <Table name="cats" link data={(cats || []).map(pick(['id', 'name', 'name_ch']))} />
   </div>
 
 export default compose(

@@ -16,7 +16,7 @@ const Rating = ({ lookup, players }) =>
         <TextBox name="player" placeholder='Search player...' />
       </div>  
       <div class="ui divider"></div>
-    <Table name="rating" data={players} isLink>
+    <Table name="rating" data={players} link>
       <td key="id" hidden />
       <td key="name" hidden />
       <td key="firstName" title="First Name"/>

@@ -1,4 +1,4 @@
-import { tap as _tap, prop, find, pipe, isNil, is, isEmpty, view, lensPath } from 'ramda';
+import { tap as _tap, prop, find, pipe, isNil, is, isEmpty, view, lensPath, reduce } from 'ramda';
 import { connect } from 'no-redux';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { successSelector } from './selectors';
@@ -33,7 +33,7 @@ export const withLoad = (p, v, force) => lifecycle({
 export const withEdit = (p, l) => lifecycle({
   componentWillMount() {
     const id = this.props.match.params.id;
-    const v = find(x => x.id == id, l ? view(lensPath(l), this.props) : this.props[p + 's']);
+    const v = find(x => x.id == id, (l ? view(lensPath(l), this.props) : this.props[p + 's']) || []);
     this.props.setForm(v, { path: p });
   }
 });
