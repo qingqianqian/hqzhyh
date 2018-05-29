@@ -190,3 +190,4 @@ export const historySelector = mapStateWithSelectors({ history: historyTable, lo
 export const scheduleSelector = mapStateWithSelectors({ schedule, tournament });
 export const standingSelector = mapStateWithSelectors({ standing, tournament });
 export const teamSelector = mapStateWithSelectors({ tournament, team: form('team'), players: dsPlayers });
+export const scheduleEditSelector = mapStateWithSelectors({ tournament, schedule: form('schedule') });

@@ -11,6 +11,8 @@ import Tournament from './Tournament';
 import Players from './Players';
 import Teams from './Teams';
 import Team from './Team';
+import Schedules from './Schedules';
+import Schedule from './Schedule';
 import Header from './Header';
 
 const App = () =>
@@ -31,6 +33,8 @@ const App = () =>
           <Route exact path='/players' component={Players} />
           <Route path='/teams/:id' component={Teams} />
           <Route path='/team/:id1/:id' component={Team} />
+          <Route path='/schedules/:id' component={Schedules} />
+          <Route path='/schedule/:id1/:id' component={Schedule} />
         </Switch>
       </div>
     </div>
