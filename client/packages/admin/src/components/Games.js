@@ -4,12 +4,12 @@ import { pick } from 'ramda';
 import { connect } from 'no-redux';
 import actions from 'utils/actions';
 import { withLoad, tap, withParams, withNewId } from 'utils';
-import { gamesSelector } from 'utils/selectors';
+import { tournamentSelector } from 'utils/selectors';
 import { Table } from 'utils/comps';
 import { withRouter } from "react-router-dom";
 import { Button } from 'semantic-ui-react';
 
-const Games = ({ tournament, games, history, id, newId }) =>
+const Games = ({ tournament, gamesWithTeams: games, history, id, newId }) =>
   <div>
     <div class="f">
       <h1 class="fg1">Matches - {tournament.name}</h1>
@@ -20,7 +20,7 @@ const Games = ({ tournament, games, history, id, newId }) =>
   </div>
 
 export default compose(
-  connect(gamesSelector, actions),
+  connect(tournamentSelector, actions),
   withParams,
   withLoad('tournament', 'id'),
   withNewId('tournament.games'),
