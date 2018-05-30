@@ -8,15 +8,15 @@ import { teamSelector } from 'utils/selectors';
 import { Table, TextBox, DoubleSelect } from 'utils/comps';
 import { tap, withLoad, withEdit, withSuccess, withParams, getPropById } from 'utils';
 
-const Team = ({ tournament, team, players, putTeam, postTeam }) =>
+const Team = ({ tournament, team, players, putTeam, postTeam, id }) =>
   <div>
-    <h1>Team - {+team.id ? team.name : 'Add New'}</h1>
+    <h1>Team - {team.name}</h1>
     <hr />
     <TextBox name="team.id" disabled />
     <TextBox name="team.name" />
-    <DoubleSelect name="team.players" options={tap(players)} buttonStyle="ui button" />
+    <DoubleSelect name="team.players" options={players} buttonStyle="ui button" />
     <hr />
-    <Button primary onClick={() => +team.id ? putTeam(toTeam(team, players), { id1: tournament.id, id: team.id }) : postTeam(toTeam(team, players))}>Save</Button>
+    <Button primary onClick={() => id[0] != '+' ? putTeam(toTeam(team, players), { id1: tournament.id, id: team.id }) : postTeam(toTeam(team, players), { id1: tournament.id })}>Save</Button>
   </div>
 
 export default compose(
@@ -24,7 +24,7 @@ export default compose(
   withParams,
   withLoad('players'),
   withLoad('tournament', 'id1'),
-  withEdit('team', ['tournament', 'teams']),
+  withEdit('team', 'tournament.teams', {players:[]}),
   withSuccess('team', () => alert('Saved'), () => alert('Error happened!'))
 )(Team)
 

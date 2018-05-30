@@ -115,6 +115,11 @@ app.get('/admin/count/:doc', (req, res) => {
   send(api.count(req.params.doc), res);
 });
 
+app.post('/admin/:doc/:id/:list', (req, res) => {
+  const { doc, id, list } = req.params;
+  send(api.addToList(doc, id, list, req.body), res);
+});
+
 app.put('/admin/:doc/:id/:list', (req, res) => {
   const { doc, id, list } = req.params;
   send(api.replaceList(doc, id, list, req.body), res);

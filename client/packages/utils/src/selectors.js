@@ -18,7 +18,7 @@ const cats = s => s.cats || [];
 const products = s => s.products || [];
 const players = s => s.players || [];
 const tournaments = s => s.tournaments || [];
-const tournament = s => s.tournament || {};
+const _tournament = s => s.tournament || {};
 const history = s => s.history || [];
 
 const success = a => createSelector(
@@ -84,16 +84,17 @@ const dsPlayers = createSelector(
 );
 
 const teams = createSelector(
-  tournament,
+  _tournament,
   t => t.teams || []
 );
 
-const tournamentWithPlayers = createSelector(
-  tournament,
+const tournament = createSelector(
+  _tournament,
   playersWithNames,
   (t, ps) => {
-    const teams = (t.teams || []).map(x => ({ ...x, players: x.players.map(p => ({ ...findById(p.id)(ps), initRating: p.rating })) }));
-    return teams.length > 0 ? { ...t, teams } : t;
+    const teams = (t.teams || []).map(x => ({ ...x, text: x.name, value: x.id, players: x.players.map(p => ({ ...findById(p.id)(ps), initRating: p.rating })) }));
+    const schedules = (t.schedules || []).map(x => ({ ...x, date: toDate(x.date) }));
+    return teams.length > 0 ? { ...t, teams, schedules } : t;
   }
 );
 
@@ -106,7 +107,7 @@ const tournamentsWithYears = createSelector(
 );
 
 const games = createSelector(
-  tournament,
+  _tournament,
   t => t.games || []
 );
 
@@ -132,7 +133,7 @@ const schedule = createSelector(
     return Object.keys(ss).sort().map(k => {
       const ms = groupBy(x => join('|', [x.team1.name, x.team2.name].sort()), ss[k].filter(x => x.team1 && x.team2));
       return ({
-        date: toDate(new Date(k)),
+        date: toDate(k),
         matches: Object.keys(ms).map(m => {
           const ns = m.split('|');
           const n = ms[m].filter(x => (x.team1.name === ns[0] && x.result[0] === '3') || (x.team2.name === ns[0] && x.result[2] === '3')).length;
@@ -169,7 +170,7 @@ const historyTable = createSelector(
   playersWithNames,
   (h, ps) => sortWith([descend(prop('date'))], h.map(x => x.games)).map(g => ({
     id: g.id,
-    date: toDate(new Date(g.date)),
+    date: toDate(g.date),
     player1: `${getNameById(g.p1)(ps)} (${g.p1Rating} ${(g.p1Diff > 0 ? '+ ' : '- ') + Math.abs(g.p1Diff)} = ${g.p1Rating + g.p1Diff})`,
     player2: `${getNameById(g.p2)(ps)} (${g.p2Rating} ${(g.p2Diff > 0 ? '+ ' : '- ') + Math.abs(g.p2Diff)} = ${g.p2Rating + g.p2Diff})`,
     result: g.result
@@ -184,7 +185,7 @@ export const productsSelector = mapStateWithSelectors({ products: filteredProduc
 export const ratingsSelector = mapStateWithSelectors({ cats, form, lang });
 export const playersSelector = mapStateWithSelectors({ players: filteredPlayers, lookup });
 export const tournamentsSelector = mapStateWithSelectors({ tournaments: tournamentsWithYears, lookup });
-export const tournamentSelector = mapStateWithSelectors({ tournament: tournamentWithPlayers, lookup, players: filteredPlayers, gamesWithTeams });
+export const tournamentSelector = mapStateWithSelectors({ tournament, lookup, players: filteredPlayers, gamesWithTeams });
 export const tourSelector = mapStateWithSelectors({ tournament: form('tournament'), tournaments });
 export const historySelector = mapStateWithSelectors({ history: historyTable, lookup, players: playersWithNames });
 export const scheduleSelector = mapStateWithSelectors({ schedule, tournament });

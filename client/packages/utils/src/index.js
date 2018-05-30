@@ -1,4 +1,4 @@
-import { tap as _tap, prop, find, pipe, isNil, is, isEmpty, view, lensPath, reduce } from 'ramda';
+import { tap as _tap, prop, find, pipe, isNil, is, isEmpty, view as _view, lensPath, reduce, max, last } from 'ramda';
 import { connect } from 'no-redux';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { successSelector } from './selectors';
@@ -24,17 +24,21 @@ export const findByName = findByProp('name');
 export const getPropById = p => id => pipe(findById(id), prop(p));
 export const getNameById = getPropById('name')
 
+export const toLensPath = s => s.replace(/\[/g, '.').replace(/\]/g, '').split('.');
+export const view = (s, o) => _view(lensPath(toLensPath(s)), o);
+
 export const withLoad = (p, v, force) => lifecycle({
   componentWillMount() {
     (force || isEmpty(this.props[p])) && this.props['get' + p[0].toUpperCase() + p.slice(1)](v && { [v]: this.props[v] });
   }
 });
 
-export const withEdit = (p, l) => lifecycle({
+export const withEdit = (p, l, o) => lifecycle({
   componentWillMount() {
-    const id = this.props.match.params.id;
-    const v = find(x => x.id == id, (l ? view(lensPath(l), this.props) : this.props[p + 's']) || []);
-    this.props.setForm(v, { path: p });
+    const id = +this.props.match.params.id;
+    const list = toLensPath(l || (p + 's'));
+    const v = find(x => x.id == id, _view(lensPath(list), this.props) || []);
+    this.props.setForm(v || { id, ...(o || {}) }, { path: p });
   }
 });
 
@@ -72,9 +76,14 @@ export const withLang = withProps(p => ({ n: name(p.lang), d: desc(p.lang) }));
 
 export const withParams = withProps(p => ({ ...p.match.params }));
 
+export const withNewId = path => withProps(p => ({ newId: reduce(max, 0, (view(path, p) || []).map(x => +x.id)) + 1 }));
+
 export const toTitleCase = s => s.replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
 
-export const toDate = d => `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+export const toDate = s => {
+  const d = new Date(s);
+  return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+}
 
 export const addIndex = (a, p) => a.map((x, i) => ({ [p || 'id']: i + 1, ...x }));
 

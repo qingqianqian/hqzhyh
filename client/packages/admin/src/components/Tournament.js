@@ -16,7 +16,7 @@ const Tournament = ({ tournament, history, postTour, patchTour }) =>
     {+tournament.id ?
     <div>  
       <Button primary onClick={() => history.push(`/teams/${tournament.id}`)}>Teams</Button>
-      <Button primary onClick={() => history.push('/teams/0')}>Schedules</Button>
+      <Button primary onClick={() => history.push(`/schedules/${tournament.id}`)}>Schedules</Button>
     </div>  
     : null}  
     <TextBox name="tournament.id" disabled />

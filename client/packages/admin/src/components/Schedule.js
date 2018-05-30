@@ -8,25 +8,28 @@ import { scheduleEditSelector } from 'utils/selectors';
 import { Table, TextBox, DoubleSelect, Select } from 'utils/comps';
 import { tap, withLoad, withEdit, withSuccess, withParams, getPropById } from 'utils';
 
-const Schedule = ({ tournament, schedule, putSchedule, postSchedule }) =>
+const Schedule = ({ tournament, schedule, putSchedule, postSchedule, id }) =>
   <div>
-    <h1>Schedule - {+schedule.id ? schedule.date : 'Add New'}</h1>
+    <h1>Schedule - {tournament.name} - {schedule.date}</h1>
     <hr />
     <TextBox name="schedule.id" disabled />
     <TextBox name="schedule.date" />
-    {range(1, 9).map(n =>
-        <div>
-            <Select/>
-        </div>
+    {range(0, 8).map(n =>
+      <div class="f aic">
+        <div class="pr8">Table {n + 1}: </div>  
+        <Select name={`schedule.matches[${n}].home`} options={tournament.teams} />
+        <div class="ph8">VS</div>
+        <Select name={`schedule.matches[${n}].away`} options={tournament.teams} />
+      </div>
     )}
     <hr />
-    <Button primary onClick={() => +schedule.id ? putSchedule(schedule, { id1: tournament.id, id: schedule.id }) : postSchedule(schedule, { id1: tournament.id })}>Save</Button>
+    <Button primary onClick={() => id[0] == '+' ? postSchedule(schedule, { id1: tournament.id }) : putSchedule(schedule, { id1: tournament.id, id: schedule.id })}>Save</Button>
   </div>
 
 export default compose(
   connect(scheduleEditSelector, actions),
   withParams,
   withLoad('tournament', 'id1'),
-  withEdit('schedule', ['tournament', 'schedules']),
+  withEdit('schedule', 'tournament.schedules', { matches: [] }),
   withSuccess('schedule', () => alert('Saved'), () => alert('Error happened!'))
 )(Schedule)

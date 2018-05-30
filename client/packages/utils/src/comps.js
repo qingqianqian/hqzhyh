@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose, withProps } from 'recompose';
 import { withRouter } from "react-router-dom";
-import { is, find, isNil, difference, innerJoin } from 'ramda';
+import { is, find, isNil, difference, innerJoin, view, lensPath } from 'ramda';
 import { toTitleCase, tap } from '.';
 import { filterSelector } from './selectors';
 import { Input, Dropdown } from 'semantic-ui-react';
@@ -76,11 +76,11 @@ const hidden = prop('hidden', false);
 const setForm = (n, v, i) => ({ type: 'setForm', path: 'form.' + n, payload: v });
 
 const withInput = isCheck => comp => ({ name, index, form, setForm, ...args }) => {
-  const [fn, n] = name.split('.');
-  let value = form && form[fn] && form[fn][n];
+  const path = name.replace(/\[/g, '.').replace(/\]/g, '').split('.');
+  let value = view(lensPath(path), form);
   if (!isNil(index) && is(Array, value)) value = value[index];
   const onChange = (e, i, v) => setForm(name, getElemValue(e, i, v), index);
-  return comp({ ...args, id: fn + '_' + n, name, value, onChange, label: n });
+  return comp({ ...args, id: path.join('_'), name, value, onChange, label: path.length > 1 ? path[1] : '' });
 }
 
 const getElemValue = (e, i, v) => {
@@ -146,6 +146,7 @@ const select2 = ({ options, placeholder, isGroup, size, multiple, onChange }) =>
   </select>
 
 const Select2 = withAll(select2);
+//export const Select = withAll(select2);
 
 const option = o =>
   <option key={o.value} value={o.value}>{o.text}</option>

@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DoubleSelect = exports.Select = exports.TextBox = exports.Table = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _react = require('react');
 
@@ -145,17 +145,13 @@ var withInput = function withInput(isCheck) {
           setForm = _ref2.setForm,
           args = _objectWithoutProperties(_ref2, ['name', 'index', 'form', 'setForm']);
 
-      var _name$split = name.split('.'),
-          _name$split2 = _slicedToArray(_name$split, 2),
-          fn = _name$split2[0],
-          n = _name$split2[1];
-
-      var value = form && form[fn] && form[fn][n];
+      var path = name.replace(/\[/g, '.').replace(/\]/g, '').split('.');
+      var value = (0, _ramda.view)((0, _ramda.lensPath)(path), form);
       if (!(0, _ramda.isNil)(index) && (0, _ramda.is)(Array, value)) value = value[index];
       var onChange = function onChange(e, i, v) {
         return setForm(name, getElemValue(e, i, v), index);
       };
-      return comp(_extends({}, args, { id: fn + '_' + n, name: name, value: value, onChange: onChange, label: n }));
+      return comp(_extends({}, args, { id: path.join('_'), name: name, value: value, onChange: onChange, label: path.length > 1 ? path[1] : '' }));
     };
   };
 };
@@ -239,6 +235,7 @@ var select2 = function select2(_ref3) {
 };
 
 var Select2 = withAll(select2);
+//export const Select = withAll(select2);
 
 var option = function option(o) {
   return _react2.default.createElement(
@@ -325,10 +322,10 @@ var DoubleSelect = exports.DoubleSelect = (0, _recompose.compose)(withForm, (0, 
       form = _ref5.form,
       setForm = _ref5.setForm;
 
-  var _name$split3 = name.split('.'),
-      _name$split4 = _slicedToArray(_name$split3, 2),
-      fn = _name$split4[0],
-      n = _name$split4[1];
+  var _name$split = name.split('.'),
+      _name$split2 = _slicedToArray(_name$split, 2),
+      fn = _name$split2[0],
+      n = _name$split2[1];
 
   var f = form;
   var selectedOptions = f && f[fn] && f[fn][n] || [];

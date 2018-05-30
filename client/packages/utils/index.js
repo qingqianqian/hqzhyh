@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.replaceParam = exports.addIndex = exports.toDate = exports.toTitleCase = exports.withParams = exports.withLang = exports.withListener = exports.withSuccess = exports.withNewValue = exports.withEdit = exports.withLoad = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
+exports.replaceParam = exports.addIndex = exports.toDate = exports.toTitleCase = exports.withNewId = exports.withParams = exports.withLang = exports.withListener = exports.withSuccess = exports.withNewValue = exports.withEdit = exports.withLoad = exports.view = exports.toLensPath = exports.getNameById = exports.getPropById = exports.findByName = exports.findById = exports.findByProp = exports.desc = exports.name = exports.ml = exports.admin = exports.api = exports.host = exports.isDev = exports.tap = exports.cdurl = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -62,6 +62,13 @@ var getPropById = exports.getPropById = function getPropById(p) {
 };
 var getNameById = exports.getNameById = getPropById('name');
 
+var toLensPath = exports.toLensPath = function toLensPath(s) {
+  return s.replace(/\[/g, '.').replace(/\]/g, '').split('.');
+};
+var view = exports.view = function view(s, o) {
+  return (0, _ramda.view)((0, _ramda.lensPath)(toLensPath(s)), o);
+};
+
 var withLoad = exports.withLoad = function withLoad(p, v, force) {
   return (0, _recompose.lifecycle)({
     componentWillMount: function componentWillMount() {
@@ -70,14 +77,15 @@ var withLoad = exports.withLoad = function withLoad(p, v, force) {
   });
 };
 
-var withEdit = exports.withEdit = function withEdit(p, l) {
+var withEdit = exports.withEdit = function withEdit(p, l, o) {
   return (0, _recompose.lifecycle)({
     componentWillMount: function componentWillMount() {
-      var id = this.props.match.params.id;
+      var id = +this.props.match.params.id;
+      var list = toLensPath(l || p + 's');
       var v = (0, _ramda.find)(function (x) {
         return x.id == id;
-      }, (l ? (0, _ramda.view)((0, _ramda.lensPath)(l), this.props) : this.props[p + 's']) || []);
-      this.props.setForm(v, { path: p });
+      }, (0, _ramda.view)((0, _ramda.lensPath)(list), this.props) || []);
+      this.props.setForm(v || _extends({ id: id }, o || {}), { path: p });
     }
   });
 };
@@ -123,13 +131,22 @@ var withParams = exports.withParams = (0, _recompose.withProps)(function (p) {
   return _extends({}, p.match.params);
 });
 
+var withNewId = exports.withNewId = function withNewId(path) {
+  return (0, _recompose.withProps)(function (p) {
+    return { newId: (0, _ramda.reduce)(_ramda.max, 0, (view(path, p) || []).map(function (x) {
+        return +x.id;
+      })) + 1 };
+  });
+};
+
 var toTitleCase = exports.toTitleCase = function toTitleCase(s) {
   return s.replace(/\w\S*/g, function (t) {
     return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
   });
 };
 
-var toDate = exports.toDate = function toDate(d) {
+var toDate = exports.toDate = function toDate(s) {
+  var d = new Date(s);
   return d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear();
 };
 
