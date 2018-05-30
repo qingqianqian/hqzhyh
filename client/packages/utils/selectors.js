@@ -179,7 +179,7 @@ var gamesWithTeams = (0, _noRedux.createSelector)(teams, playersWithNames, games
       }, ts)
     });
   }).map(function (g) {
-    return _extends({}, g, { t1: g.team1.id, t2: g.team2.id, team1: g.team1.name, team2: g.team2.name });
+    return _extends({}, g, { t1: (g.team1 || {}).id, t2: (g.team2 || {}).id, team1: (g.team1 || {}).name, team2: (g.team2 || {}).name });
   });
 });
 
