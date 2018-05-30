@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.scheduleEditSelector = exports.teamSelector = exports.standingSelector = exports.scheduleSelector = exports.historySelector = exports.tourSelector = exports.tournamentSelector = exports.tournamentsSelector = exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
+exports.gamesSelector = exports.scheduleEditSelector = exports.teamSelector = exports.standingSelector = exports.scheduleSelector = exports.historySelector = exports.tourSelector = exports.tournamentSelector = exports.tournamentsSelector = exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -168,8 +168,9 @@ var games = (0, _noRedux.createSelector)(_tournament, function (t) {
 var gamesWithTeams = (0, _noRedux.createSelector)(teams, playersWithNames, games, function (ts, ps, gs) {
   return gs.map(function (g) {
     return _extends({}, g, {
-      player1: (0, _.findById)(g.p1)(ps),
-      player2: (0, _.findById)(g.p2)(ps),
+      date: (0, _.toDate)(g.date),
+      player1: ((0, _.findById)(g.p1)(ps) || {}).name,
+      player2: ((0, _.findById)(g.p2)(ps) || {}).name,
       team1: (0, _ramda.find)(function (x) {
         return (0, _.findById)(g.p1)(x.players);
       }, ts),
@@ -177,6 +178,8 @@ var gamesWithTeams = (0, _noRedux.createSelector)(teams, playersWithNames, games
         return (0, _.findById)(g.p2)(x.players);
       }, ts)
     });
+  }).map(function (g) {
+    return _extends({}, g, { t1: g.team1.id, t2: g.team2.id, team1: g.team1.name, team2: g.team2.name });
   });
 });
 
@@ -273,3 +276,4 @@ var scheduleSelector = exports.scheduleSelector = (0, _noRedux.mapStateWithSelec
 var standingSelector = exports.standingSelector = (0, _noRedux.mapStateWithSelectors)({ standing: standing, tournament: tournament });
 var teamSelector = exports.teamSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, team: form('team'), players: dsPlayers });
 var scheduleEditSelector = exports.scheduleEditSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, schedule: form('schedule') });
+var gamesSelector = exports.gamesSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, games: gamesWithTeams });

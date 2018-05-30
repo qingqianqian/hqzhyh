@@ -117,11 +117,12 @@ const gamesWithTeams = createSelector(
   games,
   (ts, ps, gs) => gs.map(g => ({
     ...g,
-    player1: findById(g.p1)(ps),
-    player2: findById(g.p2)(ps),
+    date: toDate(g.date),
+    player1: (findById(g.p1)(ps) || {}).name,
+    player2: (findById(g.p2)(ps) || {}).name,
     team1: find(x => findById(g.p1)(x.players), ts),
     team2: find(x => findById(g.p2)(x.players), ts)
-  }))
+  })).map(g => ({...g, t1: g.team1.id, t2: g.team2.id, team1: g.team1.name, team2: g.team2.name}))
 );
 
 const redSpan = x => `<span class="red">${x}</span>`;
