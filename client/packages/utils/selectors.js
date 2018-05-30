@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.gamesSelector = exports.scheduleEditSelector = exports.teamSelector = exports.standingSelector = exports.scheduleSelector = exports.historySelector = exports.tourSelector = exports.tournamentSelector = exports.tournamentsSelector = exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
+exports.gameEditSelector = exports.gamesSelector = exports.scheduleEditSelector = exports.teamSelector = exports.standingSelector = exports.scheduleSelector = exports.historySelector = exports.tourSelector = exports.tournamentSelector = exports.tournamentsSelector = exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -276,4 +276,5 @@ var scheduleSelector = exports.scheduleSelector = (0, _noRedux.mapStateWithSelec
 var standingSelector = exports.standingSelector = (0, _noRedux.mapStateWithSelectors)({ standing: standing, tournament: tournament });
 var teamSelector = exports.teamSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, team: form('team'), players: dsPlayers });
 var scheduleEditSelector = exports.scheduleEditSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, schedule: form('schedule') });
-var gamesSelector = exports.gamesSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, games: gamesWithTeams });
+var gamesSelector = exports.gamesSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, games: gamesWithTeams, players: playersWithNames });
+var gameEditSelector = exports.gameEditSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, game: form('game') });

@@ -4,7 +4,7 @@ import { pick, find, is, range } from 'ramda';
 import { connect } from 'no-redux';
 import { Button } from 'semantic-ui-react';
 import actions from 'utils/actions';
-import { scheduleEditSelector } from 'utils/selectors';
+import { gameEditSelector } from 'utils/selectors';
 import { Table, TextBox, DoubleSelect, Select } from 'utils/comps';
 import { tap, withLoad, withEdit, withSuccess, withParams, getPropById } from 'utils';
 
@@ -14,7 +14,8 @@ const Game = ({ tournament, game, putGame, postGame, id }) =>
     <hr />
     <TextBox name="game.id" disabled />
     <TextBox name="game.date" />
-    {range(0, 8).map(n =>
+    <Select name={`game.schedule`} options={tournament.games} />
+    {(tournament.schedules || []).map(n =>
       <div class="f aic">
         <div class="pr8">Table {n + 1}: </div>  
         <Select name={`schedule.matches[${n}].home`} options={tournament.games} />
@@ -27,9 +28,9 @@ const Game = ({ tournament, game, putGame, postGame, id }) =>
   </div>
 
 export default compose(
-  connect(scheduleEditSelector, actions),
+  connect(gameEditSelector, actions),
   withParams,
   withLoad('tournament', 'id1'),
-  withEdit('game', 'tournament.games', { matches: [] }),
+  withEdit('game', 'tournament.games'),
   withSuccess('game', () => alert('Saved'), () => alert('Error happened!'))
 )(Game)

@@ -22,6 +22,7 @@ const Games = ({ tournament, gamesWithTeams: games, history, id, newId }) =>
 export default compose(
   connect(tournamentSelector, actions),
   withParams,
+  withLoad('players'),
   withLoad('tournament', 'id'),
   withNewId('tournament.games'),
   withRouter
