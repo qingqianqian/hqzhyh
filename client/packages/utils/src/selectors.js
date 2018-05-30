@@ -192,3 +192,4 @@ export const scheduleSelector = mapStateWithSelectors({ schedule, tournament });
 export const standingSelector = mapStateWithSelectors({ standing, tournament });
 export const teamSelector = mapStateWithSelectors({ tournament, team: form('team'), players: dsPlayers });
 export const scheduleEditSelector = mapStateWithSelectors({ tournament, schedule: form('schedule') });
+export const gamesSelector = mapStateWithSelectors({ tournament, games: gamesWithTeams });
