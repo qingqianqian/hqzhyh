@@ -14,17 +14,13 @@ const Game = ({ tournament, game, putGame, postGame, id }) =>
     <hr />
     <TextBox name="game.id" disabled />
     <TextBox name="game.date" />
-    <Select name={`game.schedule`} options={tournament.games} />
-    {(tournament.schedules || []).map(n =>
-      <div class="f aic">
-        <div class="pr8">Table {n + 1}: </div>  
-        <Select name={`schedule.matches[${n}].home`} options={tournament.games} />
-        <div class="ph8">VS</div>
-        <Select name={`schedule.matches[${n}].away`} options={tournament.teams} />
-      </div>
-    )}
+    <div>Date: {game.schedule.date}</div>
+    <div>Home Team: {game.team1}</div>
+    <Select name={`game.p1`} options={getPropById('players')(game.team1)(tournament.teams)} />
+    <div>Away Team: {game.team2}</div>
+    <Select name={`game.p2`} options={getPropById('players')(game.team2)(tournament.teams)} />
+    <div>Result: {game.result}</div>
     <hr />
-    <Button primary onClick={() => id[0] == '+' ? postGame(game, { id1: tournament.id }) : putGame(game, { id1: tournament.id, id: game.id })}>Save</Button>
   </div>
 
 export default compose(
@@ -34,3 +30,5 @@ export default compose(
   withEdit('game', 'tournament.games'),
   withSuccess('game', () => alert('Saved'), () => alert('Error happened!'))
 )(Game)
+
+//<Button primary onClick={() => id[0] == '+' ? postGame(game, { id1: tournament.id }) : putGame(game, { id1: tournament.id, id: game.id })}>Save</Button>
