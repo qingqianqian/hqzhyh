@@ -16,8 +16,8 @@ o.players = players.map(x => ({
   rating: +((ratings.find(y => y.PLAYER_ID == x.PK_INDEX) || {}).RATING || 100)
 }));
 
-const team = require('./team');
-['a', 'b', 'c', 'd'].forEach(d => team[d].forEach(t => t.players = t.players.map(x => {
+const teams = require('./team');
+Object.keys(teams).forEach(d => teams[d].forEach(t => t.players = t.players.map(x => {
   const ss = x.trim().split(' ');
   const p = { rating: +ss[0] };
   p.id = ss[1][0] === '+'
@@ -26,10 +26,13 @@ const team = require('./team');
   return p;
 })));
 
+const schedules = require('./schedule');
+
 o.tournaments = ts.map(x => ({
   id: +x.ID,
   name: x.TournamentName,
-  teams: x.ID == 77 ? team.a : (x.ID == 78 ? team.b : (x.ID == 79 ? team.c : (x.ID == 80 ? team.d : []))),
+  teams: teams[x.ID] || [],
+  schedules: schedules[x.ID] || [],
   games: games.filter(y => y.TOURNAMENT_ID == x.ID).map(y => {
     const p1w = +y.PLAYER_A_WON_GAMES;
     const p2w = +y.PLAYER_B_WON_GAMES;

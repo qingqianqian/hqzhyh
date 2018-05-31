@@ -1,8 +1,5 @@
 module.exports = {
-  a: [],
-  b: [],
-  c: [],
-  d: [
+  '80': [
     { id: 1, name: 'Awesome Team', players: ['394 Andy Wan', '187 +341'] },
     { id: 2, name: 'Beyond', players: ['527 Oscar Nie', '166 David Wang', '156 Georgina Wong', '100 Natalie Lok'] },
     { id: 3, name: 'Bonsor 4', players: ['411 Peter Zhu', '322 Benjamin He', '300 Linden Yang', '272 Joanna Luo', '100 Hansen Liang'] },
@@ -19,5 +16,19 @@ module.exports = {
     { id: 14, name: 'World Team', players: ['449 Aaron Cheung	', '404 Jonathan Ma	', '392 Kris Wang	', '114 Yale Wang	', '100 Louise Fan	', '100 Mandy Zhu	', '100 Nathaniel Wu	', '100 Sergiy Slobodyan	'] },
     { id: 15, name: 'X-Men', players: ['506 +318', '169 Sam Chang	', '111 Wuling Zeng	', '100 Henry Shan	', '100 Jason Wong	', '100 Michelle Kwan	'] },
     { id: 16, name: 'Yoshi', players: ['380 +488', '139 Ronald Mok	', '100 Prakhar Singhal	', '100 +484'] },
+  ],
+  '86': [
+    { id: 1, name: 'Arbutus', players: ['998 Chris Dai', '910 Charlie Dai', '893 Mike Broderick'] },
+    { id: 2, name: 'BD', players: ['1554 Ben Yiu', '941 Donna Lee'] },
+    { id: 3, name: 'Benie Babies', players: ['153 Jason Wong', '110 Michelle Kwan'] },
+    { id: 4, name: 'Burnaby North', players: ['1675 Fiona Fan', '586 Tommy Li', '488 Yanisa Tirapat'] },
+    { id: 5, name: 'Good Life', players: ['1448 George Zhao', '1274 Peter Le', '1160 Glen Zhu'] },
+    { id: 6, name: 'HKHK', players: ['1747 Angelo Au', '994 Aaron Cheung'] },
+    { id: 7, name: 'Hurricane X', players: ['1227 Leo Eng', '694 Stephen Wen'] },
+    { id: 8, name: 'Nao', players: ['713 Nan Li', '672 Tao Wang'] },
+    { id: 9, name: 'Nittaku', players: ['1400 Ao Song', '1342 Quoc Shivajie'] },
+    { id: 10, name: 'Teamo Ball', players: ['692 Laurent Goldstein', '393 Shahin Shahrad'] },
+    { id: 11, name: 'The Long Shot', players: ['1533 Junru Shen', '1168 Kenneth Chan', '956 Daniel Tsui', '570 Charles Trinh'] },
+    { id: 12, name: 'VTTC', players: ['1685 Henry Poon', '1549 Rose Huang', '1486 Grace Zhang', '1310 David Yue', '1098 Michael Man', '873 Winson Tsui', '727 Jennifer Jiang'] },
   ]
 }

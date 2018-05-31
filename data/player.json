@@ -3569,8 +3569,8 @@
       {
         "PK_INDEX": "518",
         "F_NAME": "Junru",
-        "L_NAME": "Chen",
-        "FULL_NAME": "Junru Chen",
+        "L_NAME": "Shen",
+        "FULL_NAME": "Junru Shen",
         "GENDER": "F"
       },
       {
@@ -3775,6 +3775,27 @@
         "L_NAME": "Lok",
         "FULL_NAME": "Natalie Lok",
         "GENDER": "F"
+      },
+      {
+        "PK_INDEX": "559",
+        "F_NAME": "Ao",
+        "L_NAME": "Song",
+        "FULL_NAME": "Ao Song",
+        "GENDER": "F"
+      },
+      {
+        "PK_INDEX": "548",
+        "F_NAME": "David",
+        "L_NAME": "Yue",
+        "FULL_NAME": "David Yue",
+        "GENDER": "M"
+      },
+      {
+        "PK_INDEX": "550",
+        "F_NAME": "Mike",
+        "L_NAME": "Broderick",
+        "FULL_NAME": "Mike Broderick",
+        "GENDER": "M"
       }
     ]
   }
