@@ -141,16 +141,45 @@ var teams = (0, _noRedux.createSelector)(_tournament, function (t) {
   return t.teams || [];
 });
 
+var findGames = function findGames(s, m, gs) {
+  return gs.filter(function (g) {
+    return g.date == s.date && g.t1 == m.home && g.t2 == m.away;
+  });
+};
+var gg = function gg(g, x) {
+  return +(g && g[x] || 0);
+};
+var getResult = function getResult(g) {
+  return g.result || (0, _ramda.range)(0, 5).filter(function (n) {
+    return gg(g.g1, n) > gg(g.g2, n);
+  }).length + ':' + (0, _ramda.range)(0, 5).filter(function (n) {
+    return gg(g.g1, n) < gg(g.g2, n);
+  }).length;
+};
+var isWin = function isWin(r) {
+  return r[0] > r[2];
+};
+var isLose = function isLose(r) {
+  return r[0] < r[2];
+};
+
 var tournament = (0, _noRedux.createSelector)(_tournament, playersWithNames, function (t, ps) {
   var teams = (t.teams || []).map(function (x) {
     return _extends({}, x, { text: x.name, value: x.id, players: x.players.map(function (p) {
         return _extends({}, (0, _.findById)(p.id)(ps), { initRating: p.rating });
       }) });
   });
-  var schedules = (t.schedules || []).map(function (x) {
-    return _extends({}, x, { date: (0, _.toDate)(x.date), matches: (0, _ramda.range)(1, 9).map(function (y) {
-        return (0, _.findById)(y)(x.matches) || {};
-      }) });
+  var schedules = (t.schedules || []).map(function (s) {
+    return _extends({}, s, {
+      date: (0, _.toDate)(s.date),
+      matches: (0, _ramda.range)(1, 9).map(function (m) {
+        return (0, _.findById)(m)(s.matches) || {};
+      }).map(function (m) {
+        return _extends({}, m, { result: toPairs(countBy(isWin, findGames(s, m, t.games).map(getResult))).map(function (x) {
+            return x[1];
+          }).join(':') });
+      })
+    });
   });
   return teams.length > 0 ? _extends({}, t, { teams: teams, schedules: schedules }) : t;
 });

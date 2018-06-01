@@ -18,7 +18,7 @@ const Schedule = ({ tournament, id }) =>
       {(tournament.schedules || []).map(s =>
         <div class="pt8">
           <div class="pt8 fs24 darkgreen">{s.date}</div>
-          <Table name="schedule" data={(s.matches || []).filter(m => m).map(m => ({ 'Table': m.id, 'Home': m.home, 'Away': m.away }))} />
+          <Table name="schedule" data={(s.matches || []).filter(m => m && m.id).map(m => ({ 'Table': m.id, 'Home': getNameById(m.home)(tournament.teams), 'Result': m.result, 'Away': getNameById(m.away)(tournament.teams) }))} />
           {/* <Table name="week" data={w.matches} equalWidth>
             <td key="team1Points" hidden />  
             <td key="team2Points" hidden />  
