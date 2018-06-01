@@ -103,8 +103,8 @@ const tournament = createSelector(
         ...s,
         date: toDate(s.date),
         matches: range(1, 9)
-            .map(m => findById(m)(s.matches) || {})
-            .map(m => ({ ...m, result: toPairs(countBy(isWin, tap(tap(findGames(s, m, t.games)).map(getResult)))).map(x => x[1]).join(':') }))
+            .map(n => findById(n)(s.matches) || {})
+            .map(m => ({ ...m, result: toPairs(countBy(isWin, findGames(tap(s), tap(m), tap(t.games)).map(getResult))).map(x => x[1]).join(':') }))
     }));
     return teams.length > 0 ? { ...t, teams, schedules } : t;
   }
