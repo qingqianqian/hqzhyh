@@ -75,12 +75,14 @@ const hidden = prop('hidden', false);
 
 const setForm = (n, v, i) => ({ type: 'setForm', path: 'form.' + n, payload: v });
 
-const withInput = isCheck => comp => ({ name, index, form, setForm, ...args }) => {
+const withInput = isCheck => comp => ({ name, index, noLabel, form, setForm, ...args }) => {
   const path = name.replace(/\[/g, '.').replace(/\]/g, '').split('.');
   let value = view(lensPath(path), form);
   if (!isNil(index) && is(Array, value)) value = value[index];
   const onChange = (e, i, v) => setForm(name, getElemValue(e, i, v), index);
-  return comp({ ...args, id: path.join('_'), name, value, onChange, label: path.length > 1 ? path[1] : '' });
+  const o = { ...args, id: path.join('_'), name, value, onChange };
+  if (!noLabel && path.length > 1) o.label = path[1];
+  return comp(o);
 }
 
 const getElemValue = (e, i, v) => {
@@ -141,7 +143,7 @@ const select2 = ({ options, placeholder, isGroup, size, multiple, onChange }) =>
     {placeholder ? <option value="">{placeholder}</option> : null}
     {isGroup
       ? Object.keys(options).map(k => optionGroup(k, options))
-      : tap(options).map(option)
+      : options.map(option)
     }
   </select>
 

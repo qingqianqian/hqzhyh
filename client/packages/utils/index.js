@@ -72,7 +72,9 @@ var view = exports.view = function view(s, o) {
 var withLoad = exports.withLoad = function withLoad(p, v, force) {
   return (0, _recompose.lifecycle)({
     componentWillMount: function componentWillMount() {
-      (force || (0, _ramda.isEmpty)(this.props[p])) && this.props['get' + p[0].toUpperCase() + p.slice(1)](v && _defineProperty({}, v, this.props[v]));
+      var v1 = (0, _ramda.is)(Array, v) ? v[0] : 'id';
+      var v2 = (0, _ramda.is)(Array, v) ? v[1] : v || 'id';
+      (force || (0, _ramda.isEmpty)(this.props[p])) && this.props['get' + p[0].toUpperCase() + p.slice(1)](_defineProperty({}, v1, this.props[v2]));
     }
   });
 };
@@ -80,7 +82,7 @@ var withLoad = exports.withLoad = function withLoad(p, v, force) {
 var withEdit = exports.withEdit = function withEdit(p, l, o) {
   return (0, _recompose.lifecycle)({
     componentWillMount: function componentWillMount() {
-      var id = +this.props.match.params.id;
+      var id = +tap(this.props).match.params.id;
       var list = toLensPath(l || p + 's');
       var v = (0, _ramda.find)(function (x) {
         return x.id == id;

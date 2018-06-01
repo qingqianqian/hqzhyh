@@ -22,7 +22,7 @@ const Schedules = ({ tournament, history, id, newId }) =>
 export default compose(
   connect(tournamentSelector, actions),
   withParams,
-  withLoad('tournament', 'id'),
+  withLoad('tournament', 'id', true),
   withNewId('tournament.schedules'),
   withRouter
 )(Schedules)

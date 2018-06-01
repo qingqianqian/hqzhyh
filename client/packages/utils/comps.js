@@ -141,9 +141,10 @@ var withInput = function withInput(isCheck) {
     return function (_ref2) {
       var name = _ref2.name,
           index = _ref2.index,
+          noLabel = _ref2.noLabel,
           form = _ref2.form,
           setForm = _ref2.setForm,
-          args = _objectWithoutProperties(_ref2, ['name', 'index', 'form', 'setForm']);
+          args = _objectWithoutProperties(_ref2, ['name', 'index', 'noLabel', 'form', 'setForm']);
 
       var path = name.replace(/\[/g, '.').replace(/\]/g, '').split('.');
       var value = (0, _ramda.view)((0, _ramda.lensPath)(path), form);
@@ -151,7 +152,9 @@ var withInput = function withInput(isCheck) {
       var onChange = function onChange(e, i, v) {
         return setForm(name, getElemValue(e, i, v), index);
       };
-      return comp(_extends({}, args, { id: path.join('_'), name: name, value: value, onChange: onChange, label: path.length > 1 ? path[1] : '' }));
+      var o = _extends({}, args, { id: path.join('_'), name: name, value: value, onChange: onChange });
+      if (!noLabel && path.length > 1) o.label = path[1];
+      return comp(o);
     };
   };
 };
@@ -230,7 +233,7 @@ var select2 = function select2(_ref3) {
     ) : null,
     isGroup ? Object.keys(options).map(function (k) {
       return optionGroup(k, options);
-    }) : (0, _.tap)(options).map(option)
+    }) : options.map(option)
   );
 };
 

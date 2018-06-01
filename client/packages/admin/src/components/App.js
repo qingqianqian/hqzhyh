@@ -37,8 +37,8 @@ const App = () =>
           <Route path='/team/:id1/:id' component={Team} />
           <Route path='/schedules/:id' component={Schedules} />
           <Route path='/schedule/:id1/:id' component={Schedule} />
-          <Route path='/games/:id' component={Games} />
-          <Route path='/game/:id1/:id' component={Game} />
+          <Route path='/games/:T/:S/:M' component={Games} />
+          <Route path='/game/:T/:S/:M/:id' component={Game} />
         </Switch>
       </div>
     </div>

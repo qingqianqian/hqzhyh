@@ -7,8 +7,9 @@ import actions from 'utils/actions';
 import { scheduleEditSelector } from 'utils/selectors';
 import { Table, TextBox, DoubleSelect, Select } from 'utils/comps';
 import { tap, withLoad, withEdit, withSuccess, withParams, getPropById } from 'utils';
+import { withRouter } from "react-router-dom";
 
-const Schedule = ({ tournament, schedule, putSchedule, postSchedule, id }) =>
+const Schedule = ({ tournament, schedule, history, putSchedule, postSchedule, id }) =>
   <div>
     <h1>Schedule - {tournament.name} - {schedule.date}</h1>
     <hr />
@@ -16,10 +17,12 @@ const Schedule = ({ tournament, schedule, putSchedule, postSchedule, id }) =>
     <TextBox name="schedule.date" />
     {range(0, 8).map(n =>
       <div class="f aic">
-        <div class="pr8">Table {n + 1}: </div>  
+        <div class="pr8">Table {n + 1}: </div>
         <Select name={`schedule.matches[${n}].home`} options={tournament.teams} />
         <div class="ph8">VS</div>
         <Select name={`schedule.matches[${n}].away`} options={tournament.teams} />
+        <div class="ph8"></div>
+        <Button primary onClick={() => history.push(`/games/${tournament.id}/${schedule.id}/${n + 1}`)}>Matches</Button>
       </div>
     )}
     <hr />
@@ -29,7 +32,8 @@ const Schedule = ({ tournament, schedule, putSchedule, postSchedule, id }) =>
 export default compose(
   connect(scheduleEditSelector, actions),
   withParams,
-  withLoad('tournament', 'id1'),
+  withLoad('tournament', 'id1', true),
   withEdit('schedule', 'tournament.schedules', { matches: [] }),
-  withSuccess('schedule', () => alert('Saved'), () => alert('Error happened!'))
+  withSuccess('schedule', () => alert('Saved'), () => alert('Error happened!')),
+  withRouter
 )(Schedule)

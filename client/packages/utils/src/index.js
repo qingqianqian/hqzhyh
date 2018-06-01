@@ -29,13 +29,15 @@ export const view = (s, o) => _view(lensPath(toLensPath(s)), o);
 
 export const withLoad = (p, v, force) => lifecycle({
   componentWillMount() {
-    (force || isEmpty(this.props[p])) && this.props['get' + p[0].toUpperCase() + p.slice(1)](v && { [v]: this.props[v] });
+    const v1 = is(Array, v) ? v[0] : 'id';
+    const v2 = is(Array, v) ? v[1] : (v || 'id');
+    (force || isEmpty(this.props[p])) && this.props['get' + p[0].toUpperCase() + p.slice(1)]({ [v1]: this.props[v2] });
   }
 });
 
 export const withEdit = (p, l, o) => lifecycle({
   componentWillMount() {
-    const id = +this.props.match.params.id;
+    const id = +tap(this.props).match.params.id;
     const list = toLensPath(l || (p + 's'));
     const v = find(x => x.id == id, _view(lensPath(list), this.props) || []);
     this.props.setForm(v || { id, ...(o || {}) }, { path: p });

@@ -1,4 +1,4 @@
-import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty, groupBy, join, sum } from 'ramda';
+import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty, groupBy, join, sum, range } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
 import { findById, getNameById, toDate, addIndex, tap } from '.';
 import { Z_TEXT } from 'zlib';
@@ -69,7 +69,7 @@ const filteredProducts = createSelector(
 
 const playersWithNames = createSelector(
   players,
-  ps => ps.map(p => ({ ...p, name: p.firstName + ' ' + p.lastName }))
+  ps => ps.map(p => ({ ...p, name: p.firstName + ' ' + p.lastName })).map(p => ({ ...p, text: p.name, value: p.id }))
 );
 
 const filteredPlayers = createSelector(
@@ -93,7 +93,7 @@ const tournament = createSelector(
   playersWithNames,
   (t, ps) => {
     const teams = (t.teams || []).map(x => ({ ...x, text: x.name, value: x.id, players: x.players.map(p => ({ ...findById(p.id)(ps), initRating: p.rating })) }));
-    const schedules = (t.schedules || []).map(x => ({ ...x, date: toDate(x.date) }));
+    const schedules = (t.schedules || []).map(x => ({ ...x, date: toDate(x.date), matches: range(1, 9).map(y => findById(y)(x.matches) || {}) }));
     return teams.length > 0 ? { ...t, teams, schedules } : t;
   }
 );
@@ -111,6 +111,14 @@ const games = createSelector(
   t => t.games || []
 );
 
+const gameDetail = (n, g) => {
+  const r1 = +g.result.split(':')[n];
+  const r2 = 5 - r1;
+  const g1 = range(0, r1).map(x => 11);
+  const g2 = range(0, r2).map(x => 0);
+  return r1 > 2 ? g1.concat(g2) : g2.concat(g1);
+}
+
 const gamesWithTeams = createSelector(
   teams,
   playersWithNames,
@@ -121,7 +129,9 @@ const gamesWithTeams = createSelector(
     player1: (findById(g.p1)(ps) || {}).name,
     player2: (findById(g.p2)(ps) || {}).name,
     team1: find(x => findById(g.p1)(x.players), ts),
-    team2: find(x => findById(g.p2)(x.players), ts)
+    team2: find(x => findById(g.p2)(x.players), ts),
+    g1: g.g1 || gameDetail(0, g),
+    g2: g.g2 || gameDetail(1, g),
   })).map(g => ({...g, t1: (g.team1 || {}).id, t2: (g.team2 || {}).id, team1: (g.team1 || {}).name, team2: (g.team2 || {}).name}))
 );
 
@@ -194,4 +204,4 @@ export const standingSelector = mapStateWithSelectors({ standing, tournament });
 export const teamSelector = mapStateWithSelectors({ tournament, team: form('team'), players: dsPlayers });
 export const scheduleEditSelector = mapStateWithSelectors({ tournament, schedule: form('schedule') });
 export const gamesSelector = mapStateWithSelectors({ tournament, games: gamesWithTeams, players: playersWithNames });
-export const gameEditSelector = mapStateWithSelectors({ tournament, game: form('game') });
+export const gameEditSelector = mapStateWithSelectors({ tournament, game: form('game'), players: playersWithNames, games: gamesWithTeams });
