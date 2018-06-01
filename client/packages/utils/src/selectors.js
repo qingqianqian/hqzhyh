@@ -1,4 +1,4 @@
-import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty, groupBy, join, sum, range, countBy, toPairs } from 'ramda';
+import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty, groupBy, join, sum, range } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
 import { findById, getNameById, toDate, addIndex, tap } from '.';
 import { Z_TEXT } from 'zlib';
@@ -183,14 +183,16 @@ const schedule = createSelector(
 const getPoints = (m, t, v) => m[t] === v ? m[t + 'Points'] : 0;
 
 const standing = createSelector(
-  schedule,
+  tournament,
   teams,
-  (s, ts) => addIndex(sortWith([descend(prop('points'))], ts.map(t => ({
-    team: t.name,
-    w: sum(s.map(w => w.matches.filter(m => m.winner === t.name).length)),
-    l: sum(s.map(w => w.matches.filter(m => m.loser === t.name).length)),
-    points: sum(s.map(w => sum(w.matches.map(m => getPoints(m, 'team1', t.name) + getPoints(m, 'team2', t.name))))),
-  }))), 'rank')
+  (tt, ts) => addIndex(sortWith([descend(prop('points'))], ts.map(t => {
+    const ms = unnest(tt.schedules.map(s => s.matches)).filter(m => m.home == t.id || m.away == t.id);
+    const ws = ms.filter(m => (m.home == t.id && m.result[0] > m.result[2]) || (m.away == t.id && m.result[0] < m.result[2]));
+    const wn = ws.length;
+    const ln = ms.length - wn;
+    const ps = sum(ws.map(x => +x.result[m.home == t.id ? 0 : 2]));
+    return { team: t.name, total: ms.length, w: wn, l: ln, points: ps };
+  })), 'rank')
 );
 
 const historyTable = createSelector(

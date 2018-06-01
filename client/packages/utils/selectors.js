@@ -270,26 +270,22 @@ var getPoints = function getPoints(m, t, v) {
   return m[t] === v ? m[t + 'Points'] : 0;
 };
 
-var standing = (0, _noRedux.createSelector)(schedule, teams, function (s, ts) {
+var standing = (0, _noRedux.createSelector)(tournament, teams, function (tt, ts) {
   return (0, _.addIndex)((0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('points'))], ts.map(function (t) {
-    return {
-      team: t.name,
-      w: (0, _ramda.sum)(s.map(function (w) {
-        return w.matches.filter(function (m) {
-          return m.winner === t.name;
-        }).length;
-      })),
-      l: (0, _ramda.sum)(s.map(function (w) {
-        return w.matches.filter(function (m) {
-          return m.loser === t.name;
-        }).length;
-      })),
-      points: (0, _ramda.sum)(s.map(function (w) {
-        return (0, _ramda.sum)(w.matches.map(function (m) {
-          return getPoints(m, 'team1', t.name) + getPoints(m, 'team2', t.name);
-        }));
-      }))
-    };
+    var ms = (0, _ramda.unnest)(tt.schedules.map(function (s) {
+      return s.matches;
+    })).filter(function (m) {
+      return m.home == t.id || m.away == t.id;
+    });
+    var ws = ms.filter(function (m) {
+      return m.home == t.id && m.result[0] > m.result[2] || m.away == t.id && m.result[0] < m.result[2];
+    });
+    var wn = ws.length;
+    var ln = ms.length - wn;
+    var ps = (0, _ramda.sum)(ws.map(function (x) {
+      return +x.result[m.home == t.id ? 0 : 2];
+    }));
+    return { team: t.name, total: ms.length, w: wn, l: ln, points: ps };
   })), 'rank');
 });
 
