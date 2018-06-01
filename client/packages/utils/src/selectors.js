@@ -88,7 +88,7 @@ const teams = createSelector(
   t => t.teams || []
 );
 
-const findGames = (s, m, gs) => tap(gs).filter(g => toDate(g.date) == s.date && g.t1 == m.home && g.t2 == m.away);
+const findGames = (s, m, gs) => gs.filter(g => g.t1 == m.home && g.t2 == m.away);
 const gg = (g, x) => +(g && g[x] || 0);
 const getResult = g => g.result || (range(0, 5).filter(n => gg(g.g1, n) > gg(g.g2, n)).length + ':' + range(0, 5).filter(n => gg(g.g1, n) < gg(g.g2, n)).length);
 const isWin = r => r[0] > r[2];

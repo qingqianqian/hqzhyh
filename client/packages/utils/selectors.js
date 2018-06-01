@@ -142,8 +142,8 @@ var teams = (0, _noRedux.createSelector)(_tournament, function (t) {
 });
 
 var findGames = function findGames(s, m, gs) {
-  return (0, _.tap)(gs).filter(function (g) {
-    return (0, _.toDate)(g.date) == s.date && g.t1 == m.home && g.t2 == m.away;
+  return gs.filter(function (g) {
+    return g.t1 == m.home && g.t2 == m.away;
   });
 };
 var gg = function gg(g, x) {
