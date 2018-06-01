@@ -143,7 +143,7 @@ var teams = (0, _noRedux.createSelector)(_tournament, function (t) {
 
 var findGames = function findGames(s, m, gs) {
   return gs.filter(function (g) {
-    return g.date == s.date && g.t1 == m.home && g.t2 == m.away;
+    return (0, _.toDate)(g.date) == s.date && g.t1 == m.home && g.t2 == m.away;
   });
 };
 var gg = function gg(g, x) {
@@ -175,7 +175,7 @@ var tournament = (0, _noRedux.createSelector)(_tournament, playersWithNames, fun
       matches: (0, _ramda.range)(1, 9).map(function (n) {
         return (0, _.findById)(n)(s.matches) || {};
       }).map(function (m) {
-        return _extends({}, m, { result: (0, _ramda.toPairs)((0, _ramda.countBy)(isWin, findGames((0, _.tap)(s), (0, _.tap)(m), (0, _.tap)(t.games)).map(getResult))).map(function (x) {
+        return _extends({}, m, { result: (0, _ramda.toPairs)((0, _ramda.countBy)(isWin, findGames(s, m, t.games).map(getResult))).map(function (x) {
             return x[1];
           }).join(':') });
       })

@@ -88,7 +88,7 @@ const teams = createSelector(
   t => t.teams || []
 );
 
-const findGames = (s, m, gs) => gs.filter(g => g.date == s.date && g.t1 == m.home && g.t2 == m.away);
+const findGames = (s, m, gs) => gs.filter(g => toDate(g.date) == s.date && g.t1 == m.home && g.t2 == m.away);
 const gg = (g, x) => +(g && g[x] || 0);
 const getResult = g => g.result || (range(0, 5).filter(n => gg(g.g1, n) > gg(g.g2, n)).length + ':' + range(0, 5).filter(n => gg(g.g1, n) < gg(g.g2, n)).length);
 const isWin = r => r[0] > r[2];
@@ -104,7 +104,7 @@ const tournament = createSelector(
         date: toDate(s.date),
         matches: range(1, 9)
             .map(n => findById(n)(s.matches) || {})
-            .map(m => ({ ...m, result: toPairs(countBy(isWin, findGames(tap(s), tap(m), tap(t.games)).map(getResult))).map(x => x[1]).join(':') }))
+            .map(m => ({ ...m, result: toPairs(countBy(isWin, findGames(s, m, t.games).map(getResult))).map(x => x[1]).join(':') }))
     }));
     return teams.length > 0 ? { ...t, teams, schedules } : t;
   }
