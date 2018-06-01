@@ -175,9 +175,10 @@ var tournament = (0, _noRedux.createSelector)(_tournament, playersWithNames, fun
       matches: (0, _ramda.range)(1, 9).map(function (n) {
         return (0, _.findById)(n)(s.matches) || {};
       }).map(function (m) {
-        return _extends({}, m, { result: (0, _ramda.toPairs)((0, _ramda.countBy)(isWin, (0, _.tap)(findGames(s, m, t.games).map(getResult)))).map(function (x) {
-            return x[1];
-          }).join(':') });
+        var rs = findGames(s, m, t.games).map(getResult);
+        var wn = rs.filter(isWin).length;
+        var ln = rs.filter(isLose).length;
+        return _extends({}, m, { result: wn + ':' + ln });
       })
     });
   });
