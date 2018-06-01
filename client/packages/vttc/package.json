@@ -5,7 +5,7 @@
   "dependencies": {
     "css-short": "^1.0.3",
     "jquery": "^3.3.1",
-    "no-redux": "^0.3.0",
+    "no-redux": "^0.5.0",
     "ramda": "^0.25.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
