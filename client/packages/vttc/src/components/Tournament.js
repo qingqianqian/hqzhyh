@@ -18,9 +18,9 @@ const Tournament = ({ lookup, tournament, id }) =>
       {(tournament.teams || []).map(t =>
         <div class="pt8">
           <div class="pt8 fs24 darkgreen">{t.name}</div>
-          <Table name="team" data={t.players || []}>
+          <Table name="team" data={pick(['id', 'firstName', 'lastName' ,'sex', 'rating'], (t.players || []))}>
             <td key="id" hidden />  
-            <td key="rating" title="Start Rating" />  
+            <td key="sex" title="Gender" />  
           </Table>
         </div>  
       )}
