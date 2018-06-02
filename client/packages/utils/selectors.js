@@ -275,7 +275,7 @@ var standing = (0, _noRedux.createSelector)(tournament, teams, function (tt, ts)
     var ms = (0, _ramda.unnest)(tt.schedules.map(function (s) {
       return s.matches;
     })).filter(function (m) {
-      return m.home == t.id || m.away == t.id;
+      return (m.home == t.id || m.away == t.id) && m.result != '0:0';
     });
     var ws = ms.filter(function (m) {
       return m.home == t.id && m.result[0] > m.result[2] || m.away == t.id && m.result[0] < m.result[2];
