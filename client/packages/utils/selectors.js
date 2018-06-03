@@ -271,7 +271,7 @@ var getPoints = function getPoints(m, t, v) {
 };
 
 var standing = (0, _noRedux.createSelector)(tournament, teams, function (tt, ts) {
-  return (0, _.addIndex)((0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('points'))], ts.map(function (t) {
+  return (0, _.addIndex)((0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('points')), (0, _ramda.ascend)((0, _ramda.prop)('total')), (0, _ramda.descend)((0, _ramda.prop)('w'))], ts.map(function (t) {
     var ms = (0, _ramda.unnest)(tt.schedules.map(function (s) {
       return s.matches;
     })).filter(function (m) {

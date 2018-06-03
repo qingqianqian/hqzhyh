@@ -185,7 +185,7 @@ const getPoints = (m, t, v) => m[t] === v ? m[t + 'Points'] : 0;
 const standing = createSelector(
   tournament,
   teams,
-  (tt, ts) => addIndex(sortWith([descend(prop('points'))], ts.map(t => {
+  (tt, ts) => addIndex(sortWith([descend(prop('points')), ascend(prop('total')), descend(prop('w'))], ts.map(t => {
     const ms = unnest(tt.schedules.map(s => s.matches)).filter(m => (m.home == t.id || m.away == t.id) && m.result != '0:0');
     const ws = ms.filter(m => (m.home == t.id && m.result[0] > m.result[2]) || (m.away == t.id && m.result[0] < m.result[2]));
     const wn = ws.length;
