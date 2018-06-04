@@ -4,7 +4,7 @@ import { pick, find, is, range } from 'ramda';
 import { connect } from 'no-redux';
 import { Button } from 'semantic-ui-react';
 import actions from 'utils/actions';
-import { scheduleEditSelector } from 'utils/selectors';
+import { scheduleSelector } from 'utils/selectors';
 import { Table, TextBox, DoubleSelect, Select } from 'utils/comps';
 import { tap, withLoad, withEdit, withSuccess, withParams, getPropById } from 'utils';
 import { withRouter } from "react-router-dom";
@@ -30,7 +30,7 @@ const Schedule = ({ tournament, schedule, history, putSchedule, postSchedule, id
   </div>
 
 export default compose(
-  connect(scheduleEditSelector, actions),
+  connect(scheduleSelector, actions),
   withParams,
   withLoad('tournament', 'id1', true),
   withEdit('schedule', 'tournament.schedules', { matches: [] }),

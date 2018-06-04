@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.DoubleSelect = exports.Select = exports.TextBox = exports.Table = undefined;
+exports.DoubleSelect = exports.CheckBox = exports.Select = exports.TextBox = exports.Table = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -141,10 +141,11 @@ var withInput = function withInput(isCheck) {
     return function (_ref2) {
       var name = _ref2.name,
           index = _ref2.index,
+          label = _ref2.label,
           noLabel = _ref2.noLabel,
           form = _ref2.form,
           setForm = _ref2.setForm,
-          args = _objectWithoutProperties(_ref2, ['name', 'index', 'noLabel', 'form', 'setForm']);
+          args = _objectWithoutProperties(_ref2, ['name', 'index', 'label', 'noLabel', 'form', 'setForm']);
 
       var path = name.replace(/\[/g, '.').replace(/\]/g, '').split('.');
       var value = (0, _ramda.view)((0, _ramda.lensPath)(path), form);
@@ -152,8 +153,8 @@ var withInput = function withInput(isCheck) {
       var onChange = function onChange(e, i, v) {
         return setForm(name, getElemValue(e, i, v), index);
       };
-      var o = _extends({}, args, { id: path.join('_'), name: name, value: value, onChange: onChange });
-      if (!noLabel && path.length > 1) o.label = path[1];
+      var o = _extends({}, args, { id: path.join('_'), name: name, value: value, label: label, onChange: onChange });
+      if (!noLabel && !label && path.length > 1) o.label = path[1];
       return comp(o);
     };
   };
@@ -190,8 +191,17 @@ var select1 = function select1(p) {
   );
 };
 
+var checkBox = function checkBox(p) {
+  return _react2.default.createElement(
+    'div',
+    { 'class': 'pv8' },
+    _react2.default.createElement(_semanticUiReact.Checkbox, _extends({}, p, { checked: p.value }))
+  );
+};
+
 var TextBox = exports.TextBox = withAll(textBox);
 var Select = exports.Select = withAll(select1);
+var CheckBox = exports.CheckBox = withCheck(checkBox);
 
 var s1 = {
   display: 'flex',

@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import { is, find, isNil, difference, innerJoin, view, lensPath } from 'ramda';
 import { toTitleCase, tap } from '.';
 import { filterSelector } from './selectors';
-import { Input, Dropdown } from 'semantic-ui-react';
+import { Input, Dropdown, Checkbox } from 'semantic-ui-react';
 
 const _Table = ({ data, name, link, equalWidth, setSort, children, history }) => {
   children = children && (is(Array, children) ? children : [children]);
@@ -75,13 +75,13 @@ const hidden = prop('hidden', false);
 
 const setForm = (n, v, i) => ({ type: 'setForm', path: 'form.' + n, payload: v });
 
-const withInput = isCheck => comp => ({ name, index, noLabel, form, setForm, ...args }) => {
+const withInput = isCheck => comp => ({ name, index, label, noLabel, form, setForm, ...args }) => {
   const path = name.replace(/\[/g, '.').replace(/\]/g, '').split('.');
   let value = view(lensPath(path), form);
   if (!isNil(index) && is(Array, value)) value = value[index];
   const onChange = (e, i, v) => setForm(name, getElemValue(e, i, v), index);
-  const o = { ...args, id: path.join('_'), name, value, onChange };
-  if (!noLabel && path.length > 1) o.label = path[1];
+  const o = { ...args, id: path.join('_'), name, value, label, onChange };
+  if (!noLabel && !label && path.length > 1) o.label = path[1];
   return comp(o);
 }
 
@@ -111,8 +111,14 @@ const select1 = p =>
     <Dropdown selection {...p} />
   </div>
 
+const checkBox = p =>
+  <div class="pv8">
+    <Checkbox {...p} checked={p.value} />
+  </div>
+
 export const TextBox = withAll(textBox);
 export const Select = withAll(select1);
+export const CheckBox = withCheck(checkBox);
 
 
 const s1 = {

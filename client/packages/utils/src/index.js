@@ -37,7 +37,7 @@ export const withLoad = (p, v, force) => lifecycle({
 
 export const withEdit = (p, l, o) => lifecycle({
   componentWillMount() {
-    const id = +tap(this.props).match.params.id;
+    const id = +this.props.match.params.id;
     const list = toLensPath(l || (p + 's'));
     const v = find(x => x.id == id, _view(lensPath(list), this.props) || []);
     this.props.setForm(v || { id, ...(o || {}) }, { path: p });

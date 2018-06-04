@@ -4,8 +4,8 @@ import { pick, find, is, range } from 'ramda';
 import { connect } from 'no-redux';
 import { Button, Input } from 'semantic-ui-react';
 import actions from 'utils/actions';
-import { gameEditSelector } from 'utils/selectors';
-import { Table, TextBox, DoubleSelect, Select } from 'utils/comps';
+import { gameSelector } from 'utils/selectors';
+import { Table, TextBox, DoubleSelect, Select, CheckBox } from 'utils/comps';
 import { tap, withLoad, withEdit, withSuccess, withParams, getPropById, findById, getNameById } from 'utils';
 
 const Game = ({ tournament, game, games, schedule, match, players, putGame, postGame, id }) =>
@@ -13,6 +13,7 @@ const Game = ({ tournament, game, games, schedule, match, players, putGame, post
     <h1>Match - {tournament.name} - {schedule.date}</h1>
     <hr />
     <TextBox name="game.id" disabled />
+    <CheckBox name="game.isDouble" label="Is Double?"/>
     <div class="f aic">
       <div>  
         <div class="pr8 pb32">{getNameById(match.home)(tournament.teams)}</div>
@@ -22,6 +23,12 @@ const Game = ({ tournament, game, games, schedule, match, players, putGame, post
         <Select name={`game.p1`} options={getPropById('players')(match.home)(tournament.teams)} />
         <Select name={`game.p2`} options={getPropById('players')(match.away)(tournament.teams)} />
       </div>  
+      {game.isDouble ?
+      <div>
+        <Select name={`game.p3`} options={getPropById('players')(match.home)(tournament.teams)} />
+        <Select name={`game.p4`} options={getPropById('players')(match.away)(tournament.teams)} />
+      </div>
+      : null}
       <div>  
         <div class="f aic">{range(0, 5).map(n => <TextBox name={`game.g1[${n}]`} noLabel style={{width: '50px'}}/>)}</div>
         <div class="f aic">{range(0, 5).map(n => <TextBox name={`game.g2[${n}]`} noLabel style={{width: '50px'}}/>)}</div>
@@ -36,13 +43,13 @@ const Game = ({ tournament, game, games, schedule, match, players, putGame, post
   </div>
 
 export default compose(
-  connect(gameEditSelector, actions),
+  connect(gameSelector, actions),
   withParams,
   withLoad('players'),
   withLoad('tournament', 'T', true),
-  withEdit('game', 'games', { g1: [], g2: []}),
-  withProps(p => ({ schedule: findById(p.S)(p.tournament.schedules) })),
-  withProps(p => ({ match: findById(p.M)(p.schedule.matches) })),
+  withEdit('game', 'tournament.games', { g1: [], g2: []}),
+  withProps(p => ({ schedule: findById(p.S)(p.tournament.schedules) || {} })),
+  withProps(p => ({ match: findById(p.M)((p.schedule || {}).matches) || {} })),
   withSuccess('game', () => alert('Saved'), () => alert('Error happened!'))
 )(Game)
 

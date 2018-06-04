@@ -82,7 +82,7 @@ var withLoad = exports.withLoad = function withLoad(p, v, force) {
 var withEdit = exports.withEdit = function withEdit(p, l, o) {
   return (0, _recompose.lifecycle)({
     componentWillMount: function componentWillMount() {
-      var id = +tap(this.props).match.params.id;
+      var id = +this.props.match.params.id;
       var list = toLensPath(l || p + 's');
       var v = (0, _ramda.find)(function (x) {
         return x.id == id;
