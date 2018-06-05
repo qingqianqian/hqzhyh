@@ -171,6 +171,18 @@ const standing = createSelector(
   })), 'rank')
 );
 
+const stats = createSelector(
+  tournament,
+  t => addIndex(sortWith([descend(prop('+/-')), descend(prop('Win %')), descend(prop('Games +/-'))], t.teams.map(x => x.players {
+    const ms = unnest(tt.schedules.map(s => s.matches)).filter(m => (m.home == t.id || m.away == t.id) && m.result != '0:0');
+    const ws = ms.filter(m => (m.home == t.id && m.result[0] > m.result[2]) || (m.away == t.id && m.result[0] < m.result[2]));
+    const wn = ws.length;
+    const ln = ms.length - wn;
+    const ps = sum(ws.map(m => +m.result[m.home == t.id ? 0 : 2]));
+    return { team: t.name, total: ms.length, w: wn, l: ln, points: ps };
+  })), 'rank')
+);
+
 const historyTable = createSelector(
   history,
   players,
