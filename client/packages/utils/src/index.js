@@ -87,6 +87,6 @@ export const toDate = s => {
   return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
 }
 
-export const addIndex = (a, p) => a.map((x, i) => ({ [p || 'id']: i + 1, ...x }));
+export const addIndex = p => a => a.map((x, i) => ({ [p || 'id']: i + 1, ...x }));
 
 export const replaceParam = (s, ps) => reduce((p, c) => p.replace(new RegExp(`\{${c}\}`), ps[c]), s, Object.keys(ps));

@@ -1,4 +1,4 @@
-import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty, groupBy, join, sum, range } from 'ramda';
+import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty, groupBy, join, sum, range, pipe, map } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
 import { findById, getNameById, toDate, addIndex, tap } from '.';
 import { Z_TEXT } from 'zlib';
@@ -161,26 +161,32 @@ const getPoints = (m, t, v) => m[t] === v ? m[t + 'Points'] : 0;
 const standing = createSelector(
   tournament,
   teams,
-  (tt, ts) => addIndex(sortWith([descend(prop('points')), ascend(prop('total')), descend(prop('w'))], ts.map(t => {
+  (tt, ts) => pipe(
+    sortWith([descend(prop('points')), ascend(prop('total')), descend(prop('w'))]),
+    addIndex('rank')
+  )(ts.map(t => {
     const ms = unnest(tt.schedules.map(s => s.matches)).filter(m => (m.home == t.id || m.away == t.id) && m.result != '0:0');
     const ws = ms.filter(m => (m.home == t.id && m.result[0] > m.result[2]) || (m.away == t.id && m.result[0] < m.result[2]));
     const wn = ws.length;
     const ln = ms.length - wn;
     const ps = sum(ws.map(m => +m.result[m.home == t.id ? 0 : 2]));
     return { team: t.name, total: ms.length, w: wn, l: ln, points: ps };
-  })), 'rank')
+  }))
 );
 
 const stats = createSelector(
   tournament,
-  t => addIndex(sortWith([descend(prop('+/-')), descend(prop('Win %')), descend(prop('Games +/-'))], t.teams.map(x => x.players {
-    const ms = unnest(tt.schedules.map(s => s.matches)).filter(m => (m.home == t.id || m.away == t.id) && m.result != '0:0');
-    const ws = ms.filter(m => (m.home == t.id && m.result[0] > m.result[2]) || (m.away == t.id && m.result[0] < m.result[2]));
-    const wn = ws.length;
-    const ln = ms.length - wn;
-    const ps = sum(ws.map(m => +m.result[m.home == t.id ? 0 : 2]));
-    return { team: t.name, total: ms.length, w: wn, l: ln, points: ps };
-  })), 'rank')
+  t => pipe(
+    map(x => x.players),
+    unnest,
+    uniqBy(x => x.id),
+    p => {
+      const gs = t.games.filter(g => [g.p1, g.p2, g.p3, g.p4].some(x => x == p.id));
+      const 
+    },
+    sortWith([descend(prop('+/-')), descend(prop('Win %')), descend(prop('Games +/-'))]),
+    addIndex('rank')
+  )(t.teams)
 );
 
 const historyTable = createSelector(

@@ -248,7 +248,7 @@ var getPoints = function getPoints(m, t, v) {
 };
 
 var standing = (0, _noRedux.createSelector)(tournament, teams, function (tt, ts) {
-  return (0, _.addIndex)((0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('points')), (0, _ramda.ascend)((0, _ramda.prop)('total')), (0, _ramda.descend)((0, _ramda.prop)('w'))], ts.map(function (t) {
+  return (0, _ramda.pipe)((0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('points')), (0, _ramda.ascend)((0, _ramda.prop)('total')), (0, _ramda.descend)((0, _ramda.prop)('w'))]), (0, _.addIndex)('rank'))(ts.map(function (t) {
     var ms = (0, _ramda.unnest)(tt.schedules.map(function (s) {
       return s.matches;
     })).filter(function (m) {
@@ -263,26 +263,15 @@ var standing = (0, _noRedux.createSelector)(tournament, teams, function (tt, ts)
       return +m.result[m.home == t.id ? 0 : 2];
     }));
     return { team: t.name, total: ms.length, w: wn, l: ln, points: ps };
-  })), 'rank');
+  }));
 });
 
 var stats = (0, _noRedux.createSelector)(tournament, function (t) {
-  return (0, _.addIndex)((0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('+/-')), (0, _ramda.descend)((0, _ramda.prop)('Win %')), (0, _ramda.descend)((0, _ramda.prop)('Games +/-'))], t.teams.map(function (x) {
-    var ms = (0, _ramda.unnest)(tt.schedules.map(function (s) {
-      return s.matches;
-    })).filter(function (m) {
-      return (m.home == t.id || m.away == t.id) && m.result != '0:0';
-    });
-    var ws = ms.filter(function (m) {
-      return m.home == t.id && m.result[0] > m.result[2] || m.away == t.id && m.result[0] < m.result[2];
-    });
-    var wn = ws.length;
-    var ln = ms.length - wn;
-    var ps = (0, _ramda.sum)(ws.map(function (m) {
-      return +m.result[m.home == t.id ? 0 : 2];
-    }));
-    return { team: t.name, total: ms.length, w: wn, l: ln, points: ps };
-  })), 'rank');
+  return (0, _ramda.pipe)((0, _ramda.map)(function (x) {
+    return x.players;
+  }), _ramda.unnest, uniqBy(function (x) {
+    return x.id;
+  }), (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('+/-')), (0, _ramda.descend)((0, _ramda.prop)('Win %')), (0, _ramda.descend)((0, _ramda.prop)('Games +/-'))]), (0, _.addIndex)('rank'))(t.teams);
 });
 
 var historyTable = (0, _noRedux.createSelector)(history, players, function (h, ps) {

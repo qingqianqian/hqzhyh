@@ -152,10 +152,12 @@ var toDate = exports.toDate = function toDate(s) {
   return d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear();
 };
 
-var addIndex = exports.addIndex = function addIndex(a, p) {
-  return a.map(function (x, i) {
-    return _extends(_defineProperty({}, p || 'id', i + 1), x);
-  });
+var addIndex = exports.addIndex = function addIndex(p) {
+  return function (a) {
+    return a.map(function (x, i) {
+      return _extends(_defineProperty({}, p || 'id', i + 1), x);
+    });
+  };
 };
 
 var replaceParam = exports.replaceParam = function replaceParam(s, ps) {
