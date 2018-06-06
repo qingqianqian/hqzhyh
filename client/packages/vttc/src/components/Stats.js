@@ -16,6 +16,7 @@ const Stats = ({ stats, tournament, id }) =>
       <h1>Stats - {tournament.name}</h1>
       <hr/>
       <Table name="stats" data={stats}>
+        <td key="mp" title="MP"/>
       </Table>
     </div>
   </div>

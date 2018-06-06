@@ -331,9 +331,9 @@ var stats = (0, _noRedux.createSelector)(tournament, function (t) {
       var dl = dgs.filter(function (g) {
         return !isPlayerWin(p.id)(g);
       }).length;
-      return { player: p.name, 'MP': total, w: w, l: l, '+/-': diff > 0 ? '+' + diff : diff, 'Win %': wpc, gw: gw, gl: gl, dw: dw, dl: dl };
+      return { player: p.name, 'mp': total, w: w, l: l, '+/-': diff > 0 ? '+' + diff : diff, 'win %': wpc, gw: gw, gl: gl, dw: dw, dl: dl };
     });
-  }, (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('+/-')), (0, _ramda.descend)((0, _ramda.prop)('Win %'))]), (0, _.addIndex)('rank'))(t.teams || []);
+  }, (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('+/-')), (0, _ramda.descend)((0, _ramda.prop)('win %'))]), (0, _.addIndex)('rank'))(t.teams || []);
 });
 
 var historyTable = (0, _noRedux.createSelector)(history, players, function (h, ps) {

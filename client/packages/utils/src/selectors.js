@@ -204,9 +204,9 @@ const stats = createSelector(
       const wpc = ((total && (w / total)) * 100).toFixed(1) + '%';
       const dw = dgs.filter(g => isPlayerWin(p.id)(g)).length;
       const dl = dgs.filter(g => !isPlayerWin(p.id)(g)).length;
-      return { player: p.name, 'MP': total, w, l, '+/-': diff > 0 ? '+' + diff : diff, 'Win %': wpc, gw, gl, dw, dl };
+      return { player: p.name, 'mp': total, w, l, '+/-': diff > 0 ? '+' + diff : diff, 'win %': wpc, gw, gl, dw, dl };
     }),
-    sortWith([descend(prop('+/-')), descend(prop('Win %'))]),
+    sortWith([descend(prop('+/-')), descend(prop('win %'))]),
     addIndex('rank')
   )(t.teams || [])
 );
