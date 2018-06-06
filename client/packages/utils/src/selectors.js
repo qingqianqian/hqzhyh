@@ -189,7 +189,7 @@ const stats = createSelector(
     map(x => x.players),
     unnest,
     uniqBy(x => x.id),
-    ps => tap(ps).map(p => {
+    ps => ps.map(p => {
       const gs = (t.games || []).filter(g => [g.p1, g.p2, g.p3, g.p4].some(x => x == p.id));
       const sgs = gs.filter(g => !g.isDouble);
       const dgs = gs.filter(g => g.isDouble);

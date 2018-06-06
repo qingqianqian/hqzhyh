@@ -292,7 +292,7 @@ var stats = (0, _noRedux.createSelector)(tournament, function (t) {
   }), _ramda.unnest, (0, _ramda.uniqBy)(function (x) {
     return x.id;
   }), function (ps) {
-    return (0, _.tap)(ps).map(function (p) {
+    return ps.map(function (p) {
       var gs = (t.games || []).filter(function (g) {
         return [g.p1, g.p2, g.p3, g.p4].some(function (x) {
           return x == p.id;
