@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.gameSelector = exports.scheduleSelector = exports.teamSelector = exports.standingSelector = exports.historySelector = exports.tourSelector = exports.tournamentSelector = exports.tournamentsSelector = exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
+exports.statsSelector = exports.gameSelector = exports.scheduleSelector = exports.teamSelector = exports.standingSelector = exports.historySelector = exports.tourSelector = exports.tournamentSelector = exports.tournamentsSelector = exports.playersSelector = exports.ratingsSelector = exports.productsSelector = exports.catsSelector = exports.langSelector = exports.lookupSelector = exports.successSelector = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -190,7 +190,7 @@ var tournament = (0, _noRedux.createSelector)(_tournament, players, function (t,
       })
     });
   });
-  return (0, _.tap)(_extends({}, t, { teams: teams, schedules: schedules, games: games }));
+  return teams.length > 0 ? _extends({}, t, { teams: teams, schedules: schedules, games: games }) : t;
 });
 
 var tournamentsWithYears = (0, _noRedux.createSelector)(tournaments, function (ts) {
@@ -266,12 +266,74 @@ var standing = (0, _noRedux.createSelector)(tournament, teams, function (tt, ts)
   }));
 });
 
+var isHomePlayer = function isHomePlayer(p) {
+  return function (g) {
+    return g.p1 == p || g.p3 == p;
+  };
+};
+var isAwayPlayer = function isAwayPlayer(p) {
+  return function (g) {
+    return g.p2 == p || g.p4 == p;
+  };
+};
+var isHomeWin = function isHomeWin(g) {
+  return g.result[0] > g.result[2];
+};
+var isAwayWin = function isAwayWin(g) {
+  return g.result[2] > g.result[0];
+};
+var isPlayerWin = function isPlayerWin(p) {
+  return (0, _ramda.anyPass)([(0, _ramda.both)(isHomePlayer(p), isHomeWin), (0, _ramda.both)(isAwayPlayer(p), isAwayWin)]);
+};
+
 var stats = (0, _noRedux.createSelector)(tournament, function (t) {
   return (0, _ramda.pipe)((0, _ramda.map)(function (x) {
     return x.players;
-  }), _ramda.unnest, uniqBy(function (x) {
+  }), _ramda.unnest, (0, _ramda.uniqBy)(function (x) {
     return x.id;
-  }), (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('+/-')), (0, _ramda.descend)((0, _ramda.prop)('Win %')), (0, _ramda.descend)((0, _ramda.prop)('Games +/-'))]), (0, _.addIndex)('rank'))(t.teams);
+  }), function (ps) {
+    return (0, _.tap)(ps).map(function (p) {
+      var gs = (t.games || []).filter(function (g) {
+        return [g.p1, g.p2, g.p3, g.p4].some(function (x) {
+          return x == p.id;
+        });
+      });
+      var sgs = gs.filter(function (g) {
+        return !g.isDouble;
+      });
+      var dgs = gs.filter(function (g) {
+        return g.isDouble;
+      });
+      var total = sgs.length;
+      var wins = sgs.filter(function (g) {
+        return isPlayerWin(p.id)(g);
+      });
+      var loses = sgs.filter(function (g) {
+        return !isPlayerWin(p.id)(g);
+      });
+      var gw = (0, _ramda.sum)(wins.filter(isHomeWin).map(function (g) {
+        return +g.result[0];
+      })) + (0, _ramda.sum)(wins.filter(isAwayWin).map(function (g) {
+        return +g.result[2];
+      }));
+      var gl = (0, _ramda.sum)(loses.filter(isHomeWin).map(function (g) {
+        return +g.result[2];
+      })) + (0, _ramda.sum)(loses.filter(isAwayWin).map(function (g) {
+        return +g.result[0];
+      }));
+      var w = wins.length;
+      var l = loses.length;
+      var diff = w - l;
+      var wpc = ((total && w / total) * 100).toFixed(1) + '%';
+      var dw = dgs.filter(function (g) {
+        return isPlayerWin(p.id)(g);
+      }).length;
+      var dl = dgs.filter(function (g) {
+        return !isPlayerWin(p.id)(g);
+      }).length;
+      return { player: p.name, 'MP': total, w: w, l: l, '+/-': diff > 0 ? '+' + diff : diff, 'Win %': wpc, gw: gw, gl: gl, dw: dw, dl: dl };
+    });
+  }, (0, _ramda.sortWith)([(0, _ramda.descend)((0, _ramda.prop)('+/-')), (0, _ramda.descend)((0, _ramda.prop)('Win %'))]), (0, _.addIndex)('rank'))(t.teams || []);
 });
 
 var historyTable = (0, _noRedux.createSelector)(history, players, function (h, ps) {
@@ -305,3 +367,4 @@ var standingSelector = exports.standingSelector = (0, _noRedux.mapStateWithSelec
 var teamSelector = exports.teamSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, team: form('team'), players: dsPlayers });
 var scheduleSelector = exports.scheduleSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, schedule: form('schedule') });
 var gameSelector = exports.gameSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, players: players, game: form('game') });
+var statsSelector = exports.statsSelector = (0, _noRedux.mapStateWithSelectors)({ tournament: tournament, stats: stats });

@@ -1,4 +1,4 @@
-import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty, groupBy, join, sum, range, pipe, map } from 'ramda';
+import { reduce, prop, sortWith, ascend, descend, unnest, find, isEmpty, groupBy, join, sum, range, pipe, map, uniqBy, anyPass, both } from 'ramda';
 import { createSelector, mapStateWithSelectors } from 'no-redux';
 import { findById, getNameById, toDate, addIndex, tap } from '.';
 import { Z_TEXT } from 'zlib';
@@ -113,7 +113,7 @@ const tournament = createSelector(
                 return {...m, result: wn + ':' + ln };
             })
     }));
-    return tap({ ...t, teams, schedules, games });
+    return teams.length > 0 ? { ...t, teams, schedules, games } : t;
   }
 );
 
@@ -174,19 +174,41 @@ const standing = createSelector(
   }))
 );
 
+const isHomePlayer = p => g => g.p1 == p || g.p3 == p;
+const isAwayPlayer = p => g => g.p2 == p || g.p4 == p;
+const isHomeWin = g => g.result[0] > g.result[2];
+const isAwayWin = g => g.result[2] > g.result[0];
+const isPlayerWin = p => anyPass([
+  both(isHomePlayer(p), isHomeWin),
+  both(isAwayPlayer(p), isAwayWin)
+])
+
 const stats = createSelector(
   tournament,
   t => pipe(
     map(x => x.players),
     unnest,
     uniqBy(x => x.id),
-    p => {
-      const gs = t.games.filter(g => [g.p1, g.p2, g.p3, g.p4].some(x => x == p.id));
-      const 
-    },
-    sortWith([descend(prop('+/-')), descend(prop('Win %')), descend(prop('Games +/-'))]),
+    ps => tap(ps).map(p => {
+      const gs = (t.games || []).filter(g => [g.p1, g.p2, g.p3, g.p4].some(x => x == p.id));
+      const sgs = gs.filter(g => !g.isDouble);
+      const dgs = gs.filter(g => g.isDouble);
+      const total = sgs.length;
+      const wins = sgs.filter(g => isPlayerWin(p.id)(g));
+      const loses = sgs.filter(g => !isPlayerWin(p.id)(g));
+      const gw = sum(wins.filter(isHomeWin).map(g => +g.result[0])) + sum(wins.filter(isAwayWin).map(g => +g.result[2]));
+      const gl = sum(loses.filter(isHomeWin).map(g => +g.result[2])) + sum(loses.filter(isAwayWin).map(g => +g.result[0]));
+      const w = wins.length;
+      const l = loses.length;
+      const diff = w - l;
+      const wpc = ((total && (w / total)) * 100).toFixed(1) + '%';
+      const dw = dgs.filter(g => isPlayerWin(p.id)(g)).length;
+      const dl = dgs.filter(g => !isPlayerWin(p.id)(g)).length;
+      return { player: p.name, 'MP': total, w, l, '+/-': diff > 0 ? '+' + diff : diff, 'Win %': wpc, gw, gl, dw, dl };
+    }),
+    sortWith([descend(prop('+/-')), descend(prop('Win %'))]),
     addIndex('rank')
-  )(t.teams)
+  )(t.teams || [])
 );
 
 const historyTable = createSelector(
@@ -216,3 +238,4 @@ export const standingSelector = mapStateWithSelectors({ standing, tournament });
 export const teamSelector = mapStateWithSelectors({ tournament, team: form('team'), players: dsPlayers });
 export const scheduleSelector = mapStateWithSelectors({ tournament, schedule: form('schedule') });
 export const gameSelector = mapStateWithSelectors({ tournament, players, game: form('game') });
+export const statsSelector = mapStateWithSelectors({ tournament, stats });

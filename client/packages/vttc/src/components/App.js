@@ -13,6 +13,7 @@ import Rating from './Rating';
 import History from './History';
 import Schedule from './Schedule';
 import Standing from './Standing';
+import Stats from './Stats';
 import Contact from './Contact';
 import { Switch, Route } from 'react-router';
 import { withLoad } from 'utils';
@@ -36,6 +37,7 @@ const App = p =>
       <Route path='/rating/:id' component={History} />
       <Route path='/schedule/:id' component={Schedule} />
       <Route path='/standing/:id' component={Standing} />
+      <Route path='/stats/:id' component={Stats} />
     </Switch>
 
     <div class="ui divider"></div>
