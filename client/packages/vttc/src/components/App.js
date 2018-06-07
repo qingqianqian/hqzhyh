@@ -15,6 +15,7 @@ import Schedule from './Schedule';
 import Standing from './Standing';
 import Stats from './Stats';
 import Contact from './Contact';
+import Calendar from './Calendar';
 import { Switch, Route } from 'react-router';
 import { withLoad } from 'utils';
 import actions from 'utils/actions';
@@ -28,6 +29,7 @@ const App = p =>
     <Switch>
       <Route exact path='/' component={Home} />
       <Route path='/contact' component={Contact} />
+      <Route path='/calendar' component={Calendar} />
       <Route exact path='/products' component={Products} />
       <Route path='/products/:id' component={Product} />
       <Route exact path='/players' component={Players} />

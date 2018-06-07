@@ -59,7 +59,11 @@ const col = (idx, key, obj, children) => {
   if (p.center) cls += 'tac';
   if (p.right) cls += 'tar';
 
-  return <td key={`td${key + idx}`} class={cls}><div dangerouslySetInnerHTML={{ __html: v }} /></td>;
+  return (
+    <td key={`td${key + idx}`} class={cls}>
+      {p.children ? p.children(obj) : <div dangerouslySetInnerHTML={{ __html: v }} />}
+    </td>
+  );
 }
 
 const prop = (prop, val = '') => (key, children) => {

@@ -110,7 +110,7 @@ var col = function col(idx, key, obj, children) {
   return _react2.default.createElement(
     'td',
     { key: 'td' + (key + idx), 'class': cls },
-    _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: v } })
+    p.children ? p.children(obj) : _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: v } })
   );
 };
 
