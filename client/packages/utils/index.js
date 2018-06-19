@@ -18,7 +18,7 @@ var _selectors = require('./selectors');
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var cdurl = exports.cdurl = function cdurl(l, c, n) {
-  return l.cdVersion ? 'http://res.cloudinary.com/vttc/image/upload/v' + l.cdVersion + '/' + c + '/' + n + '.jpg' : '';
+  return l.cdVersion ? 'http://res.cloudinary.com/hqzhyh/image/upload/v' + l.cdVersion + '/' + c + '/' + n + '.jpg' : '';
 };
 
 var tap = exports.tap = function tap(x) {

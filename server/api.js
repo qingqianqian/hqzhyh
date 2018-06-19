@@ -5,7 +5,7 @@ const { sortWith, ascend, descend, prop } = require('ramda');
 const { tap, config } = require('./utils');
 
 let db = null;
-if (config) cd.config({ cloud_name: 'vttc', api_key: config.cloudinary_key, api_secret: config.cloudinary_secret });
+if (config) cd.config({ cloud_name: 'hqzhyh', api_key: config.cloudinary_key, api_secret: config.cloudinary_secret });
 const e = {};
 
 e.initdb = mongoURL => {

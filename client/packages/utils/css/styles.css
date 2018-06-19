@@ -9,7 +9,9 @@ body.pushable {
 }
 
 .bgb {
-  background-color: rgb(42, 27, 112);
+  /* background-color: rgb(42, 27, 112); */
+  /* background-color: rgb(19, 71, 110); */
+  background-color: rgb(5, 10, 78);
 }
 
 #main-menu {
